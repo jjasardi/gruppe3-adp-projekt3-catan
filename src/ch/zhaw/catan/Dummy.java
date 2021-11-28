@@ -12,7 +12,7 @@ import org.beryx.textio.TextTerminal;
 public class Dummy {
 
   public enum Actions {
-    SHOW, QUIT
+    SHOW, BANK, QUIT
   }
 
   private void run() {
@@ -21,16 +21,33 @@ public class Dummy {
 
     SiedlerBoard board = new SiedlerBoard();
     SiedlerBoardTextView view = new SiedlerBoardTextView(board);
+    Bank bank = new Bank();
 
-    //for (Map.Entry<Point, Label> e : lowerFieldLabel.entrySet()) {
-    // view.setLowerFieldLabel(e.getKey(), e.getValue());
-    //}
+    Map<Point, Label> lowerFieldLabel = new HashMap<>();
+    for (Map.Entry<Point, Integer> index : Config.getStandardDiceNumberPlacement().entrySet()) {
+      char char1 = '0';
+      char char2 = '0';
+      char[] chars = ("" + index.getValue()).toCharArray();
+      if (index.getValue() > 9) {
+        char1 = chars[0];
+        char2 = chars[1];
+      } else {
+        char2 = chars[0];
+      }
+      lowerFieldLabel.put(new Point(index.getKey()), new Label(char1, char2));
+    }
+    for (Map.Entry<Point, Label> e : lowerFieldLabel.entrySet()) {
+      view.setLowerFieldLabel(e.getKey(), e.getValue());
+    }
 
     boolean running = true;
     while (running) {
       switch (getEnumValue(textIO, Actions.class)) {
         case SHOW:
           textTerminal.println(view.toString());
+          break;
+        case BANK:
+          System.out.println(bank.getBankStock().values());
           break;
         case QUIT:
           running = false;
