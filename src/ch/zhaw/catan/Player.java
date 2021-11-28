@@ -32,4 +32,7 @@ public class Player {
         //TODO
     }
 
+    public Player (Faction faction){
+        this.faction = faction;
+    }
 }
