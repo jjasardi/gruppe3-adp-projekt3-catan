@@ -30,6 +30,7 @@ public class SiedlerGame {
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     // TODO: Implement
+    setPlayers(numberOfPlayers);
   }
 
   /**
@@ -285,6 +286,25 @@ public class SiedlerGame {
                  + getCurrentPlayerResourceStock(Resource.BRICK);
 
     return allCards;
+  }
+
+  //TODO not final, bad code.
+  private void setPlayers(int numberOfPlayers) {
+    if (numberOfPlayers == 2) {
+      Player playerOne = new Player(Faction.RED);
+      Player playerTwo = new Player(Faction.BLUE);
+    } else if (numberOfPlayers == 3) {
+      Player playerOne = new Player(Faction.RED);
+      Player playerTwo = new Player(Faction.BLUE);
+      Player playerThree = new Player(Faction.GREEN);
+    } else if (numberOfPlayers == 4){
+      Player playerOne = new Player(Faction.RED);
+      Player playerTwo = new Player(Faction.BLUE);
+      Player playerThree = new Player(Faction.GREEN);
+      Player playerFour = new Player(Faction.YELLOW);
+    } else {
+      System.err.println("error");
+    }
   }
 
 }
