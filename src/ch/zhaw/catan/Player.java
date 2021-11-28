@@ -5,18 +5,18 @@ import ch.zhaw.catan.Config.Resource;
 import java.util.HashMap;
 
 public class Player {
-    private boolean playerActive;
+    private boolean isPlayerActive;
     private final Faction playerFaction;
     private HashMap<Resource, Integer> playerResource;
 
     public Player(Faction PlayerFaction) {
-        playerActive = true;
+        isPlayerActive = true;
         this.playerFaction = PlayerFaction;
         playerResource = new HashMap<>();
     }
 
     public boolean getPlayerActive() {
-        return playerActive;
+        return isPlayerActive;
     }
 
     public Faction getPlayerFaction() {
@@ -30,9 +30,5 @@ public class Player {
 
     private void setPlayerResource() {
         //TODO
-    }
-
-    public Player (Faction faction){
-        this.faction = faction;
     }
 }
