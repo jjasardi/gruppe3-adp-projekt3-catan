@@ -32,11 +32,8 @@ public class SiedlerGame {
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     // TODO: finish Implement
-    Faction faction[] = Faction.values(); // TODO gehört hierhin.
-    for (int i = 0; i < numberOfPlayers; i++) {
-      playerList.add(new Player(faction[i]));
-    }
-    currentPlayer = playerList.get(0);
+    setPlayerList(numberOfPlayers);
+    
   }
 
   /**
@@ -45,7 +42,7 @@ public class SiedlerGame {
   public void switchToNextPlayer() {
     Player activePlayer = playerList.remove(0);
     playerList.add(activePlayer);
-    currentPlayer = playerList.get(0);
+    currentPlayer = getCurrentPlayer();
   }
 
   /**
@@ -54,7 +51,7 @@ public class SiedlerGame {
   public void switchToPreviousPlayer() {
     Player lastPlayer = playerList.remove(playerList.size() - 1); // Magic number?
     playerList.add(0, lastPlayer);
-    currentPlayer = playerList.get(0);
+    currentPlayer = getCurrentPlayer();
   }
 
   /**
@@ -89,8 +86,7 @@ public class SiedlerGame {
    * @return the faction of the current player
    */
   public Faction getCurrentPlayerFaction() {
-    // TODO: Implement
-    return null;
+    return getCurrentPlayer().getPlayerFaction();
   }
 
   /**
@@ -269,6 +265,10 @@ public class SiedlerGame {
 
   // new implement
 
+  private Player getCurrentPlayer() {
+    return playerList.get(0);
+  }
+
   /**
    * This method simulates rolling a pair of dice.
    */
@@ -291,9 +291,18 @@ public class SiedlerGame {
    */
   private int getCurrentPlayerStock() {
     int allCards = getCurrentPlayerResourceStock(Resource.GRAIN)
-        + getCurrentPlayerResourceStock(Resource.WOOL) + getCurrentPlayerResourceStock(Resource.LUMBER)
-        + getCurrentPlayerResourceStock(Resource.ORE) + getCurrentPlayerResourceStock(Resource.BRICK);
+        + getCurrentPlayerResourceStock(Resource.WOOL) 
+        + getCurrentPlayerResourceStock(Resource.LUMBER)
+        + getCurrentPlayerResourceStock(Resource.ORE) 
+        + getCurrentPlayerResourceStock(Resource.BRICK);
 
     return allCards;
+  }
+
+  private void setPlayerList(int numberOfPlayers) {
+    Faction faction[] = Faction.values(); // TODO gehört hierhin.
+    for (int i = 0; i < numberOfPlayers; i++) {
+      playerList.add(new Player(faction[i]));
+    }
   }
 }
