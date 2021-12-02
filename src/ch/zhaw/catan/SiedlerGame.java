@@ -19,6 +19,8 @@ public class SiedlerGame {
 
   // TODO: not final
   private int dicethrow;
+  private List<Player> playerList;
+  private Player currentPlayer;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -29,22 +31,30 @@ public class SiedlerGame {
    *                                  is not between two and four
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
-    // TODO: Implement
-    setPlayers(numberOfPlayers);
+    // TODO: finish Implement
+    Faction faction[] = Faction.values(); // TODO gehört hierhin.
+    for (int i = 0; i < numberOfPlayers; i++) {
+      playerList.add(new Player(faction[i]));
+    }
+    currentPlayer = playerList.get(0);
   }
 
   /**
    * Switches to the next player in the defined sequence of players.
    */
   public void switchToNextPlayer() {
-    // TODO: Implement
+    Player activePlayer = playerList.remove(0);
+    playerList.add(activePlayer);
+    currentPlayer = playerList.get(0);
   }
 
   /**
    * Switches to the previous player in the defined sequence of players.
    */
   public void switchToPreviousPlayer() {
-    // TODO: Implement
+    Player lastPlayer = playerList.remove(playerList.size() - 1); // Magic number?
+    playerList.add(0, lastPlayer);
+    currentPlayer = playerList.get(0);
   }
 
   /**
@@ -276,35 +286,14 @@ public class SiedlerGame {
 
   /**
    * Returns how many cards the current player owns.
+   * 
    * @return the number of cards in hand
    */
   private int getCurrentPlayerStock() {
     int allCards = getCurrentPlayerResourceStock(Resource.GRAIN)
-                 + getCurrentPlayerResourceStock(Resource.WOOL)
-                 + getCurrentPlayerResourceStock(Resource.LUMBER)
-                 + getCurrentPlayerResourceStock(Resource.ORE)
-                 + getCurrentPlayerResourceStock(Resource.BRICK);
+        + getCurrentPlayerResourceStock(Resource.WOOL) + getCurrentPlayerResourceStock(Resource.LUMBER)
+        + getCurrentPlayerResourceStock(Resource.ORE) + getCurrentPlayerResourceStock(Resource.BRICK);
 
     return allCards;
   }
-
-  //TODO not final, bad code.
-  private void setPlayers(int numberOfPlayers) {
-    if (numberOfPlayers == 2) {
-      Player playerOne = new Player(Faction.RED);
-      Player playerTwo = new Player(Faction.BLUE);
-    } else if (numberOfPlayers == 3) {
-      Player playerOne = new Player(Faction.RED);
-      Player playerTwo = new Player(Faction.BLUE);
-      Player playerThree = new Player(Faction.GREEN);
-    } else if (numberOfPlayers == 4){
-      Player playerOne = new Player(Faction.RED);
-      Player playerTwo = new Player(Faction.BLUE);
-      Player playerThree = new Player(Faction.GREEN);
-      Player playerFour = new Player(Faction.YELLOW);
-    } else {
-      System.err.println("error");
-    }
-  }
-
 }
