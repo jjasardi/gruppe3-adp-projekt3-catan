@@ -97,8 +97,7 @@ public class SiedlerGame {
    * @return the number of resource cards of this type
    */
   public int getCurrentPlayerResourceStock(Resource resource) {
-    // TODO: Implement
-    return 0;
+    return getCurrentPlayer().getPlayerResource(resource);
   }
 
   /**
