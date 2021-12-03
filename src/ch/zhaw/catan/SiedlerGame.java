@@ -3,7 +3,6 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +16,10 @@ public class SiedlerGame {
   static final int FOUR_TO_ONE_TRADE_OFFER = 4;
   static final int FOUR_TO_ONE_TRADE_WANT = 1;
 
-  // TODO: not final
-  private int dicethrow;
   private List<Player> playerList;
-  private Player currentPlayer;
+  private List<Faction> playerFactionList;
+  private int dicethrow;
+  private int currentPlayer = 0;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -33,25 +32,29 @@ public class SiedlerGame {
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     // TODO: finish Implement
     setPlayerList(numberOfPlayers);
-    
+
   }
 
   /**
    * Switches to the next player in the defined sequence of players.
    */
   public void switchToNextPlayer() {
-    Player activePlayer = playerList.remove(0);
-    playerList.add(activePlayer);
-    currentPlayer = getCurrentPlayer();
+    if (currentPlayer < (playerList.size() - 1)) {
+      currentPlayer++;
+    } else {
+      currentPlayer = 0;
+    }
   }
 
   /**
    * Switches to the previous player in the defined sequence of players.
    */
   public void switchToPreviousPlayer() {
-    Player lastPlayer = playerList.remove(playerList.size() - 1); // Magic number?
-    playerList.add(0, lastPlayer);
-    currentPlayer = getCurrentPlayer();
+    if (currentPlayer != 0) {
+      currentPlayer--;
+    } else {
+      currentPlayer = playerList.size() - 1;
+    }
   }
 
   /**
@@ -66,8 +69,10 @@ public class SiedlerGame {
    * @return the list with player's factions
    */
   public List<Faction> getPlayerFactions() {
-    // TODO: Implement
-    return Collections.emptyList();
+    for (Player player : playerList) {
+      playerFactionList.add(player.getPlayerFaction());
+    }
+    return playerFactionList;
   }
 
   /**
@@ -265,7 +270,7 @@ public class SiedlerGame {
   // new implement
 
   private Player getCurrentPlayer() {
-    return playerList.get(0);
+    return playerList.get(currentPlayer);
   }
 
   /**
@@ -299,7 +304,7 @@ public class SiedlerGame {
   }
 
   private void setPlayerList(int numberOfPlayers) {
-    Faction faction[] = Faction.values(); // TODO gehört hierhin.
+    Faction faction[] = Faction.values();
     for (int i = 0; i < numberOfPlayers; i++) {
       playerList.add(new Player(faction[i]));
     }
