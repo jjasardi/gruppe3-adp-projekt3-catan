@@ -15,11 +15,12 @@ import java.util.Map;
 public class SiedlerGame {
   static final int FOUR_TO_ONE_TRADE_OFFER = 4;
   static final int FOUR_TO_ONE_TRADE_WANT = 1;
+  static final int FIRST_PLAYER_IN_LIST = 0;
 
   private List<Player> playerList;
   private List<Faction> playerFactionList;
   private int dicethrow;
-  private int currentPlayer = 0;
+  private int currentPlayer = FIRST_PLAYER_IN_LIST;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -43,7 +44,7 @@ public class SiedlerGame {
     if (currentPlayer < (playerList.size() - 1)) {
       currentPlayer++;
     } else {
-      currentPlayer = 0;
+      currentPlayer = FIRST_PLAYER_IN_LIST;
     }
   }
 
@@ -51,7 +52,7 @@ public class SiedlerGame {
    * Switches to the previous player in the defined sequence of players.
    */
   public void switchToPreviousPlayer() {
-    if (currentPlayer != 0) {
+    if (currentPlayer != FIRST_PLAYER_IN_LIST) {
       currentPlayer--;
     } else {
       currentPlayer = playerList.size() - 1;
