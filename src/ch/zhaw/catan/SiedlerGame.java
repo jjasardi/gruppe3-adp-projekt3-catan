@@ -144,7 +144,7 @@ public class SiedlerGame {
   }
 
   private boolean isSettlementPositionValid(Point position) {
-     // TODO: fertig implementieren
+    // TODO: fertig implementieren
     if (siedlerBoard.getCorner(position) == null) {
       return true;
     } else {
@@ -175,7 +175,7 @@ public class SiedlerGame {
 
   private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
     // TODO: fertig implementieren
-    if (siedlerBoard.getEdge(roadStart, roadEnd) == null){
+    if (siedlerBoard.getEdge(roadStart, roadEnd) == null) {
       return true;
     }
     return false;
@@ -292,8 +292,13 @@ public class SiedlerGame {
    * @return the winner of the game or null, if there is no winner (yet)
    */
   public Faction getWinner() {
-    // TODO: Implement
-    return null;
+    Faction winner = null;
+    for (Player player : playerList) {
+      if (player.getPoints() >= winPoints) {
+        winner = player.getPlayerFaction();
+      }
+    }
+    return winner;
   }
 
   /**
@@ -339,10 +344,8 @@ public class SiedlerGame {
    */
   private int getCurrentPlayerStock() {
     int allCards = getCurrentPlayerResourceStock(Resource.GRAIN)
-        + getCurrentPlayerResourceStock(Resource.WOOL)
-        + getCurrentPlayerResourceStock(Resource.LUMBER)
-        + getCurrentPlayerResourceStock(Resource.ORE)
-        + getCurrentPlayerResourceStock(Resource.BRICK);
+        + getCurrentPlayerResourceStock(Resource.WOOL) + getCurrentPlayerResourceStock(Resource.LUMBER)
+        + getCurrentPlayerResourceStock(Resource.ORE) + getCurrentPlayerResourceStock(Resource.BRICK);
 
     return allCards;
   }
