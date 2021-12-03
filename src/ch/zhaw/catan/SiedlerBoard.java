@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class SiedlerBoard extends HexBoard<Land, String, String, String> {
+public class SiedlerBoard extends HexBoard<Land, Settlement, Road, String> {
 
 	private ArrayList<Building> buildingList;
 	private ArrayList<Road> roadList;
