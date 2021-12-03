@@ -3,6 +3,7 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class SiedlerGame {
   static final int FIRST_PLAYER_IN_LIST = 0;
 
   private List<Player> playerList;
-  private List<Faction> playerFactionList;
+  private int winPoints;
   private int dicethrow;
   private int currentPlayer = FIRST_PLAYER_IN_LIST;
 
@@ -32,8 +33,8 @@ public class SiedlerGame {
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     // TODO: finish Implement
+    this.winPoints = winPoints;
     setPlayerList(numberOfPlayers);
-    setPlayerFactionList();
 
   }
 
@@ -71,6 +72,10 @@ public class SiedlerGame {
    * @return the list with player's factions
    */
   public List<Faction> getPlayerFactions() {
+    List<Faction> playerFactionList = new ArrayList<>();
+    for (Player player : playerList) {
+      playerFactionList.add(player.getPlayerFaction());
+    }
     return playerFactionList;
   }
 
@@ -306,12 +311,6 @@ public class SiedlerGame {
     Faction faction[] = Faction.values();
     for (int i = 0; i < numberOfPlayers; i++) {
       playerList.add(new Player(faction[i]));
-    }
-  }
-
-  private void setPlayerFactionList() {
-    for (Player player : playerList) {
-      playerFactionList.add(player.getPlayerFaction());
     }
   }
 }
