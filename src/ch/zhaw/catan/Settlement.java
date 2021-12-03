@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class Settlement extends Building {
     
-    public Settlement(Point position) {
-        super(position);
+    public Settlement(Point position, Player owner) {
+        super(position, owner);
     }
 }

@@ -1,10 +1,13 @@
 package ch.zhaw.catan;
 
 import ch.zhaw.catan.Config.Land;
+import ch.zhaw.catan.Config.Structure;
+import ch.zhaw.hexboard.EdgeTest;
 import ch.zhaw.hexboard.HexBoard;
 import ch.zhaw.hexboard.Label;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +16,15 @@ import java.util.Map.Entry;
 
 public class SiedlerBoard extends HexBoard<Land, String, String, String> {
 
+	private ArrayList<Building> buildingList;
+	private ArrayList<Road> roadList;
+
 	// TODO: Add fields, constructors and methods as you see fit. Do NOT change the
 	// signature
 	// of the methods below.
 	public SiedlerBoard() {
+		buildingList = new ArrayList<>();
+		roadList = new ArrayList<>();
 		setBoard();
 	}
 
@@ -46,5 +54,19 @@ public class SiedlerBoard extends HexBoard<Land, String, String, String> {
 	public List<Land> getLandsForCorner(Point corner) {
 		// TODO: Implement.
 		return Collections.emptyList();
+	}
+
+	//new
+
+	public void addBuilding(Point position, Structure structure, Player owner) {
+        if (structure.equals(Structure.SETTLEMENT)) {
+            buildingList.add(new Settlement(position, owner));
+        } else if (structure.equals(Structure.CITY)) {
+            buildingList.add(new City(position, owner));
+        }
+    }
+
+	public void addRoad(Point firstPoint, Point secondPoint, Player owner) {
+		roadList.add(new Road(firstPoint, secondPoint, owner));
 	}
 }
