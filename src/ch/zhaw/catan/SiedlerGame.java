@@ -22,8 +22,6 @@ public class SiedlerGame {
   private List<Faction> playerFactionList;
   private int dicethrow;
   private SiedlerBoard siedlerBoard;
-  private List<Settlement> builduings;
-  private List<Road> roads;
   private int currentPlayer = FIRST_PLAYER_IN_LIST;
 
   /**
@@ -127,10 +125,9 @@ public class SiedlerGame {
     // TODO: fertig Implementieren
     if (isSettlementPositionValid(position)) {
       Settlement initalSettlement = new Settlement(position, getCurrentPlayer());
-      builduings.add(initalSettlement);
       siedlerBoard.setCorner(position, initalSettlement);
       if (payout) {
-        List<Land> landsForCornerList = siedlerBoard.getLandsForCorner(position);
+        List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
       }
       return true;
     } else {
@@ -159,7 +156,6 @@ public class SiedlerGame {
     // TODO: fertig implementieren
     if (isRoadPositionValid(roadStart, roadEnd)) {
       Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayer());
-      roads.add(initalRoad);
       siedlerBoard.setEdge(roadStart, roadEnd, initalRoad);
       return true;
     } else {
