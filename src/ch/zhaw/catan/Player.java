@@ -4,7 +4,6 @@ import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 
 import java.util.HashMap;
-import java.awt.Point;
 
 public class Player {
     private final Faction playerFaction;
@@ -21,10 +20,6 @@ public class Player {
 
     public int getPlayerResource(Resource resource) {
         return playerResource.get(resource);
-    }
-
-    public void addRoad(Point positionOne, Point positionTwo) {
-
     }
 
     private void setPlayerResource() {
