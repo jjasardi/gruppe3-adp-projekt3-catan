@@ -32,6 +32,7 @@ public class SiedlerGame {
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     // TODO: finish Implement
     setPlayerList(numberOfPlayers);
+    setPlayerFactionList();
 
   }
 
@@ -69,9 +70,6 @@ public class SiedlerGame {
    * @return the list with player's factions
    */
   public List<Faction> getPlayerFactions() {
-    for (Player player : playerList) {
-      playerFactionList.add(player.getPlayerFaction());
-    }
     return playerFactionList;
   }
 
@@ -307,6 +305,12 @@ public class SiedlerGame {
     Faction faction[] = Faction.values();
     for (int i = 0; i < numberOfPlayers; i++) {
       playerList.add(new Player(faction[i]));
+    }
+  }
+
+  private void setPlayerFactionList() {
+    for (Player player : playerList) {
+      playerFactionList.add(player.getPlayerFaction());
     }
   }
 }
