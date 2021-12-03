@@ -1,6 +1,7 @@
 package ch.zhaw.catan;
 
 import ch.zhaw.catan.Config.Faction;
+import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class SiedlerGame {
   private List<Player> playerList;
   private int winPoints;
   private int dicethrow;
+  private SiedlerBoard siedlerBoard;
+  private List<Settlement> builduings;
+  private List<Road> roads;
   private int currentPlayer = FIRST_PLAYER_IN_LIST;
 
   /**
@@ -32,6 +36,7 @@ public class SiedlerGame {
    *                                  is not between two and four
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
+    siedlerBoard = new SiedlerBoard();
     // TODO: finish Implement
     this.winPoints = winPoints;
     setPlayerList(numberOfPlayers);
@@ -124,8 +129,27 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean placeInitialSettlement(Point position, boolean payout) {
-    // TODO: Implement
-    return false;
+    // TODO: fertig Implementieren
+    if (isSettlementPositionValid(position)) {
+      Settlement initalSettlement = new Settlement(position, getCurrentPlayer());
+      builduings.add(initalSettlement);
+      siedlerBoard.setCorner(position, initalSettlement);
+      if (payout) {
+        List<Land> landsForCornerList = siedlerBoard.getLandsForCorner(position);
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private boolean isSettlementPositionValid(Point position) {
+     // TODO: fertig implementieren
+    if (siedlerBoard.getCorner(position) == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -137,7 +161,23 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
-    // TODO: Implement
+    // TODO: fertig implementieren
+    if (isRoadPositionValid(roadStart, roadEnd)) {
+      Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayer());
+      roads.add(initalRoad);
+      siedlerBoard.setEdge(roadStart, roadEnd, initalRoad);
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
+    // TODO: fertig implementieren
+    if (siedlerBoard.getEdge(roadStart, roadEnd) == null){
+      return true;
+    }
     return false;
   }
 
@@ -299,9 +339,9 @@ public class SiedlerGame {
    */
   private int getCurrentPlayerStock() {
     int allCards = getCurrentPlayerResourceStock(Resource.GRAIN)
-        + getCurrentPlayerResourceStock(Resource.WOOL) 
+        + getCurrentPlayerResourceStock(Resource.WOOL)
         + getCurrentPlayerResourceStock(Resource.LUMBER)
-        + getCurrentPlayerResourceStock(Resource.ORE) 
+        + getCurrentPlayerResourceStock(Resource.ORE)
         + getCurrentPlayerResourceStock(Resource.BRICK);
 
     return allCards;
