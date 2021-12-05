@@ -2,16 +2,12 @@ package ch.zhaw.catan;
 
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Structure;
-import ch.zhaw.hexboard.EdgeTest;
 import ch.zhaw.hexboard.HexBoard;
-import ch.zhaw.hexboard.Label;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {

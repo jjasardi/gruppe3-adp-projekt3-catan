@@ -1,6 +1,5 @@
 package ch.zhaw.catan;
 
-import ch.zhaw.catan.Config.Land;
 import ch.zhaw.hexboard.Label;
 import java.awt.Point;
 import java.util.HashMap;
