@@ -3,6 +3,7 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.Bank;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class SiedlerGame {
   private int dicethrow;
   private SiedlerBoard siedlerBoard;
   private int currentPlayer = FIRST_PLAYER_IN_LIST;
+  private Bank bank;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -38,6 +40,7 @@ public class SiedlerGame {
     // TODO: finish Implement
     this.winPoints = winPoints;
     setPlayerList(numberOfPlayers);
+    Bank bank = new Bank();
 
   }
 
@@ -278,7 +281,7 @@ public class SiedlerGame {
    * @return true, if the trade was successful
    */
   public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
-    //tradeFourForOne(offer, want);         //object conflicts
+    bank.tradeFourForOne(getCurrentPlayer(), offer, want);
     return false;
   }
 
