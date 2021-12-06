@@ -278,7 +278,7 @@ public class SiedlerGame {
    * @return true, if the trade was successful
    */
   public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
-    // TODO: Implement
+    //tradeFourForOne(offer, want);         //object conflicts
     return false;
   }
 

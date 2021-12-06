@@ -21,6 +21,10 @@ public class Player {
         return playerFaction;
     }
 
+    protected void setPlayerResource(Resource resource, int anzahl) {
+            playerResource.put(resource, anzahl);      
+    }
+
     public int getPlayerResource(Resource resource) {
         return playerResource.get(resource);
     }
@@ -41,7 +45,5 @@ public class Player {
         }
     }
 
-    // private void setPlayerResource() {
-    //     // TODO
-    // }
+
 }

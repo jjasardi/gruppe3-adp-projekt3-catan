@@ -20,7 +20,6 @@ public class Dummy {
 
     SiedlerBoard board = new SiedlerBoard();
     SiedlerBoardTextView view = new SiedlerBoardTextView(board);
-    Bank bank = new Bank();
 
     Map<Point, Label> lowerFieldLabel = new HashMap<>();
     for (Map.Entry<Point, Integer> index : Config.getStandardDiceNumberPlacement().entrySet()) {
@@ -46,7 +45,7 @@ public class Dummy {
           textTerminal.println(view.toString());
           break;
         case BANK:
-          System.out.println(bank.getBankStock().values());
+          //System.out.println(bank.getBankStock().values());
           break;
         case QUIT:
           running = false;
