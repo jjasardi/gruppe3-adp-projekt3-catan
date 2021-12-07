@@ -5,6 +5,7 @@ import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,8 @@ import java.util.Map;
 public class SiedlerGame {
   static final int FOUR_TO_ONE_TRADE_OFFER = 4;
   static final int FOUR_TO_ONE_TRADE_WANT = 1;
-  static final int FIRST_PLAYER_IN_LIST = 0;
+  private static final int FIRST_PLAYER_IN_LIST = 0;
+  private static final int THIEF_NUMBER = 7;
 
   private List<Player> playerList;
   private int winPoints;
@@ -236,20 +238,29 @@ public class SiedlerGame {
    * @return the resource cards added to the stock of the different players
    */
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
-    int dummy = 3;
-    // TODO: Implement
-    for (int i = 0; i < dummy; i++) {
+    // TODO: finish implementation
+    Map<Faction, List<Resource>> factionResourceList = new HashMap<>();
+    Land landType;
+    List<Resource> resourceList;
+    List<Point> fieldPositions;
+    List<Building> buildingsOfField;
 
-    }
-    int cardsInHand = getCurrentPlayerStock();
-    if (dicethrow == 7) {
-      if (cardsInHand > Config.MAX_CARDS_IN_HAND_NO_DROP) {
-        cardsInHand = cardsInHand / 2;
+    if (dicethrow != THIEF_NUMBER) {
+      fieldPositions = siedlerBoard.getFieldsForDiceValue(dicethrow);
+      for (Point fieldPosition : fieldPositions) {
+        landType = siedlerBoard.getField(fieldPosition);
+        buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
+        for (Building building : buildingsOfField) {
+          Faction owner = building.getOwner().getPlayerFaction();
+          //resourceList = 
+        }
       }
 
     } else {
+      removeHalfResource();
+      factionResourceList = Collections.emptyMap();
     }
-    return null;
+    return factionResourceList;
   }
 
   /**
@@ -377,5 +388,11 @@ public class SiedlerGame {
     for (int i = 0; i < numberOfPlayers; i++) {
       playerList.add(new Player(faction[i]));
     }
+  }
+
+  private void removeHalfResource() {
+    // TODO: implement method to remove half of the cards 
+    //       if bigger than THIEF_NUMBER
+
   }
 }
