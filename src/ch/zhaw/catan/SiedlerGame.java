@@ -24,7 +24,7 @@ public class SiedlerGame {
   private int winPoints;
   private int dicethrow;
   private SiedlerBoard siedlerBoard;
-  private int currentPlayer = FIRST_PLAYER_IN_LIST;
+  private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
   private Bank bank;
 
   /**
@@ -48,10 +48,10 @@ public class SiedlerGame {
    * Switches to the next player in the defined sequence of players.
    */
   public void switchToNextPlayer() {
-    if (currentPlayer < (playerList.size() - 1)) {
-      currentPlayer++;
+    if (currentPlayerIndex < (playerList.size() - 1)) {
+      currentPlayerIndex++;
     } else {
-      currentPlayer = FIRST_PLAYER_IN_LIST;
+      currentPlayerIndex = FIRST_PLAYER_IN_LIST;
     }
   }
 
@@ -59,10 +59,10 @@ public class SiedlerGame {
    * Switches to the previous player in the defined sequence of players.
    */
   public void switchToPreviousPlayer() {
-    if (currentPlayer != FIRST_PLAYER_IN_LIST) {
-      currentPlayer--;
+    if (currentPlayerIndex != FIRST_PLAYER_IN_LIST) {
+      currentPlayerIndex--;
     } else {
-      currentPlayer = playerList.size() - 1;
+      currentPlayerIndex = playerList.size() - 1;
     }
   }
 
@@ -132,12 +132,14 @@ public class SiedlerGame {
   public boolean placeInitialSettlement(Point position, boolean payout) {
     // TODO: fertig Implementieren
     if (isSettlementPositionValid(position)) {
-      Settlement initalSettlement = new Settlement(position, getCurrentPlayer());
+      Player currentPlayer = getCurrentPlayer();
+      Settlement initalSettlement = new Settlement(position, currentPlayer);
       siedlerBoard.setCorner(position, initalSettlement);
+      currentPlayer.addPoints(initalSettlement.getWinPoints()); 
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-          getCurrentPlayer().setPlayerResource(land.getResource(), 1);
+          currentPlayer.setPlayerResource(land.getResource(), 1);
         }
       }
       return true;
@@ -322,7 +324,7 @@ public class SiedlerGame {
   // new implement
 
   private Player getCurrentPlayer() {
-    return playerList.get(currentPlayer);
+    return playerList.get(currentPlayerIndex);
   }
 
   /**
