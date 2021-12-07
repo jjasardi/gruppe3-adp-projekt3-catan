@@ -11,17 +11,19 @@ public class Dice {
     }
 
     /**
-   * This method simulates rolling a pair of dice.
-   */
-  private int rollWithTwoDice() {
-    int diceOne;
-    int diceTwo;
+     * This method simulates rolling a pair of dice.
+     * 
+     * @return random number between 2-12
+     */
+    private int rollWithTwoDice() {
+        int diceOne;
+        int diceTwo;
 
-    diceOne = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET); // magic number?
-    diceTwo = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET);
+        diceOne = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET);
+        diceTwo = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET);
 
-    dicethrow = diceOne + diceTwo;
+        dicethrow = diceOne + diceTwo;
 
-    return dicethrow;
-  }
+        return dicethrow;
+    }
 }
