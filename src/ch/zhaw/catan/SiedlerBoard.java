@@ -64,25 +64,8 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	 * @return the list with the adjacent {@link Land}s
 	 */
 	public List<Land> getLandsForCorner(Point corner) {
-		List<Land> landNextToCorner = new ArrayList<>();
-		Point[] field = new Point[3];
-		if (corner.y % 3 == 0) {
-			field[0] = new Point(corner.x, corner.y + 2);
-			field[1] = new Point(corner.x + 1, corner.y - 1);
-			field[2] = new Point(corner.x - 1, corner.y - 1);
-		} else {
-			field[0] = new Point(corner.x, corner.y - 2);
-			field[1] = new Point(corner.x + 1, corner.y + 1);
-			field[2] = new Point(corner.x - 1, corner.y + 1);
-		}
-		for (Point point : field) {
-			for (Entry<Point, Land> index : Config.getStandardLandPlacement().entrySet()) {
-				if (point == index.getKey()) {
-					landNextToCorner.add(index.getValue());
-				}
-			}
-		}
-		return landNextToCorner;
+		// TODO: Implement.
+		return getFields(corner);
 	}
 
 	// new

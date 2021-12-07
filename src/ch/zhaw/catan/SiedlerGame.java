@@ -136,6 +136,9 @@ public class SiedlerGame {
       siedlerBoard.setCorner(position, initalSettlement);
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
+        for (Land land : landsForSettlement) {
+          getCurrentPlayer().setPlayerResource(land.getResource(), 1);
+        }
       }
       return true;
     } else {
@@ -145,7 +148,8 @@ public class SiedlerGame {
 
   private boolean isSettlementPositionValid(Point position) {
     // TODO: fertig implementieren
-    if (siedlerBoard.getCorner(position) == null) {
+    if (siedlerBoard.getCorner(position) == null
+        && siedlerBoard.getNeighboursOfCorner(position).isEmpty()) {
       return true;
     } else {
       return false;

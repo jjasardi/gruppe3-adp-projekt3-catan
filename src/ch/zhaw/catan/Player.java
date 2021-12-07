@@ -22,7 +22,7 @@ public class Player {
     }
 
     protected void setPlayerResource(Resource resource, int anzahl) {
-            playerResource.put(resource, anzahl);      
+            playerResource.merge(resource, anzahl, Integer::sum);       
     }
 
     public int getPlayerResource(Resource resource) {
