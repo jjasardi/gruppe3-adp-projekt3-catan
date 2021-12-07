@@ -3,7 +3,6 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.catan.Bank;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ public class SiedlerGame {
   private SiedlerBoard siedlerBoard;
   private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
   private Bank bank;
+  private SiedlerBoardTextView view;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -36,11 +36,13 @@ public class SiedlerGame {
    *                                  is not between two and four
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
-    siedlerBoard = new SiedlerBoard();
-    // TODO: finish Implement
-    this.winPoints = winPoints;
     setPlayerList(numberOfPlayers);
+    siedlerBoard = new SiedlerBoard(); // TODO: dicevalues
+    view = new SiedlerBoardTextView(siedlerBoard);
+    // TODO: finish Implement
+    this.winPoints = winPoints;    
     Bank bank = new Bank();
+    //dice
 
   }
 
@@ -91,8 +93,11 @@ public class SiedlerGame {
    * @return the game board
    */
   public SiedlerBoard getBoard() {
-    // TODO: Implement
-    return null;
+    return siedlerBoard;
+  }
+
+  public SiedlerBoardTextView getView() {
+    return view;
   }
 
   /**
@@ -269,7 +274,7 @@ public class SiedlerGame {
    * 
    * @param roadStart the position of the start of the road
    * @param roadEnd   the position of the end of the road
-   * @return true, if the placement was successful
+   * @return true, if the placement was successful 
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
     // TODO: Implement
@@ -358,7 +363,7 @@ public class SiedlerGame {
   private void setPlayerList(int numberOfPlayers) {
     Faction faction[] = Faction.values();
     for (int i = 0; i < numberOfPlayers; i++) {
-      playerList.add(new Player(faction[i]));
+      playerList.add(new Player(faction[i])); 
     }
   }
 }

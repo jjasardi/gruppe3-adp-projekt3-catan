@@ -16,7 +16,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 
 	private ArrayList<Building> buildingList;
 	private ArrayList<Road> roadList;
-	private HashMap<Point, Integer> landList;
+	private HashMap<Point, Integer> diceValueList;
 
 	// TODO: Add fields, constructors and methods as you see fit. Do NOT change the
 	// signature
@@ -24,7 +24,9 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	public SiedlerBoard() {
 		buildingList = new ArrayList<>();
 		roadList = new ArrayList<>();
+		diceValueList = new HashMap<>();
 		setBoard();
+		setDiceValues();
 	}
 
 	private void setBoard() {
@@ -33,12 +35,14 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		}
 	}
 
-	private void test() {
-		landList = new HashMap<>();
-		for (Map.Entry<Point, Integer> index : Config.getStandardDiceNumberPlacement().entrySet()) {
-			landList.put(new Point(index.getKey()), index.getValue());
-		}
+	public HashMap<Point, Integer> getDiceValues() {
+		return diceValueList;
+	}
 
+	private void setDiceValues() {
+		for (Map.Entry<Point, Integer> index : Config.getStandardDiceNumberPlacement().entrySet()) {
+			diceValueList.put(new Point(index.getKey()), index.getValue());
+		}
 	}
 
 	/**
@@ -49,7 +53,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	 */
 	public List<Point> getFieldsForDiceValue(int dice) {
 		List<Point> fieldMatch = new ArrayList<>();
-		for (Entry<Point, Integer> land : landList.entrySet()) {
+		for (Entry<Point, Integer> land : diceValueList.entrySet()) {
 			if (land.getValue() == dice) {
 				fieldMatch.add(land.getKey());
 			}
@@ -64,13 +68,13 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	 * @return the list with the adjacent {@link Land}s
 	 */
 	public List<Land> getLandsForCorner(Point corner) {
-		// TODO: Implement.
+		// TODO: testing
 		return getFields(corner);
 	}
 
 	// new
 
-	public void addBuilding(Point position, Structure structure, Player owner) {
+	public void addBuilding(Point position, Structure structure, Player owner) { // TODO: eventuell löschen
 		if (structure.equals(Structure.SETTLEMENT)) {
 			buildingList.add(new Settlement(position, owner));
 		} else if (structure.equals(Structure.CITY)) {
@@ -78,7 +82,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		}
 	}
 
-	public void addRoad(Point firstPoint, Point secondPoint, Player owner) {
+	public void addRoad(Point firstPoint, Point secondPoint, Player owner) { // TODO: eventuell löschen
 		roadList.add(new Road(firstPoint, secondPoint, owner));
 	}
 }
