@@ -5,6 +5,7 @@ import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,6 @@ public class SiedlerGame {
   private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
   private Bank bank;
   private SiedlerBoardTextView view;
-  private Input input;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -322,6 +322,10 @@ public class SiedlerGame {
     return false;
   }
 
+  public Map<Resource, Integer> getBankStock() {
+    return bank.getBankStock();
+  }
+
   /**
    * Returns the winner of the game, if any.
    * 
@@ -363,12 +367,8 @@ public class SiedlerGame {
    * 
    * @return the number of cards in hand
    */
-  private int getCurrentPlayerStock() {
-    int allCards = getCurrentPlayerResourceStock(Resource.GRAIN)
-        + getCurrentPlayerResourceStock(Resource.WOOL) + getCurrentPlayerResourceStock(Resource.LUMBER)
-        + getCurrentPlayerResourceStock(Resource.ORE) + getCurrentPlayerResourceStock(Resource.BRICK);
-
-    return allCards;
+  public HashMap<Resource, Integer> getCurrentPlayerStock() {
+    return getCurrentPlayer().getPlayerStock();
   }
 
   private void setPlayerList(int numberOfPlayers) {

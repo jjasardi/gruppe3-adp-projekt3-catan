@@ -16,39 +16,23 @@ public class MainGame {
     private int playerCount;
 
     public enum Actions {
-        SHOW, TRADE, BUILD, END
+        SHOW, TRADE, BUILD, BANK_STOCK, MY_STOCK, END
     }
 
     public enum Building {
         ROAD, SETTELMENT, CITY
     }
 
+    public static void main(String[] args) {
+        new MainGame().run();
+    }
+
     private void run() {
         firstPhase();
-        secondPhase();
+        //secondPhase();
         thirdPhase();
 
     }
-
-    /*
-     * private void foundationPhase() {
-     * TextIO textIO = TextIoFactory.getTextIO();
-     * Faction arrayFaction[] = Faction.values();
-     * int numberOfPlayers = setNumberOfPlayers(textIO);
-     * for (int i = 0; i < numberOfPlayers; i++) {
-     * playerList.add(new Player(arrayFaction[i]));
-     * }
-     * }
-     * 
-     * 
-     * public int setNumberOfPlayers(TextIO textIO) {
-     * int numberOfPlayers = textIO.newIntInputReader()
-     * .withMinVal(Config.MIN_NUMBER_OF_PLAYERS)
-     * .withMaxVal(Config.Faction.values().length)
-     * .read("How many players are playing?");
-     * return numberOfPlayers;
-     * }
-     */
 
     private void firstPhase() {
         textIO = TextIoFactory.getTextIO();
@@ -62,6 +46,7 @@ public class MainGame {
 
     private void secondPhase() {
         for (int player = 1; player <= playerCount; player++) {
+            textTerminal.println(siedlerGame.getView().toString());
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
             Point position = input.getPosition();
@@ -71,6 +56,7 @@ public class MainGame {
             siedlerGame.switchToNextPlayer();
         }
         for (int player = 1; player <= playerCount; player++) {
+            textTerminal.println(siedlerGame.getView().toString());
             siedlerGame.switchToPreviousPlayer();
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
@@ -83,7 +69,8 @@ public class MainGame {
 
     private void thirdPhase() {
         while (siedlerGame.getWinner() == null) {
-            //throwdice
+            output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
+            // throwdice
             commands();
             siedlerGame.switchToNextPlayer();
         }
@@ -102,6 +89,12 @@ public class MainGame {
                     break;
                 case BUILD:
                     build();
+                    break;
+                case BANK_STOCK:
+                    output.printBankStock(siedlerGame.getBankStock());
+                    break;
+                case MY_STOCK:                    
+                    output.printPlayerStock(siedlerGame.getCurrentPlayerStock());
                     break;
                 case END:
                     running = false;
@@ -126,22 +119,21 @@ public class MainGame {
 
     private void tradeResource() {
         Resource offer = input.getTradeOffer(textIO, Config.Resource.class);
-        output.printTradeBuy();
         switch (getResourceValue(textIO, Config.Resource.class)) {
             case GRAIN:
                 siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN);
                 break;
             case WOOL:
-                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.WOOL);
+                siedlerGame.tradeWithBankFourToOne(offer, Resource.WOOL);
                 break;
             case LUMBER:
-                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.LUMBER);
+                siedlerGame.tradeWithBankFourToOne(offer, Resource.LUMBER);
                 break;
             case ORE:
-                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.ORE);
+                siedlerGame.tradeWithBankFourToOne(offer, Resource.ORE);
                 break;
             case BRICK:
-                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.BRICK);
+                siedlerGame.tradeWithBankFourToOne(offer, Resource.BRICK);
                 break;
         }
     }
@@ -166,8 +158,5 @@ public class MainGame {
                 siedlerGame.buildCity(positionCity);
                 break;
         }
-    }
-    public static void main(String[] args) {
-        new MainGame().run();
     }
 }

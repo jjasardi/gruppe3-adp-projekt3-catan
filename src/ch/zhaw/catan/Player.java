@@ -21,6 +21,10 @@ public class Player {
         return playerFaction;
     }
 
+    public HashMap<Resource, Integer> getPlayerStock() {
+        return playerResource;
+    }
+
     protected void setPlayerResource(Resource resource, int amount) {
             playerResource.merge(resource, amount, Integer::sum);       
     }
