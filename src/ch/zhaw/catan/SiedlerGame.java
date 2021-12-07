@@ -21,7 +21,6 @@ public class SiedlerGame {
 
   private List<Player> playerList;
   private int winPoints;
-  private int dicethrow;
   private SiedlerBoard siedlerBoard;
   private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
   private Bank bank;
@@ -40,9 +39,9 @@ public class SiedlerGame {
     siedlerBoard = new SiedlerBoard(); // TODO: dicevalues
     view = new SiedlerBoardTextView(siedlerBoard);
     // TODO: finish Implement
-    this.winPoints = winPoints;    
+    this.winPoints = winPoints;
     Bank bank = new Bank();
-    //dice
+    // dice
 
   }
 
@@ -140,7 +139,7 @@ public class SiedlerGame {
       Player currentPlayer = getCurrentPlayer();
       Settlement initalSettlement = new Settlement(position, currentPlayer);
       siedlerBoard.setCorner(position, initalSettlement);
-      currentPlayer.addPoints(initalSettlement.getWinPoints()); 
+      currentPlayer.addPoints(initalSettlement.getWinPoints());
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
@@ -155,7 +154,7 @@ public class SiedlerGame {
 
   private boolean isSettlementPositionValid(Point position) {
     // TODO: fertig implementieren
-    if (siedlerBoard.getCorner(position) == null
+    if (siedlerBoard.getCorner(position) == null 
         && siedlerBoard.getNeighboursOfCorner(position).isEmpty()) {
       return true;
     } else {
@@ -274,7 +273,7 @@ public class SiedlerGame {
    * 
    * @param roadStart the position of the start of the road
    * @param roadEnd   the position of the end of the road
-   * @return true, if the placement was successful 
+   * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
     // TODO: Implement
@@ -333,21 +332,6 @@ public class SiedlerGame {
   }
 
   /**
-   * This method simulates rolling a pair of dice.
-   */
-  private int rollWithTwoDice() {
-    int diceOne;
-    int diceTwo;
-
-    diceOne = (int) ((Math.random() * 6) + 1); // magic number?
-    diceTwo = (int) ((Math.random() * 6) + 1);
-
-    dicethrow = diceOne + diceTwo;
-
-    return dicethrow;
-  }
-
-  /**
    * Returns how many cards the current player owns.
    * 
    * @return the number of cards in hand
@@ -364,7 +348,7 @@ public class SiedlerGame {
     Faction faction[] = Faction.values();
     playerList = new ArrayList<>();
     for (int i = 0; i < numberOfPlayers; i++) {
-      playerList.add(new Player(faction[i])); 
+      playerList.add(new Player(faction[i]));
     }
   }
 }
