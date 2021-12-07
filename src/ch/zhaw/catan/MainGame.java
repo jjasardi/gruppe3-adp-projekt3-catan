@@ -8,11 +8,13 @@ import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 
 import ch.zhaw.catan.Config.Faction;
+import java.awt.Point;
 
 public class MainGame {
-    TextIO textIO;
-    TextTerminal<?> textTerminal;
-    SiedlerGame siedlerGame;
+    private TextIO textIO;
+    private TextTerminal<?> textTerminal;
+    private SiedlerGame siedlerGame;
+    private int playerCount;
 
     public enum Actions {
         SHOW, TRADE, BUILD, END
@@ -53,11 +55,26 @@ public class MainGame {
     private void firstPhase() {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
-        siedlerGame = new SiedlerGame(5, 4); // Magic Numbers
+        playerCount = setPlayerCount(textIO);
+        siedlerGame = new SiedlerGame(5, playerCount); // Magic Numbers
 
     }
 
     private void secondPhase() {
+        for (int player = 1; player <= playerCount; player++) {
+            Point position = inputPosition(textIO);
+            siedlerGame.placeInitialSettlement(position, false);
+            Point roadEnd = inputPosition(textIO);
+            siedlerGame.placeInitialRoad(position, roadEnd);
+            siedlerGame.switchToNextPlayer();
+        }
+        for (int player = 1; player <= playerCount; player++) {
+            siedlerGame.switchToPreviousPlayer();
+            Point position = inputPosition(textIO);
+            siedlerGame.placeInitialSettlement(position, false);
+            Point roadEnd = inputPosition(textIO);
+            siedlerGame.placeInitialRoad(position, roadEnd);
+        }
 
     }
 
@@ -70,7 +87,7 @@ public class MainGame {
         while (running) {
             switch (getEnumValue(textIO, Actions.class)) {
                 case SHOW:
-                    textTerminal.println(siedlerGame.getBoard().toString());
+                    textTerminal.println(siedlerGame.getView().toString());
                     break;
                 case TRADE:
                     // System.out.println(bank.getBankStock().values());
@@ -80,7 +97,7 @@ public class MainGame {
                     break;
                 case END:
                     running = false;
-                    break;    
+                    break;
                 default:
                     throw new IllegalStateException("Internal error found - Command not implemented.");
             }
@@ -88,8 +105,19 @@ public class MainGame {
         textIO.dispose();
     }
 
-    public static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands) {
+    private static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands) {
         return textIO.newEnumInputReader(commands).read("What would you like to do?");
+    }
+
+    private static Point inputPosition(TextIO textIO) {
+        int x = textIO.newIntInputReader().withMinVal(0).withMaxVal(14).read("x Position?");
+        int y = textIO.newIntInputReader().withMinVal(0).withMaxVal(22).read("y Position?");
+        Point point = new Point (x, y);
+        return point;
+    }
+
+    private static int setPlayerCount(TextIO textIO) {
+        return textIO.newIntInputReader().withMinVal(2).withMaxVal(4).read("Wieviele Spieler? 2-4");
     }
 
     public static void main(String[] args) {

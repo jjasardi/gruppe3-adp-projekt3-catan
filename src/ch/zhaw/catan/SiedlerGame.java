@@ -362,6 +362,7 @@ public class SiedlerGame {
 
   private void setPlayerList(int numberOfPlayers) {
     Faction faction[] = Faction.values();
+    playerList = new ArrayList<>();
     for (int i = 0; i < numberOfPlayers; i++) {
       playerList.add(new Player(faction[i])); 
     }
