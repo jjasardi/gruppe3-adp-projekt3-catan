@@ -11,6 +11,7 @@ import ch.zhaw.catan.Config.Faction;
 import java.awt.Point;
 
 public class MainGame {
+    private Input input;
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
@@ -55,24 +56,25 @@ public class MainGame {
     private void firstPhase() {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
-        playerCount = setPlayerCount(textIO);
+        input = new Input();
+        playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(5, playerCount); // Magic Numbers
 
     }
 
     private void secondPhase() {
         for (int player = 1; player <= playerCount; player++) {
-            Point position = inputPosition(textIO);
+            Point position = input.getPosition();
             siedlerGame.placeInitialSettlement(position, false);
-            Point roadEnd = inputPosition(textIO);
+            Point roadEnd = input.getPosition();
             siedlerGame.placeInitialRoad(position, roadEnd);
             siedlerGame.switchToNextPlayer();
         }
         for (int player = 1; player <= playerCount; player++) {
             siedlerGame.switchToPreviousPlayer();
-            Point position = inputPosition(textIO);
+            Point position = input.getPosition();
             siedlerGame.placeInitialSettlement(position, false);
-            Point roadEnd = inputPosition(textIO);
+            Point roadEnd = input.getPosition();
             siedlerGame.placeInitialRoad(position, roadEnd);
         }
 

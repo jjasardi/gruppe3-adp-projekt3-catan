@@ -18,9 +18,13 @@ public class Input {
 
     public Point getPosition() {
 		int x = textIO.newIntInputReader()
+            .withMinVal(0)
+            .withMaxVal(14)
             .read("Please enter x-coordinate:");
 		
         int y = textIO.newIntInputReader()
+            .withMinVal(0)
+            .withMaxVal(22)
             .read("Please enter y-coordinate:");
 		
         return new Point(x, y);
