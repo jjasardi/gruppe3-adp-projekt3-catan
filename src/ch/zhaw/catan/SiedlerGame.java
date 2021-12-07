@@ -44,7 +44,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     // TODO: finish Implement
     this.winPoints = winPoints;
-    Bank bank = new Bank();
+    bank = new Bank();
     // dice
 
   }
@@ -138,7 +138,7 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean placeInitialSettlement(Point position, boolean payout) {
-    // TODO: fertig Implementieren
+    // TODO: testing
     if (isSettlementPositionValid(position)) {
       Player currentPlayer = getCurrentPlayer();
       Settlement initalSettlement = new Settlement(position, currentPlayer);
@@ -147,7 +147,10 @@ public class SiedlerGame {
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-          currentPlayer.setPlayerResource(land.getResource(), 1);
+          Resource landResource = land.getResource();
+          if (bank.giveOneResource(landResource)) {
+            currentPlayer.setPlayerResource(landResource, 1);
+          }
         }
       }
       return true;
@@ -157,7 +160,7 @@ public class SiedlerGame {
   }
 
   private boolean isSettlementPositionValid(Point position) {
-    // TODO: fertig implementieren
+    // TODO: testing
     if (siedlerBoard.getCorner(position) == null 
         && siedlerBoard.getNeighboursOfCorner(position).isEmpty()) {
       return true;
@@ -176,7 +179,7 @@ public class SiedlerGame {
    */
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
     // TODO: fertig implementieren
-    if (isRoadPositionValid(roadStart, roadEnd)) {
+    if (isInitialRoadPositionValid(roadStart, roadEnd)) {
       Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayer());
       siedlerBoard.setEdge(roadStart, roadEnd, initalRoad);
       return true;
@@ -186,10 +189,33 @@ public class SiedlerGame {
 
   }
 
-  private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
-    // TODO: fertig implementieren
-    if (siedlerBoard.getEdge(roadStart, roadEnd) == null) {
+  private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
+    // TODO: second street only on second settlement
+    if (siedlerBoard.getEdge(roadStart, roadEnd) == null
+        && ((isBuilduingOwner(roadStart) || isBuilduingOwner(roadEnd)
+            || isAdjacentToRoad(roadStart) || isAdjacentToRoad(roadEnd)))) {
       return true;
+    } else {
+      return false;
+    }
+  }
+
+  private boolean isBuilduingOwner(Point point) {
+    Player buildingOwner = siedlerBoard.getCorner(point).getOwner();
+    if (buildingOwner.equals(getCurrentPlayer())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private boolean isAdjacentToRoad(Point point) {
+    List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
+    for (Road road : AdjacentRoads) {
+      Player roadOwner = siedlerBoard.getEdge(road.getFirstPoint(), road.getSecondPoint()).getOwner();
+      if (roadOwner.equals(getCurrentPlayer())) {
+        return true;
+      }
     }
     return false;
   }

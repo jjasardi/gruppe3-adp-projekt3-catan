@@ -18,6 +18,30 @@ public class Output {
         textTerminal.println("It was rolled: " + dicethrow); 
     }
 
+    public void printTradeOffer() {
+        textTerminal.println("Wich Resource do you want to offer?");  
+    }
+
+    public void printTradeBuy() {
+        textTerminal.println("Wich Resource do you want to buy?");  
+    }
+
+    public void printCurrentPlayer(Faction currentPlayer) {
+        textTerminal.println(currentPlayer.name() + "'s turn:"); 
+    }
+
+    public void printRoad() {
+        textTerminal.println("Position for Road?"); 
+    }
+
+    public void printSettelment() {
+        textTerminal.println("Position for Settelment?"); 
+    }
+
+    public void printCity() {
+        textTerminal.println("Position for City?"); 
+    }
+
     public void printErrorMessage() {
         textTerminal.println("The action could not be successfully executed.");
     }

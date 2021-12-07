@@ -1,17 +1,15 @@
 package ch.zhaw.catan;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
+import ch.zhaw.catan.Config.Resource;
 
-import ch.zhaw.catan.Config.Faction;
 import java.awt.Point;
 
 public class MainGame {
     private Input input;
+    private Output output;
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
@@ -21,13 +19,12 @@ public class MainGame {
         SHOW, TRADE, BUILD, END
     }
 
-    public enum Buildins {
+    public enum Building {
         ROAD, SETTELMENT, CITY
     }
 
     private void run() {
         firstPhase();
-        commands();
         secondPhase();
         thirdPhase();
 
@@ -57,6 +54,7 @@ public class MainGame {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         input = new Input();
+        output = new Output();
         playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(5, playerCount); // Magic Numbers
 
@@ -64,23 +62,31 @@ public class MainGame {
 
     private void secondPhase() {
         for (int player = 1; player <= playerCount; player++) {
+            output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
+            output.printSettelment();
             Point position = input.getPosition();
             siedlerGame.placeInitialSettlement(position, false);
-            Point roadEnd = input.getPosition();
-            siedlerGame.placeInitialRoad(position, roadEnd);
+            output.printRoad();
+            siedlerGame.placeInitialRoad(position, input.getPosition());
             siedlerGame.switchToNextPlayer();
         }
         for (int player = 1; player <= playerCount; player++) {
             siedlerGame.switchToPreviousPlayer();
+            output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
+            output.printSettelment();
             Point position = input.getPosition();
             siedlerGame.placeInitialSettlement(position, false);
-            Point roadEnd = input.getPosition();
-            siedlerGame.placeInitialRoad(position, roadEnd);
+            output.printRoad();
+            siedlerGame.placeInitialRoad(position, input.getPosition());
         }
-
     }
 
     private void thirdPhase() {
+        while (siedlerGame.getWinner() == null) {
+            //throwdice
+            commands();
+            siedlerGame.switchToNextPlayer();
+        }
 
     }
 
@@ -92,10 +98,10 @@ public class MainGame {
                     textTerminal.println(siedlerGame.getView().toString());
                     break;
                 case TRADE:
-                    // System.out.println(bank.getBankStock().values());
+                    tradeResource();
                     break;
                 case BUILD:
-                    running = false;
+                    build();
                     break;
                 case END:
                     running = false;
@@ -104,24 +110,63 @@ public class MainGame {
                     throw new IllegalStateException("Internal error found - Command not implemented.");
             }
         }
-        textIO.dispose();
     }
 
     private static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands) {
         return textIO.newEnumInputReader(commands).read("What would you like to do?");
     }
 
-    private static Point inputPosition(TextIO textIO) {
-        int x = textIO.newIntInputReader().withMinVal(0).withMaxVal(14).read("x Position?");
-        int y = textIO.newIntInputReader().withMinVal(0).withMaxVal(22).read("y Position?");
-        Point point = new Point (x, y);
-        return point;
+    private static <T extends Enum<T>> T getResourceValue(TextIO textIO, Class<T> commands) {
+        return textIO.newEnumInputReader(commands).read("Which Resource do you want to buy?");
     }
 
-    private static int setPlayerCount(TextIO textIO) {
-        return textIO.newIntInputReader().withMinVal(2).withMaxVal(4).read("Wieviele Spieler? 2-4");
+    private static <T extends Enum<T>> T getBuildingValue(TextIO textIO, Class<T> commands) {
+        return textIO.newEnumInputReader(commands).read("What do you want to build?");
     }
 
+    private void tradeResource() {
+        Resource offer = input.getTradeOffer(textIO, Config.Resource.class);
+        output.printTradeBuy();
+        switch (getResourceValue(textIO, Config.Resource.class)) {
+            case GRAIN:
+                siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN);
+                break;
+            case WOOL:
+                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.WOOL);
+                break;
+            case LUMBER:
+                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.LUMBER);
+                break;
+            case ORE:
+                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.ORE);
+                break;
+            case BRICK:
+                siedlerGame.tradeWithBankFourToOne(Resource.GRAIN, Resource.BRICK);
+                break;
+        }
+    }
+
+    private void build() {
+        switch (getBuildingValue(textIO, Building.class)) {
+            case ROAD:
+                output.printRoad();
+                Point roadStart = input.getPosition();
+                output.printRoad();
+                Point roadEnd = input.getPosition();
+                siedlerGame.buildRoad(roadStart, roadEnd);
+                break;
+            case SETTELMENT:
+                output.printSettelment();
+                Point positionSettelment = input.getPosition();
+                siedlerGame.buildSettlement(positionSettelment);
+                break;
+            case CITY:
+                output.printCity();
+                Point positionCity = input.getPosition();
+                siedlerGame.buildCity(positionCity);
+                break;
+        }
+    }
     public static void main(String[] args) {
         new MainGame().run();
     }
