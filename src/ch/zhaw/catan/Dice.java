@@ -3,6 +3,9 @@ package ch.zhaw.catan;
 public class Dice {
     private int dicethrow;
 
+    private static final int OFFSET = 1;
+    private static final int DICE_NUMBER_OF_EYES = 6;
+
     public int getDiceThrow() {
         return rollWithTwoDice();
     }
@@ -14,8 +17,8 @@ public class Dice {
     int diceOne;
     int diceTwo;
 
-    diceOne = (int) ((Math.random() * 6) + 1); // magic number?
-    diceTwo = (int) ((Math.random() * 6) + 1);
+    diceOne = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET); // magic number?
+    diceTwo = (int) ((Math.random() * DICE_NUMBER_OF_EYES) + OFFSET);
 
     dicethrow = diceOne + diceTwo;
 
