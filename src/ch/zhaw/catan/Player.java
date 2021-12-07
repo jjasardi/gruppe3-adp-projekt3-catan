@@ -21,12 +21,16 @@ public class Player {
         return playerFaction;
     }
 
-    protected void setPlayerResource(Resource resource, int anzahl) {
-            playerResource.merge(resource, anzahl, Integer::sum);       
+    protected void setPlayerResource(Resource resource, int amount) {
+            playerResource.merge(resource, amount, Integer::sum);       
     }
 
     public int getPlayerResource(Resource resource) {
         return playerResource.get(resource);
+    }
+
+    public boolean removeResource(Resource resource, int anzahl) {
+        return playerResource.remove(resource, anzahl);
     }
 
     public int getPoints() {
