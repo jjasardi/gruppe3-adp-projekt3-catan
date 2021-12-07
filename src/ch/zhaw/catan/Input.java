@@ -4,6 +4,7 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 
 import java.awt.Point;
+import ch.zhaw.catan.Config.Resource;;
 
 public class Input {
     TextIO textIO = TextIoFactory.getTextIO();
@@ -29,4 +30,8 @@ public class Input {
 		
         return new Point(x, y);
 	}
+
+    public <T extends Enum<T>> T getTradeOffer(TextIO textIO, Class<T> commands) {
+        return textIO.newEnumInputReader(commands).read("Which Resource do you offer?");
+      }
 }

@@ -1,6 +1,8 @@
 package ch.zhaw.catan;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ch.zhaw.catan.Config.Resource;
 
@@ -10,11 +12,18 @@ public class Bank {
     static final int RESOURCE_WANT = 1;
 
     public Bank() {
-        bank = Config.INITIAL_RESOURCE_CARDS_BANK;
+        bank = new HashMap<>();
+        setBank();
     }
 
     public Map<Resource, Integer> getBankStock() {
         return bank;
+    }
+
+    private void setBank() {
+        for (Entry<Resource, Integer> resource : Config.INITIAL_RESOURCE_CARDS_BANK.entrySet()) {
+            bank.put(resource.getKey(), resource.getValue());
+        }
     }
 
     public void setBankResource(Resource resource, Integer neuerWert) {
