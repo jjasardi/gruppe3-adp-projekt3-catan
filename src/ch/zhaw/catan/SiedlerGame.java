@@ -25,6 +25,7 @@ public class SiedlerGame {
   private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
   private Bank bank;
   private SiedlerBoardTextView view;
+  private Input input;
 
   /**
    * Constructs a SiedlerGame game state object.
