@@ -17,6 +17,11 @@ public class Thief {
         return position;
     }
 
+    public Point getPositionOffset() {
+        position = new Point(position.x, (position.y + 2));
+        return position;
+    }
+
     public void setNewThiefPosition(Point position) {
         this.position = position;
     }
@@ -25,6 +30,11 @@ public class Thief {
         int totalResource = list.size();
         int randomResourceIndex = (int) ((Math.random() * totalResource));
         return list.get(randomResourceIndex);
+    }
+
+    @Override
+    public String toString() {
+        return "TH";
     }
 
 }

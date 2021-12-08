@@ -29,7 +29,7 @@ public class MainGame {
 
     private void run() {
         firstPhase();
-        secondPhase();
+        //secondPhase();
         thirdPhase();
 
     }
@@ -46,7 +46,7 @@ public class MainGame {
 
     private void secondPhase() {
         secondPhaseOne();
-        secondPhaseTwo();              
+        secondPhaseTwo();
     }
 
     private void secondPhaseOne() {
@@ -58,9 +58,9 @@ public class MainGame {
             if (!siedlerGame.placeInitialSettlement(settlement, false)) {
                 boolean success = false;
                 while (!success) {
-                output.printError();
-                settlement = input.getPosition();
-                success = siedlerGame.placeInitialSettlement(settlement, false);
+                    output.printError();
+                    settlement = input.getPosition();
+                    success = siedlerGame.placeInitialSettlement(settlement, false);
                 }
             }
             output.printRoad();
@@ -68,9 +68,9 @@ public class MainGame {
             if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
                 boolean success = false;
                 while (!success) {
-                output.printError();
-                roadEnd = input.getPosition();
-                success = siedlerGame.placeInitialRoad(settlement, roadEnd);
+                    output.printError();
+                    roadEnd = input.getPosition();
+                    success = siedlerGame.placeInitialRoad(settlement, roadEnd);
                 }
             }
             siedlerGame.switchToNextPlayer();
@@ -87,9 +87,9 @@ public class MainGame {
             if (!siedlerGame.placeInitialSettlement(settlement, true)) {
                 boolean success = false;
                 while (!success) {
-                output.printError();
-                settlement = input.getPosition();
-                success = siedlerGame.placeInitialSettlement(settlement, true);
+                    output.printError();
+                    settlement = input.getPosition();
+                    success = siedlerGame.placeInitialSettlement(settlement, true);
                 }
             }
             output.printRoad();
@@ -97,9 +97,9 @@ public class MainGame {
             if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
                 boolean success = false;
                 while (!success) {
-                output.printError();
-                roadEnd = input.getPosition();
-                success = siedlerGame.placeInitialRoad(settlement, roadEnd);
+                    output.printError();
+                    roadEnd = input.getPosition();
+                    success = siedlerGame.placeInitialRoad(settlement, roadEnd);
                 }
             }
         }
@@ -147,19 +147,29 @@ public class MainGame {
         Resource offer = input.getTradeOffer(textIO, Config.Resource.class);
         switch (input.getResourceValue(textIO, Config.Resource.class)) {
             case GRAIN:
-                siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN);
+                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN)) {
+                    output.printError();
+                }
                 break;
             case WOOL:
-                siedlerGame.tradeWithBankFourToOne(offer, Resource.WOOL);
+                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.WOOL)) {
+                    output.printError();
+                }
                 break;
             case LUMBER:
-                siedlerGame.tradeWithBankFourToOne(offer, Resource.LUMBER);
+                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.LUMBER)) {
+                    output.printError();
+                }
                 break;
             case ORE:
-                siedlerGame.tradeWithBankFourToOne(offer, Resource.ORE);
+                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.ORE)) {
+                    output.printError();
+                }
                 break;
             case BRICK:
-                siedlerGame.tradeWithBankFourToOne(offer, Resource.BRICK);
+                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.BRICK)) {
+                    output.printError();
+                }
                 break;
         }
     }
@@ -171,17 +181,23 @@ public class MainGame {
                 Point roadStart = input.getPosition();
                 output.printRoad();
                 Point roadEnd = input.getPosition();
-                siedlerGame.buildRoad(roadStart, roadEnd);
+                if (!siedlerGame.buildRoad(roadStart, roadEnd)) {
+                    output.printError();
+                }
                 break;
             case SETTELMENT:
                 output.printSettelment();
                 Point positionSettelment = input.getPosition();
-                siedlerGame.buildSettlement(positionSettelment);
+                if (!siedlerGame.buildSettlement(positionSettelment)) {
+                    output.printError();
+                }
                 break;
             case CITY:
                 output.printCity();
                 Point positionCity = input.getPosition();
-                siedlerGame.buildCity(positionCity);
+                if (!siedlerGame.buildCity(positionCity)) {
+                    output.printError();
+                }
                 break;
         }
     }

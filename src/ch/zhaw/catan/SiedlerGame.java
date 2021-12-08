@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.beryx.textio.TextIO;
+
 /**
  * This class performs all actions related to modifying the game state. TODO:
  * (your documentation)
@@ -32,7 +34,6 @@ public class SiedlerGame {
   private SiedlerBoardTextView view;
   private Thief thiefPosition;
 
-
   /**
    * Constructs a SiedlerGame game state object.
    * 
@@ -48,7 +49,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     bank = new Bank();
     currentPlayerIndex = FIRST_PLAYER_IN_LIST;
-    thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
+    placeInitialThief();
     // dice
 
   }
@@ -359,7 +360,7 @@ public class SiedlerGame {
       return false;
   }
 
-  private boolean hasEnoughForRoad() { //TODO: magic numbers
+  private boolean hasEnoughForRoad() { // TODO: magic numbers
     if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1) {
       return true;
@@ -367,7 +368,7 @@ public class SiedlerGame {
       return false;
   }
 
-  private boolean hasEnoughForSettlement() { //TODO: magic numbers
+  private boolean hasEnoughForSettlement() { // TODO: magic numbers
     if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.WOOL) >= 1
@@ -377,10 +378,10 @@ public class SiedlerGame {
       return false;
   }
 
-  private boolean hasEnoughForCity() {  //TODO: magic numbers
-    //List<Resource> costs = Structure.CITY.getCosts();
-    //for (Resource cost : costs) {
-    //}
+  private boolean hasEnoughForCity() { // TODO: magic numbers
+    // List<Resource> costs = Structure.CITY.getCosts();
+    // for (Resource cost : costs) {
+    // }
     if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
         && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
       return true;
@@ -399,8 +400,7 @@ public class SiedlerGame {
    * @return true, if the trade was successful
    */
   public boolean tradeWithBankFourToOne(Resource offer, Resource want) {
-    bank.tradeFourForOne(getCurrentPlayer(), offer, want);
-    return false;
+    return bank.tradeFourForOne(getCurrentPlayer(), offer, want);
   }
 
   public Map<Resource, Integer> getBankStock() {
@@ -447,12 +447,19 @@ public class SiedlerGame {
       Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
       Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
       randomPlayer.removeResourceFromPlayer(resourceToSteal, 1);
-      getCurrentPlayer().addResourceToPlayer(resourceToSteal, 1);      
+      getCurrentPlayer().addResourceToPlayer(resourceToSteal, 1);
+      siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(), thiefPosition.toString());
       return true;
-      } else
+    } else
       return false;
   }
-  
+
+  private void placeInitialThief() {
+    thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
+    siedlerBoard.addFieldAnnotation(Config.INITIAL_THIEF_POSITION, thiefPosition.getPositionOffset(),
+        thiefPosition.toString());
+  }
+
   // new implement
 
   private Player getCurrentPlayer() {
@@ -465,7 +472,8 @@ public class SiedlerGame {
       if (player.getPlayerFaction() == faction) {
         player1 = player;
       }
-    } return player1;
+    }
+    return player1;
   }
 
   /*
