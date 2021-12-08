@@ -25,7 +25,7 @@ public class Player {
         return playerResource;
     }
 
-    protected void setPlayerResource(Resource resource, int amount) {
+    protected void setPlayerResource(Resource resource, int amount) { //TODO: better name
             playerResource.merge(resource, amount, Integer::sum);       
     }
 
@@ -33,7 +33,7 @@ public class Player {
         return playerResource.get(resource);
     }
 
-    public boolean removeResource(Resource resource, int anzahl) {
+    public boolean removeResource(Resource resource, int anzahl) { //TODO: fix
         return playerResource.remove(resource, anzahl);
     }
 

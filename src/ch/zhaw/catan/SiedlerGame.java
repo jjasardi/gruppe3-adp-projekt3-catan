@@ -206,7 +206,7 @@ public class SiedlerGame {
 
   private boolean isBuilduingOwner(Point point) {
     Faction buildingOwner = siedlerBoard.getCorner(point).getOwner();
-    if (buildingOwner.equals(getCurrentPlayer())) {
+    if (buildingOwner.equals(getCurrentPlayerFaction())) {
       return true;
     } else {
       return false;
