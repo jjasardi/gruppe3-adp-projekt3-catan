@@ -3,7 +3,7 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.hexboard.HexBoardTextView;
+import ch.zhaw.catan.Config.Structure;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -30,7 +30,8 @@ public class SiedlerGame {
   private int currentPlayerIndex;
   private Bank bank;
   private SiedlerBoardTextView view;
-  private Point thiefPosition;
+  private Thief thiefPosition;
+
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -47,7 +48,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     bank = new Bank();
     currentPlayerIndex = FIRST_PLAYER_IN_LIST;
-    thiefPosition = Config.INITIAL_THIEF_POSITION;
+    placeInitialThief();
     // dice
 
   }
@@ -286,10 +287,14 @@ public class SiedlerGame {
    */
   public boolean buildSettlement(Point position) {
     if (isSettlementPositionValid(position)
-        && isAdjacentToRoad(position)) { // TODO && hasEnoughResources
+        && isAdjacentToRoad(position) && hasEnoughForSettlement()) {
       Player currentPlayer = getCurrentPlayer();
       Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.BRICK, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.WOOL, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 1);
       return true;
     } else {
       return false;
@@ -318,10 +323,12 @@ public class SiedlerGame {
         isSettlementOwner = true;
       }
     }
-    if (isSettlementOwner /* && hasResources */) {
+    if (isSettlementOwner && hasEnoughForCity()) {
       City city = new City(position, getCurrentPlayerFaction());
       siedlerBoard.setCorner(position, city);
       getCurrentPlayer().addPoints(city.getWinPoints());
+      getCurrentPlayer().removeResourceFromPlayer(Resource.ORE, 3);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 2);
       return true;
     } else
       return true;
@@ -342,9 +349,40 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart)) { // TODO: Resource cost
+    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart) && hasEnoughForRoad()) {
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.BRICK, 1);
+      return true;
+    } else
+      return false;
+  }
+
+  private boolean hasEnoughForRoad() { //TODO: magic numbers
+    if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
+        && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1) {
+      return true;
+    } else
+      return false;
+  }
+
+  private boolean hasEnoughForSettlement() { //TODO: magic numbers
+    if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
+        && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1
+        && getCurrentPlayer().getPlayerResource(Resource.WOOL) >= 1
+        && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 1) {
+      return true;
+    } else
+      return false;
+  }
+
+  private boolean hasEnoughForCity() {  //TODO: magic numbers
+    //List<Resource> costs = Structure.CITY.getCosts();
+    //for (Resource cost : costs) {
+    //}
+    if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
+        && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
       return true;
     } else
       return false;
@@ -396,14 +434,19 @@ public class SiedlerGame {
    */
   public boolean placeThiefAndStealCard(Point field) {
     if (siedlerBoard.hasField(field)) {
-      thiefPosition = field;
-      if (true) {
+      thiefPosition.setNewThiefPosition(field);
+      List<Building> corners = siedlerBoard.getCornersOfField(field);
+      if (corners != null) {
         // random.player.minusOneCard();
         // currentPlayer.plusOneCard();
       }
       return true;
     } else
       return false;
+  }
+
+  private void placeInitialThief() {
+    thiefPosition.setNewThiefPosition(Config.INITIAL_THIEF_POSITION);
   }
 
   // new implement
