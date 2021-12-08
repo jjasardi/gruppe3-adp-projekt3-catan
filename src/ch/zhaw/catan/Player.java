@@ -67,7 +67,7 @@ public class Player {
         }
     }
 
-    public boolean PlayerHasResourceInStock(Resource resource, int amount) {
+    private boolean PlayerHasResourceInStock(Resource resource, int amount) {
         if (getPlayerResource(resource) >= amount) {
             return true;
         } else {
