@@ -9,4 +9,9 @@ public class Settlement extends Building {
     public Settlement(Point position, Faction owner) {
         super(position, owner, WIN_POINTS_FOR_SETTLEMENT);
     }
+
+    @Override
+    public String toString() {
+        return getOwner().toString();
+    }
 }

@@ -13,15 +13,20 @@ public class Road {
         this.owner = owner;
     }
 
-    public Point getFirstPoint () {
+    public Point getFirstPoint() {
         return firstPoint;
     }
-    
-    public Point getSecondPoint () {
+
+    public Point getSecondPoint() {
         return secondPoint;
     }
 
     public Faction getOwner() {
         return owner;
+    }
+
+    @Override
+    public String toString() {
+        return getOwner().toString();
     }
 }
