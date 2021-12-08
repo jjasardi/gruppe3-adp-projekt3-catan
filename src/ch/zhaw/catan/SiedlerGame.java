@@ -29,7 +29,6 @@ public class SiedlerGame {
   private SiedlerBoard siedlerBoard;
   private int currentPlayerIndex;
   private Bank bank;
-  private Validation valid;
   private SiedlerBoardTextView view;
   private Point thiefPosition;
 
@@ -152,7 +151,7 @@ public class SiedlerGame {
         for (Land land : landsForSettlement) {
           Resource landResource = land.getResource();
           if (bank.giveOneResource(landResource)) {
-            currentPlayer.setPlayerResource(landResource, 1);
+            currentPlayer.addResourceToPlayer(landResource, 1);
           }
         }
       }
@@ -378,7 +377,7 @@ public class SiedlerGame {
   public Faction getWinner() {
     Faction winner = null;
     for (Player player : playerList) {
-      if (player.getPoints() >= winPoints) {
+      if (player.getPlayerPoints() >= winPoints) {
         winner = player.getPlayerFaction();
       }
     }

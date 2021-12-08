@@ -10,7 +10,6 @@ import java.awt.Point;
 public class MainGame {
     private Input input;
     private Output output;
-    private Validation valid;
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;

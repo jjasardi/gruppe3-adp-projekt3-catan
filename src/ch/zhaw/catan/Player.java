@@ -4,6 +4,7 @@ import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Player {
     private final static int MAX_POINTS_PLAYER_CAN_GET = 2;
@@ -21,24 +22,37 @@ public class Player {
         return playerFaction;
     }
 
-    public HashMap<Resource, Integer> getPlayerStock() {
-        return playerResource;
-    }
-
-    protected void setPlayerResource(Resource resource, int amount) { //TODO: better name
-            playerResource.merge(resource, amount, Integer::sum);       
-    }
-
     public int getPlayerResource(Resource resource) {
         return playerResource.get(resource);
     }
 
-    public boolean removeResource(Resource resource, int anzahl) { //TODO: fix
-        return playerResource.remove(resource, anzahl);
+    public HashMap<Resource, Integer> getPlayerStock() {
+        return playerResource;
     }
 
-    public int getPoints() {
+    public int getPlayerPoints() {
         return points;
+    }
+
+    public void addResourceToPlayer(Resource resource, int amount) {
+        if (amount > 0) {
+            playerResource.merge(resource, amount, Integer::sum);
+        }
+    }
+
+    public void addResourceToPlayer(List<Resource> resourceList) {
+        for (Resource resource : resourceList) {
+            addResourceToPlayer(resource, 1);
+        }
+    }
+
+    public boolean removeResourceFromPlayer(Resource resource, int amount) {
+        if (amount > 0 && PlayerHasResourceInStock(resource, amount)) {
+            playerResource.merge(resource, -amount, Integer::sum);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addPoints(int pointsAdd) {
@@ -53,5 +67,11 @@ public class Player {
         }
     }
 
-
+    public boolean PlayerHasResourceInStock(Resource resource, int amount) {
+        if (getPlayerResource(resource) >= amount) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

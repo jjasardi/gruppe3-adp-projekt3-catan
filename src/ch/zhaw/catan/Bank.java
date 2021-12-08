@@ -40,8 +40,8 @@ public class Bank {
 
     public boolean tradeFourForOne(Player currentPlayer, Resource offer, Resource want) {
         if (bank.get(want) > 0 && currentPlayer.getPlayerResource(offer) >= 4) {
-            currentPlayer.setPlayerResource(want, (currentPlayer.getPlayerResource(want) + RESOURCE_WANT));
-            currentPlayer.setPlayerResource(offer, (currentPlayer.getPlayerResource(offer) - RESOURCE_OFFER));
+            currentPlayer.addResourceToPlayer(want, RESOURCE_WANT);
+            currentPlayer.removeResourceFromPlayer(offer, RESOURCE_OFFER);
             setBankResource(want, (bank.get(want) - RESOURCE_WANT));
             setBankResource(offer, (bank.get(offer) + RESOURCE_OFFER));
             return true;
