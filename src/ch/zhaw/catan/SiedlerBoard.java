@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Structure;
 import ch.zhaw.hexboard.HexBoard;
@@ -82,7 +83,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		}
 	}
 
-	public void addRoad(Point firstPoint, Point secondPoint, Player owner) { // TODO: eventuell löschen
+	public void addRoad(Point firstPoint, Point secondPoint, Faction owner) { // TODO: eventuell löschen
 		roadList.add(new Road(firstPoint, secondPoint, owner));
 	}
 }

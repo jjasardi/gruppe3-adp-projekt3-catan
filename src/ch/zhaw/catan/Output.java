@@ -22,6 +22,10 @@ public class Output {
         textTerminal.println("It was rolled: " + dicethrow); 
     }
 
+    public void printError() {
+        textTerminal.println("Error"); 
+    }
+
     public void printTradeOffer() {
         textTerminal.println("Wich Resource do you want to offer?");  
     }
@@ -67,6 +71,6 @@ public class Output {
             String key = resource.toString();
             String value = playerStock.get(resource).toString();
             textTerminal.println(key + " " + value);
-        } textTerminal.println("Test"); // TODO: remove
+        }
     }
 }

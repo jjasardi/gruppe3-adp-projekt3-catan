@@ -10,6 +10,7 @@ import java.awt.Point;
 public class MainGame {
     private Input input;
     private Output output;
+    private Validation valid;
     private TextIO textIO;
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
@@ -29,7 +30,7 @@ public class MainGame {
 
     private void run() {
         firstPhase();
-        //secondPhase();
+        secondPhase();
         thirdPhase();
 
     }
@@ -38,9 +39,9 @@ public class MainGame {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         input = new Input();
-        output = new Output();
         playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(5, playerCount); // Magic Numbers
+        output = new Output();
 
     }
 
@@ -49,10 +50,19 @@ public class MainGame {
             textTerminal.println(siedlerGame.getView().toString());
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
-            Point position = input.getPosition();
-            siedlerGame.placeInitialSettlement(position, false);
+            Point settlement = input.getPosition();
+            while (!siedlerGame.placeInitialSettlement(settlement, false)) {
+                output.printError();
+                settlement = input.getPosition();
+                siedlerGame.placeInitialSettlement(settlement, false);
+            }
             output.printRoad();
-            siedlerGame.placeInitialRoad(position, input.getPosition());
+            Point roadEnd = input.getPosition();
+            while (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+                output.printError();
+                roadEnd = input.getPosition();
+                siedlerGame.placeInitialRoad(settlement, roadEnd);
+            }
             siedlerGame.switchToNextPlayer();
         }
         for (int player = 1; player <= playerCount; player++) {
@@ -60,10 +70,19 @@ public class MainGame {
             siedlerGame.switchToPreviousPlayer();
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
-            Point position = input.getPosition();
-            siedlerGame.placeInitialSettlement(position, false);
+            Point settlement = input.getPosition();
+            while (!siedlerGame.placeInitialSettlement(settlement, true)) {
+                output.printError();
+                settlement = input.getPosition();
+                siedlerGame.placeInitialSettlement(settlement, true);
+            }
             output.printRoad();
-            siedlerGame.placeInitialRoad(position, input.getPosition());
+            Point roadEnd = input.getPosition();
+            while (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+                output.printError();
+                roadEnd = input.getPosition();
+                siedlerGame.placeInitialRoad(settlement, roadEnd);
+            }
         }
     }
 
@@ -80,7 +99,7 @@ public class MainGame {
     private void commands() {
         boolean running = true;
         while (running) {
-            switch (getEnumValue(textIO, Actions.class)) {
+            switch (input.getEnumValue(textIO, Actions.class)) {
                 case SHOW:
                     textTerminal.println(siedlerGame.getView().toString());
                     break;
@@ -93,7 +112,7 @@ public class MainGame {
                 case BANK_STOCK:
                     output.printBankStock(siedlerGame.getBankStock());
                     break;
-                case MY_STOCK:                    
+                case MY_STOCK:
                     output.printPlayerStock(siedlerGame.getCurrentPlayerStock());
                     break;
                 case END:
@@ -105,21 +124,9 @@ public class MainGame {
         }
     }
 
-    private static <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("What would you like to do?");
-    }
-
-    private static <T extends Enum<T>> T getResourceValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("Which Resource do you want to buy?");
-    }
-
-    private static <T extends Enum<T>> T getBuildingValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("What do you want to build?");
-    }
-
     private void tradeResource() {
         Resource offer = input.getTradeOffer(textIO, Config.Resource.class);
-        switch (getResourceValue(textIO, Config.Resource.class)) {
+        switch (input.getResourceValue(textIO, Config.Resource.class)) {
             case GRAIN:
                 siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN);
                 break;
@@ -139,7 +146,7 @@ public class MainGame {
     }
 
     private void build() {
-        switch (getBuildingValue(textIO, Building.class)) {
+        switch (input.getBuildingValue(textIO, Building.class)) {
             case ROAD:
                 output.printRoad();
                 Point roadStart = input.getPosition();

@@ -25,9 +25,12 @@ public class SiedlerGame {
   private List<Player> playerList;
   private int winPoints;
   private SiedlerBoard siedlerBoard;
-  private int currentPlayerIndex = FIRST_PLAYER_IN_LIST;
+  private int currentPlayerIndex;
   private Bank bank;
+  private Validation valid;
   private SiedlerBoardTextView view;
+  private Point thiefPosition;
+  private Map<Player, List<Building>> buildingList;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -38,12 +41,13 @@ public class SiedlerGame {
    *                                  is not between two and four
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
+    this.winPoints = winPoints;
     setPlayerList(numberOfPlayers);
     siedlerBoard = new SiedlerBoard(); // TODO: dicevalues
     view = new SiedlerBoardTextView(siedlerBoard);
-    // TODO: finish Implement
-    this.winPoints = winPoints;
     bank = new Bank();
+    currentPlayerIndex = FIRST_PLAYER_IN_LIST;
+    thiefPosition = Config.INITIAL_THIEF_POSITION;
     // dice
 
   }
@@ -160,7 +164,7 @@ public class SiedlerGame {
 
   private boolean isSettlementPositionValid(Point position) {
     // TODO: testing
-    if (siedlerBoard.getCorner(position) == null 
+    if (siedlerBoard.hasCorner(position) && siedlerBoard.getCorner(position) == null
         && siedlerBoard.getNeighboursOfCorner(position).isEmpty()) {
       return true;
     } else {
@@ -179,7 +183,7 @@ public class SiedlerGame {
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
     // TODO: fertig implementieren
     if (isInitialRoadPositionValid(roadStart, roadEnd)) {
-      Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayer());
+      Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, initalRoad);
       return true;
     } else {
@@ -190,7 +194,7 @@ public class SiedlerGame {
 
   private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
     // TODO: second street only on second settlement
-    if (siedlerBoard.getEdge(roadStart, roadEnd) == null
+    if (siedlerBoard.hasEdge(roadStart, roadEnd) && siedlerBoard.getEdge(roadStart, roadEnd) == null
         && ((isBuilduingOwner(roadStart) || isBuilduingOwner(roadEnd)
             || isAdjacentToRoad(roadStart) || isAdjacentToRoad(roadEnd)))) {
       return true;
@@ -211,7 +215,7 @@ public class SiedlerGame {
   private boolean isAdjacentToRoad(Point point) {
     List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
     for (Road road : AdjacentRoads) {
-      Player roadOwner = siedlerBoard.getEdge(road.getFirstPoint(), road.getSecondPoint()).getOwner();
+      Faction roadOwner = siedlerBoard.getEdge(road.getFirstPoint(), road.getSecondPoint()).getOwner();
       if (roadOwner.equals(getCurrentPlayer())) {
         return true;
       }
@@ -252,7 +256,7 @@ public class SiedlerGame {
         buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
         for (Building building : buildingsOfField) {
           Faction owner = building.getOwner().getPlayerFaction();
-          //resourceList = 
+          // resourceList =
         }
       }
 
@@ -295,7 +299,6 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildCity(Point position) {
-    // TODO: OPTIONAL task - Implement
     return false;
   }
 
@@ -314,8 +317,10 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    // TODO: Implement
-    return false;
+    if (siedlerBoard.hasEdge(roadStart, roadEnd)) {
+      return true;
+    } else
+      return false;
   }
 
   /**
@@ -363,8 +368,15 @@ public class SiedlerGame {
    *         placed there (e.g., on water)
    */
   public boolean placeThiefAndStealCard(Point field) {
-    // TODO: Implement (or longest road functionality)
-    return false;
+    if (siedlerBoard.hasField(field)) {
+      thiefPosition = field;
+      if (true) {
+        // random.player.minusOneCard();
+        // currentPlayer.plusOneCard();
+      }
+      return true;
+    } else
+      return false;
   }
 
   // new implement
@@ -372,6 +384,15 @@ public class SiedlerGame {
   private Player getCurrentPlayer() {
     return playerList.get(currentPlayerIndex);
   }
+
+  /*
+   * private Map<Faction, Point> getAllSettlements() {
+   * Map<Faction, Point> allSettlements = new HashMap<>();
+   * for (Player player : playerList) {
+   * 
+   * }
+   * }
+   */
 
   /**
    * Returns how many cards the current player owns.
@@ -391,8 +412,8 @@ public class SiedlerGame {
   }
 
   private void removeHalfResource() {
-    // TODO: implement method to remove half of the cards 
-    //       if bigger than THIEF_NUMBER
+    // TODO: implement method to remove half of the cards
+    // if bigger than THIEF_NUMBER
 
   }
 }

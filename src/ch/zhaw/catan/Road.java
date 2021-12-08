@@ -1,12 +1,13 @@
 package ch.zhaw.catan;
 
 import java.awt.Point;
+import ch.zhaw.catan.Config.Faction;
 
 public class Road {
     private Point firstPoint, secondPoint;
-    private Player owner;
+    private Faction owner;
 
-    public Road(Point firstPoint, Point secondPoint, Player owner) {
+    public Road(Point firstPoint, Point secondPoint, Faction owner) {
         this.firstPoint = firstPoint;
         this.secondPoint = secondPoint;
         this.owner = owner;
@@ -20,7 +21,7 @@ public class Road {
         return secondPoint;
     }
 
-    public Player getOwner() {
+    public Faction getOwner() {
         return owner;
     }
 }
