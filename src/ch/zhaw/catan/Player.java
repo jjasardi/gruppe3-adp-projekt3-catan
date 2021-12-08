@@ -3,8 +3,10 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class Player {
     private final static int MAX_POINTS_PLAYER_CAN_GET = 2;
@@ -32,6 +34,15 @@ public class Player {
 
     public int getPlayerPoints() {
         return points;
+    }
+
+    public List<Resource> getResourceList() {
+        List<Resource> list = new ArrayList<>();
+        for (Entry<Resource, Integer> resource : playerResource.entrySet()) {
+            if (resource.getValue() > 0) {
+                list.add(resource.getKey());
+            }
+        } return list;
     }
 
     public void addResourceToPlayer(Resource resource, int amount) {

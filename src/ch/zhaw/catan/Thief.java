@@ -21,10 +21,9 @@ public class Thief {
         this.position = position;
     }
 
-    public Resource getRandomResource() {
-        List<Resource> list = List.of(Resource.BRICK, Resource.GRAIN, Resource.LUMBER, Resource.ORE, Resource.WOOL);
+    public Resource getRandomResource(List<Resource> list) {
         int totalResource = list.size();
-        int randomResourceIndex = (int) ((Math.random() * totalResource) + 1);
+        int randomResourceIndex = (int) ((Math.random() * totalResource));
         return list.get(randomResourceIndex);
     }
 

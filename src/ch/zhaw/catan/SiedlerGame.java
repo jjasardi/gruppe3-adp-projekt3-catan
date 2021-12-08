@@ -48,7 +48,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     bank = new Bank();
     currentPlayerIndex = FIRST_PLAYER_IN_LIST;
-    placeInitialThief();
+    thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
     // dice
 
   }
@@ -433,26 +433,39 @@ public class SiedlerGame {
    *         placed there (e.g., on water)
    */
   public boolean placeThiefAndStealCard(Point field) {
-    if (siedlerBoard.hasField(field)) {
+    List<Building> corners = siedlerBoard.getCornersOfField(field);
+    if (siedlerBoard.hasField(field) && corners != null) {
       thiefPosition.setNewThiefPosition(field);
-      List<Building> corners = siedlerBoard.getCornersOfField(field);
-      if (corners != null) {
-        // random.player.minusOneCard();
-        // currentPlayer.plusOneCard();
+      List<Faction> factions = new ArrayList<>();
+      for (Building building : corners) {
+        if (building.getOwner() != getCurrentPlayerFaction()) {
+          factions.add(building.getOwner());
+        }
       }
+      int totalFactions = factions.size();
+      int randomFactionIndex = (int) ((Math.random() * totalFactions));
+      Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
+      Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
+      randomPlayer.removeResourceFromPlayer(resourceToSteal, 1);
+      getCurrentPlayer().addResourceToPlayer(resourceToSteal, 1);      
       return true;
-    } else
+      } else
       return false;
   }
-
-  private void placeInitialThief() {
-    thiefPosition.setNewThiefPosition(Config.INITIAL_THIEF_POSITION);
-  }
-
+  
   // new implement
 
   private Player getCurrentPlayer() {
     return playerList.get(currentPlayerIndex);
+  }
+
+  private Player getPlayerofFaction(Faction faction) {
+    Player player1 = null;
+    for (Player player : playerList) {
+      if (player.getPlayerFaction() == faction) {
+        player1 = player;
+      }
+    } return player1;
   }
 
   /*
