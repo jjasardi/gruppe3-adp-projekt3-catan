@@ -146,8 +146,7 @@ public class SiedlerGame {
     if (isSettlementPositionValid(position)) {
       Player currentPlayer = getCurrentPlayer();
       Settlement initalSettlement = new Settlement(position, currentPlayer.getPlayerFaction());
-      siedlerBoard.setCorner(position, initalSettlement);
-      currentPlayer.addPoints(initalSettlement.getWinPoints());
+      placeBuilding(initalSettlement, position, currentPlayer);
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
@@ -171,6 +170,11 @@ public class SiedlerGame {
     } else {
       return false;
     }
+  }
+
+  private void placeBuilding(Building building, Point position, Player currentPlayer) {
+    siedlerBoard.setCorner(position, building);
+    currentPlayer.addPoints(building.getWinPoints());
   }
 
   /**
@@ -216,8 +220,8 @@ public class SiedlerGame {
   private boolean isAdjacentToRoad(Point point) {
     List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
     for (Road road : AdjacentRoads) {
-      Faction roadOwner = siedlerBoard.getEdge(road.getFirstPoint(), road.getSecondPoint()).getOwner();
-      if (roadOwner.equals(getCurrentPlayer())) {
+      Faction roadOwner = road.getOwner();
+      if (roadOwner.equals(getCurrentPlayerFaction())) {
         return true;
       }
     }
@@ -282,8 +286,15 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildSettlement(Point position) {
-    // TODO: Implement
-    return false;
+    if (isSettlementPositionValid(position)
+        && isAdjacentToRoad(position)) { // TODO && hasEnoughResources
+      Player currentPlayer = getCurrentPlayer();
+      Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
+      placeBuilding(settlement, position, currentPlayer);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
