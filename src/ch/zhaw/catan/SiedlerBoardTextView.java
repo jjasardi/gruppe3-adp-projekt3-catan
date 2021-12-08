@@ -31,7 +31,5 @@ public class SiedlerBoardTextView extends HexBoardTextView<Land, Building, Road,
     for (Map.Entry<Point, Label> e : lowerFieldLabel.entrySet()) {
       setLowerFieldLabel(e.getKey(), e.getValue());
     }
-
   }
-
 }

@@ -3,6 +3,8 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.hexboard.HexBoardTextView;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +32,6 @@ public class SiedlerGame {
   private Validation valid;
   private SiedlerBoardTextView view;
   private Point thiefPosition;
-  private Map<Player, List<Building>> buildingList;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -144,7 +145,7 @@ public class SiedlerGame {
     // TODO: testing
     if (isSettlementPositionValid(position)) {
       Player currentPlayer = getCurrentPlayer();
-      Settlement initalSettlement = new Settlement(position, currentPlayer);
+      Settlement initalSettlement = new Settlement(position, currentPlayer.getPlayerFaction());
       siedlerBoard.setCorner(position, initalSettlement);
       currentPlayer.addPoints(initalSettlement.getWinPoints());
       if (payout) {
@@ -204,7 +205,7 @@ public class SiedlerGame {
   }
 
   private boolean isBuilduingOwner(Point point) {
-    Player buildingOwner = siedlerBoard.getCorner(point).getOwner();
+    Faction buildingOwner = siedlerBoard.getCorner(point).getOwner();
     if (buildingOwner.equals(getCurrentPlayer())) {
       return true;
     } else {
@@ -255,7 +256,7 @@ public class SiedlerGame {
         landType = siedlerBoard.getField(fieldPosition);
         buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
         for (Building building : buildingsOfField) {
-          Faction owner = building.getOwner().getPlayerFaction();
+          Faction owner = building.getOwner();
           // resourceList =
         }
       }
@@ -298,8 +299,22 @@ public class SiedlerGame {
    * @param position the position of the city
    * @return true, if the placement was successful
    */
-  public boolean buildCity(Point position) {
-    return false;
+  public boolean buildCity(Point position) { // TODO: Resource, Settlement City conflict
+    List<Building> settlements = siedlerBoard.getCorners();
+    boolean isSettlementOwner = false;
+    for (Building building : settlements) {
+      Faction buildingOwner = building.getOwner();
+      if (buildingOwner.equals(getCurrentPlayerFaction())) {
+        isSettlementOwner = true;
+      }
+    }
+    if (isSettlementOwner /* && hasResources */) {
+      City city = new City(position, getCurrentPlayerFaction());
+      siedlerBoard.setCorner(position, city);
+      getCurrentPlayer().addPoints(city.getWinPoints());
+      return true;
+    } else
+      return true;
   }
 
   /**
@@ -317,7 +332,9 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (siedlerBoard.hasEdge(roadStart, roadEnd)) {
+    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart)) { // TODO: Resource cost
+      Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
+      siedlerBoard.setEdge(roadStart, roadEnd, road);
       return true;
     } else
       return false;

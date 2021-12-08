@@ -46,42 +46,62 @@ public class MainGame {
     }
 
     private void secondPhase() {
+        secondPhaseOne();
+        secondPhaseTwo();              
+    }
+
+    private void secondPhaseOne() {
         for (int player = 1; player <= playerCount; player++) {
             textTerminal.println(siedlerGame.getView().toString());
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
             Point settlement = input.getPosition();
-            while (!siedlerGame.placeInitialSettlement(settlement, false)) {
+            if (!siedlerGame.placeInitialSettlement(settlement, false)) {
+                boolean success = false;
+                while (!success) {
                 output.printError();
                 settlement = input.getPosition();
-                siedlerGame.placeInitialSettlement(settlement, false);
+                success = siedlerGame.placeInitialSettlement(settlement, false);
+                }
             }
             output.printRoad();
             Point roadEnd = input.getPosition();
-            while (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+            if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+                boolean success = false;
+                while (!success) {
                 output.printError();
                 roadEnd = input.getPosition();
-                siedlerGame.placeInitialRoad(settlement, roadEnd);
+                success = siedlerGame.placeInitialRoad(settlement, roadEnd);
+                }
             }
             siedlerGame.switchToNextPlayer();
         }
+    }
+
+    private void secondPhaseTwo() {
         for (int player = 1; player <= playerCount; player++) {
             textTerminal.println(siedlerGame.getView().toString());
             siedlerGame.switchToPreviousPlayer();
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             output.printSettelment();
             Point settlement = input.getPosition();
-            while (!siedlerGame.placeInitialSettlement(settlement, true)) {
+            if (!siedlerGame.placeInitialSettlement(settlement, true)) {
+                boolean success = false;
+                while (!success) {
                 output.printError();
                 settlement = input.getPosition();
-                siedlerGame.placeInitialSettlement(settlement, true);
+                success = siedlerGame.placeInitialSettlement(settlement, true);
+                }
             }
             output.printRoad();
             Point roadEnd = input.getPosition();
-            while (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+            if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
+                boolean success = false;
+                while (!success) {
                 output.printError();
                 roadEnd = input.getPosition();
-                siedlerGame.placeInitialRoad(settlement, roadEnd);
+                success = siedlerGame.placeInitialRoad(settlement, roadEnd);
+                }
             }
         }
     }

@@ -75,7 +75,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 
 	// new
 
-	public void addBuilding(Point position, Structure structure, Player owner) { // TODO: eventuell löschen
+	public void addBuilding(Point position, Structure structure, Faction owner) { // TODO: eventuell löschen
 		if (structure.equals(Structure.SETTLEMENT)) {
 			buildingList.add(new Settlement(position, owner));
 		} else if (structure.equals(Structure.CITY)) {

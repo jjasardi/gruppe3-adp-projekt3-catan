@@ -1,12 +1,13 @@
 package ch.zhaw.catan;
 
 import java.awt.Point;
+import ch.zhaw.catan.Config.Faction;
 
 public class Building {
     private Point position;
-    private Player owner;
+    private Faction owner;
 
-    public Building(Point position, Player owner) {
+    public Building(Point position, Faction owner) {
         this.position = position;
         this.owner = owner;
     }
@@ -15,7 +16,7 @@ public class Building {
         return position;
     }
 
-    public Player getOwner() {
+    public Faction getOwner() {
         return owner;
     }
 }
