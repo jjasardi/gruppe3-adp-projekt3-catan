@@ -165,6 +165,19 @@ public class SiedlerGame {
     }
   }
 
+  /**
+   * checks if the settlement position meets the required position rules
+   * <p>
+   * The settlement position rules are:
+   * <ul>
+   * <li>the position is a corener</li>
+   * <li>the corner is free</li>
+   * <li>the neighbour corners are free</li>
+   * </ul>
+   * 
+   * @param position the position to be checked
+   * @return true, if the position is valid
+   */
   private boolean isSettlementPositionValid(Point position) {
     // TODO: testing
     if (siedlerBoard.hasCorner(position)
@@ -176,6 +189,12 @@ public class SiedlerGame {
     }
   }
 
+  /**
+   * places the building in the game board at the specified position
+   * 
+   * @param building the building to be placed
+   * @param position the position where the building is placed
+   */
   private void placeBuilding(Building building, Point position,
       Player currentPlayer) {
     siedlerBoard.setCorner(position, building);
@@ -203,7 +222,7 @@ public class SiedlerGame {
   }
 
   private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
-    // TODO: second street only on second settlement
+        // TODO: second street only on second settlement
     if (siedlerBoard.hasEdge(roadStart, roadEnd)
         && siedlerBoard.getEdge(roadStart, roadEnd) == null
         && ((isBuilduingFaction(roadStart) || isBuilduingFaction(roadEnd)
