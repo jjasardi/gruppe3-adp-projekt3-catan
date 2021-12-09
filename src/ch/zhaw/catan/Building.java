@@ -16,18 +16,30 @@ public class Building {
         this.resourceEarning = resourceEarning;
     }
 
+    /**
+     * @return Point
+     */
     public Point getPosition() {
         return position;
     }
 
+    /**
+     * @return Faction
+     */
     public Faction getFaction() {
         return faction;
     }
 
+    /**
+     * @return int
+     */
     public int getWinPoints() {
         return winPointsForBuilduing;
     }
 
+    /**
+     * @return int
+     */
     public int getResourceEarning() {
         return resourceEarning;
     }

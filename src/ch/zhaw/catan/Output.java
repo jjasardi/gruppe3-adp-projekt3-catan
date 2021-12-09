@@ -15,39 +15,45 @@ public class Output {
     TextTerminal<?> textTerminal = textIO.getTextTerminal();
 
     public void printWelcome() {
-        textTerminal.println("Welcome to Siedler Game from ADP.");        
+        textTerminal.println("Welcome to Siedler Game from ADP.");
     }
 
+    /**
+     * @param dicethrow
+     */
     public void printDieceNumber(int dicethrow) {
-        textTerminal.println("It was rolled: " + dicethrow); 
+        textTerminal.println("It was rolled: " + dicethrow);
     }
 
     public void printError() {
-        textTerminal.println("Error"); 
+        textTerminal.println("Error");
     }
 
     public void printTradeOffer() {
-        textTerminal.println("Wich Resource do you want to offer?");  
+        textTerminal.println("Wich Resource do you want to offer?");
     }
 
     public void printTradeBuy() {
-        textTerminal.println("Wich Resource do you want to buy?");  
+        textTerminal.println("Wich Resource do you want to buy?");
     }
 
+    /**
+     * @param currentPlayer
+     */
     public void printCurrentPlayer(Faction currentPlayer) {
-        textTerminal.println(currentPlayer.name() + "'s turn:"); 
+        textTerminal.println(currentPlayer.name() + "'s turn:");
     }
 
     public void printRoad() {
-        textTerminal.println("Position for Road?"); 
+        textTerminal.println("Position for Road?");
     }
 
     public void printSettelment() {
-        textTerminal.println("Position for Settelment?"); 
+        textTerminal.println("Position for Settelment?");
     }
 
     public void printCity() {
-        textTerminal.println("Position for City?"); 
+        textTerminal.println("Position for City?");
     }
 
     public void printErrorMessage() {
@@ -58,24 +64,36 @@ public class Output {
         textTerminal.println("Position for Thief?");
     }
 
+    /**
+     * @param diceThrow
+     */
     public void printDice(int diceThrow) {
         textTerminal.println("You rolled: " + diceThrow);
     }
 
+    /**
+     * @param faction
+     */
     public void printWinnter(Faction faction) {
         textTerminal.println("Congratulation!! the winner is:" + faction.name());
     }
 
+    /**
+     * @param bankStock
+     */
     public void printBankStock(Map<Resource, Integer> bankStock) {
-        for (Resource resource: bankStock.keySet()) {
+        for (Resource resource : bankStock.keySet()) {
             String key = resource.toString();
             String value = bankStock.get(resource).toString();
             textTerminal.println(key + " " + value);
         }
     }
 
+    /**
+     * @param playerStock
+     */
     public void printPlayerStock(Map<Resource, Integer> playerStock) {
-        for (Resource resource: playerStock.keySet()) {
+        for (Resource resource : playerStock.keySet()) {
             String key = resource.toString();
             String value = playerStock.get(resource).toString();
             textTerminal.println(key + " " + value);

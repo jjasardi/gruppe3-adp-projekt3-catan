@@ -13,18 +13,30 @@ public class Road {
         this.faction = faction;
     }
 
+    /**
+     * @return Point
+     */
     public Point getFirstPoint() {
         return firstPoint;
     }
 
+    /**
+     * @return Point
+     */
     public Point getSecondPoint() {
         return secondPoint;
     }
 
+    /**
+     * @return Faction
+     */
     public Faction getFaction() {
         return faction;
     }
 
+    /**
+     * @return String
+     */
     @Override
     public String toString() {
         return getFaction().toString();
