@@ -153,17 +153,10 @@ public class SiedlerGame {
         List<Land> landsForSettlement = siedlerBoard
             .getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-<<<<<<< HEAD
-          Resource landResource = land.getResource();
-          if (bank.giveOneResource(landResource)) {
-            currentPlayer.addResourceToPlayer(landResource, 1);
-          }
-=======
             Resource landResource = land.getResource();
             if (bank.removeOneResource(landResource)) {
               currentPlayer.addResourceToPlayer(landResource, 1);
             }
->>>>>>> d95e4ce08f5c8f833946dd1442965c9f2af52504
         }
       }
       return true;
