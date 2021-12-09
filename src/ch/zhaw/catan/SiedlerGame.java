@@ -151,9 +151,11 @@ public class SiedlerGame {
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-          Resource landResource = land.getResource();
-          if (bank.giveOneResource(landResource)) {
-            currentPlayer.addResourceToPlayer(landResource, 1);
+          if (land != Land.WATER && land != Land.DESERT) {
+            Resource landResource = land.getResource();
+            if (bank.giveOneResource(landResource)) {
+              currentPlayer.addResourceToPlayer(landResource, 1);
+            }
           }
         }
       }
@@ -435,7 +437,7 @@ public class SiedlerGame {
   public boolean placeThiefAndStealCard(Point field) {
     List<Building> corners = null;
     if (siedlerBoard.hasField(field)) {
-    corners = siedlerBoard.getCornersOfField(field);
+      corners = siedlerBoard.getCornersOfField(field);
     }
     if (siedlerBoard.hasField(field) && corners != null) {
       thiefPosition.setNewThiefPosition(field);
