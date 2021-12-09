@@ -5,9 +5,10 @@ import ch.zhaw.catan.Config.Faction;
 
 public class City extends Building {
     private static final int WIN_POINTS_FOR_CITY = 2;
+    private static final int RESOURCE_EARNING = 2;
 
     public City(Point position, Faction faction) {
-        super(position, faction, WIN_POINTS_FOR_CITY);
+        super(position, faction, WIN_POINTS_FOR_CITY, RESOURCE_EARNING);
     }
 
     @Override
