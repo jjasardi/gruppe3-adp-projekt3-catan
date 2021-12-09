@@ -31,7 +31,7 @@ public class Bank {
     }
 
     public boolean giveOneResource(Resource resource) {
-        if (bank.get(resource) > 0) {
+        if (bank.get(resource) != null && bank.get(resource) > 0) {
             setBankResource(resource, (bank.get(resource) - RESOURCE_WANT));
             return true;
         } else

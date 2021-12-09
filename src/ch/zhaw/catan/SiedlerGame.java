@@ -151,12 +151,10 @@ public class SiedlerGame {
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-          if (land != Land.WATER && land != Land.DESERT) {
             Resource landResource = land.getResource();
             if (bank.giveOneResource(landResource)) {
               currentPlayer.addResourceToPlayer(landResource, 1);
             }
-          }
         }
       }
       return true;
