@@ -153,7 +153,7 @@ public class SiedlerGame {
         for (Land land : landsForSettlement) {
           if (land != Land.WATER && land != Land.DESERT) {
             Resource landResource = land.getResource();
-            if (bank.giveOneResource(landResource)) {
+            if (bank.removeOneResource(landResource)) {
               currentPlayer.addResourceToPlayer(landResource, 1);
             }
           }
@@ -508,8 +508,18 @@ public class SiedlerGame {
   }
 
   private void removeHalfResource() {
-    // TODO: implement method to remove half of the cards
-    // if bigger than THIEF_NUMBER
-
+    for (Player player : playerList) {
+      int playerStock = player.getPlayerStockVolume();
+      if(playerStock >= THIEF_NUMBER) {
+        int recourceToSteal = playerStock / 2;
+        for(int i=0 ; i < recourceToSteal ; i++) {
+        List<Resource> resourceList = player.getResourceList();
+        int randomIndex = (int) ((Math.random() * playerStock));
+        Resource resource = resourceList.get(randomIndex);       
+        player.removeOneResourceFromPlayer(resource);
+        bank.addOneResource(resource);
+        }
+      }
+    }
   }
 }

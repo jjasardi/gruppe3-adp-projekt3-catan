@@ -30,12 +30,20 @@ public class Bank {
         bank.put(resource, neuerWert);
     }
 
-    public boolean giveOneResource(Resource resource) {
+    public boolean removeOneResource(Resource resource) {
         if (bank.get(resource) > 0) {
             setBankResource(resource, (bank.get(resource) - RESOURCE_WANT));
             return true;
         } else
             return false;
+    }
+
+    public void addOneResource(Resource resource) {
+        if (bank.get(resource) >= 0) {
+            setBankResource(resource, (bank.get(resource) + 1));
+        } else {
+            bank.put(resource, 1);
+        }
     }
 
     public boolean tradeFourForOne(Player currentPlayer, Resource offer, Resource want) {
