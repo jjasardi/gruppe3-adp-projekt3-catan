@@ -7,11 +7,13 @@ public class Building {
     private Point position;
     private Faction faction;
     private int winPointsForBuilduing;
+    private int resourceEarning;
 
-    public Building(Point position, Faction faction, int winPointsForBuilduing) {
+    public Building(Point position, Faction faction, int winPointsForBuilduing, int resourceEarning) {
         this.position = position;
         this.faction = faction;
         this.winPointsForBuilduing = winPointsForBuilduing;
+        this.resourceEarning = resourceEarning;
     }
 
     public Point getPosition() {
@@ -24,5 +26,9 @@ public class Building {
 
     public int getWinPoints() {
         return winPointsForBuilduing;
+    }
+
+    public int getResourceEarning() {
+        return resourceEarning;
     }
 }

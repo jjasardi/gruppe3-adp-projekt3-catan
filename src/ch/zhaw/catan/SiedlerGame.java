@@ -39,8 +39,8 @@ public class SiedlerGame {
    * 
    * @param winPoints       the number of points required to win the game
    * @param numberOfPlayers the number of players
-   * @throws IllegalArgumentException if winPoints is lower than three or players
-   *                                  is not between two and four
+   * @throws IllegalArgumentException if winPoints is lower than three or
+   *                                  players is not between two and four
    */
   public SiedlerGame(int winPoints, int numberOfPlayers) {
     this.winPoints = winPoints;
@@ -79,10 +79,10 @@ public class SiedlerGame {
   /**
    * Returns the {@link Faction}s of the active players.
    * <p>
-   * The order of the player's factions in the list must correspond to the oder in
-   * which they play. Hence, the player that sets the first settlement must be at
-   * position 0 in the list etc. <strong>Important note:</strong> The list must
-   * contain the factions of active players only.
+   * The order of the player's factions in the list must correspond to the oder
+   * in which they play. Hence, the player that sets the first settlement must
+   * be at position 0 in the list etc. <strong>Important note:</strong> The list
+   * must contain the factions of active players only.
    * </p>
    * 
    * @return the list with player's factions
@@ -131,10 +131,10 @@ public class SiedlerGame {
   /**
    * Places a settlement in the founder's phase (phase II) of the game.
    * <p>
-   * The placement does not cost any resource cards. If payout is set to true, for
-   * each adjacent resource-producing field, a resource card of the type of the
-   * resource produced by the field is taken from the bank (if available) and
-   * added to the players' stock of resource cards.
+   * The placement does not cost any resource cards. If payout is set to true,
+   * for each adjacent resource-producing field, a resource card of the type of
+   * the resource produced by the field is taken from the bank (if available)
+   * and added to the players' stock of resource cards.
    * </p>
    * 
    * @param position the position of the settlement
@@ -146,10 +146,12 @@ public class SiedlerGame {
     // TODO: testing
     if (isSettlementPositionValid(position)) {
       Player currentPlayer = getCurrentPlayer();
-      Settlement initalSettlement = new Settlement(position, currentPlayer.getPlayerFaction());
+      Settlement initalSettlement = new Settlement(position,
+          currentPlayer.getPlayerFaction());
       placeBuilding(initalSettlement, position, currentPlayer);
       if (payout) {
-        List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
+        List<Land> landsForSettlement = siedlerBoard
+            .getLandsForCorner(position);
         for (Land land : landsForSettlement) {
           Resource landResource = land.getResource();
           if (bank.removeOneResource(landResource)) {
@@ -165,7 +167,8 @@ public class SiedlerGame {
 
   private boolean isSettlementPositionValid(Point position) {
     // TODO: testing
-    if (siedlerBoard.hasCorner(position) && siedlerBoard.getCorner(position) == null
+    if (siedlerBoard.hasCorner(position)
+        && siedlerBoard.getCorner(position) == null
         && siedlerBoard.getNeighboursOfCorner(position).isEmpty()) {
       return true;
     } else {
@@ -173,7 +176,8 @@ public class SiedlerGame {
     }
   }
 
-  private void placeBuilding(Building building, Point position, Player currentPlayer) {
+  private void placeBuilding(Building building, Point position,
+      Player currentPlayer) {
     siedlerBoard.setCorner(position, building);
     currentPlayer.addPoints(building.getWinPoints());
   }
@@ -200,7 +204,8 @@ public class SiedlerGame {
 
   private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
     // TODO: second street only on second settlement
-    if (siedlerBoard.hasEdge(roadStart, roadEnd) && siedlerBoard.getEdge(roadStart, roadEnd) == null
+    if (siedlerBoard.hasEdge(roadStart, roadEnd)
+        && siedlerBoard.getEdge(roadStart, roadEnd) == null
         && ((isBuilduingFaction(roadStart) || isBuilduingFaction(roadEnd)
             || isAdjacentToRoad(roadStart) || isAdjacentToRoad(roadEnd)))) {
       return true;
@@ -262,7 +267,8 @@ public class SiedlerGame {
         buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
         for (Building building : buildingsOfField) {
           Faction buildingFaction = building.getFaction();
-          // resourceList =
+          resourceList = resourceEarningByBuilding(building, landType);
+          factionResourceList.put(buildingFaction, resourceList);
         }
       }
 
@@ -287,10 +293,11 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildSettlement(Point position) {
-    if (isSettlementPositionValid(position)
-        && isAdjacentToRoad(position) && hasEnoughForSettlement()) {
+    if (isSettlementPositionValid(position) && isAdjacentToRoad(position)
+        && hasEnoughForSettlement()) {
       Player currentPlayer = getCurrentPlayer();
-      Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
+      Settlement settlement = new Settlement(position,
+          currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
       getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
       getCurrentPlayer().removeResourceFromPlayer(Resource.BRICK, 1);
@@ -350,7 +357,8 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart) && hasEnoughForRoad()) {
+    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart)
+        && hasEnoughForRoad()) {
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
@@ -390,10 +398,10 @@ public class SiedlerGame {
   }
 
   /**
-   * Trades in {@link #FOUR_TO_ONE_TRADE_OFFER} resource cards of the offered type
-   * for {@link #FOUR_TO_ONE_TRADE_WANT} resource cards of the wanted type. The
-   * trade only works when bank and player possess the resource cards for the
-   * trade before the trade is executed.
+   * Trades in {@link #FOUR_TO_ONE_TRADE_OFFER} resource cards of the offered
+   * type for {@link #FOUR_TO_ONE_TRADE_WANT} resource cards of the wanted type.
+   * The trade only works when bank and player possess the resource cards for
+   * the trade before the trade is executed.
    *
    * @param offer offered type
    * @param want  wanted type
@@ -423,10 +431,10 @@ public class SiedlerGame {
   }
 
   /**
-   * Places the thief on the specified field and steals a random resource card (if
-   * the player has such cards) from a random player with a settlement at that
-   * field (if there is a settlement) and adds it to the resource cards of the
-   * current player.
+   * Places the thief on the specified field and steals a random resource card
+   * (if the player has such cards) from a random player with a settlement at
+   * that field (if there is a settlement) and adds it to the resource cards of
+   * the current player.
    * 
    * @param field the field on which to place the thief
    * @return false, if the specified field is not a field or the thief cannot be
@@ -447,11 +455,14 @@ public class SiedlerGame {
       }
       int totalFactions = factions.size();
       int randomFactionIndex = (int) ((Math.random() * totalFactions));
-      Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
-      Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
+      Player randomPlayer = getPlayerofFaction(
+          factions.get(randomFactionIndex));
+      Resource resourceToSteal = thiefPosition
+          .getRandomResource(randomPlayer.getResourceList());
       randomPlayer.removeResourceFromPlayer(resourceToSteal, 1);
       getCurrentPlayer().addResourceToPlayer(resourceToSteal, 1);
-      siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(), thiefPosition.toString());
+      siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(),
+          thiefPosition.toString());
       return true;
     } else
       return false;
@@ -459,8 +470,8 @@ public class SiedlerGame {
 
   private void placeInitialThief() {
     thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
-    siedlerBoard.addFieldAnnotation(Config.INITIAL_THIEF_POSITION, thiefPosition.getPositionOffset(),
-        thiefPosition.toString());
+    siedlerBoard.addFieldAnnotation(Config.INITIAL_THIEF_POSITION,
+        thiefPosition.getPositionOffset(), thiefPosition.toString());
   }
 
   // new implement
@@ -480,12 +491,8 @@ public class SiedlerGame {
   }
 
   /*
-   * private Map<Faction, Point> getAllSettlements() {
-   * Map<Faction, Point> allSettlements = new HashMap<>();
-   * for (Player player : playerList) {
-   * 
-   * }
-   * }
+   * private Map<Faction, Point> getAllSettlements() { Map<Faction, Point>
+   * allSettlements = new HashMap<>(); for (Player player : playerList) { } }
    */
 
   /**
@@ -519,5 +526,13 @@ public class SiedlerGame {
         }
       }
     }
+  }
+
+  private List<Resource> resourceEarningByBuilding(Building building, Land landType) {
+    List<Resource> resourceEarning = new ArrayList<>();
+    for (int i = 0; i < building.getResourceEarning(); i++) {
+      resourceEarning.add(landType.getResource());
+    }
+    return resourceEarning;
   }
 }
