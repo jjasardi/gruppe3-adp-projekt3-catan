@@ -151,10 +151,10 @@ public class SiedlerGame {
       if (payout) {
         List<Land> landsForSettlement = siedlerBoard.getLandsForCorner(position);
         for (Land land : landsForSettlement) {
-            Resource landResource = land.getResource();
-            if (bank.removeOneResource(landResource)) {
-              currentPlayer.addResourceToPlayer(landResource, 1);
-            }
+          Resource landResource = land.getResource();
+          if (bank.removeOneResource(landResource)) {
+            currentPlayer.addResourceToPlayer(landResource, 1);
+          }
         }
       }
       return true;
@@ -508,14 +508,14 @@ public class SiedlerGame {
   private void removeHalfResource() {
     for (Player player : playerList) {
       int playerStock = player.getPlayerStockVolume();
-      if(playerStock >= THIEF_NUMBER) {
-        int recourceToSteal = playerStock / 2;
-        for(int i=0 ; i < recourceToSteal ; i++) {
-        List<Resource> resourceList = player.getResourceList();
-        int randomIndex = (int) ((Math.random() * playerStock));
-        Resource resource = resourceList.get(randomIndex);       
-        player.removeOneResourceFromPlayer(resource);
-        bank.addOneResource(resource);
+      if (playerStock >= THIEF_NUMBER) {
+        int resourceToSteal = playerStock / 2;
+        for (int i = 0; i < resourceToSteal; i++) {
+          List<Resource> resourceList = player.getResourceList();
+          int randomIndex = (int) ((Math.random() * resourceList.size()));
+          Resource resource = resourceList.get(randomIndex);
+          player.removeOneResourceFromPlayer(resource);
+          bank.addOneResource(resource);
         }
       }
     }
