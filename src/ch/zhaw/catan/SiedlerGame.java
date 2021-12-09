@@ -3,7 +3,6 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.catan.Config.Structure;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.beryx.textio.TextIO;
+
 
 /**
  * This class performs all actions related to modifying the game state. TODO:
@@ -191,13 +190,18 @@ public class SiedlerGame {
 
   /**
    * places the building in the game board at the specified position
+   * and updates the points of the specified player
    * 
    * @param building the building to be placed
    * @param position the position where the building is placed
+   * @param player   the player that places the building
    */
-  private void placeBuilding(Building building, Point position, Player currentPlayer) {
-    siedlerBoard.setCorner(position, building);
-    currentPlayer.addPoints(building.getWinPoints());
+  private void placeBuilding(Building building, Point position, Player player) {
+    Building oldBuilding = siedlerBoard.setCorner(position, building);
+    if (oldBuilding != null) {
+      player.removePoints(oldBuilding.getWinPoints());
+    }
+    player.addPoints(building.getWinPoints());
   }
 
   /**
@@ -333,7 +337,7 @@ public class SiedlerGame {
       Player currentPlayer = getCurrentPlayer();
       Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
-      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1); // TODO CleanCode CodeDuplication
       getCurrentPlayer().removeResourceFromPlayer(Resource.BRICK, 1);
       getCurrentPlayer().removeResourceFromPlayer(Resource.WOOL, 1);
       getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 1);
@@ -356,22 +360,15 @@ public class SiedlerGame {
    * @param position the position of the city
    * @return true, if the placement was successful
    */
-  public boolean buildCity(Point position) { // TODO: Resource, Settlement City
-                                             // conflict
-    List<Building> settlements = siedlerBoard.getCorners();
-    boolean isSettlementFaction = false;
-    for (Building building : settlements) {
-      Faction buildingFaction = building.getFaction();
-      if (buildingFaction.equals(getCurrentPlayerFaction())) {
-        isSettlementFaction = true;
-      }
-    }
-    if (isSettlementFaction && hasEnoughForCity()) {
+  public boolean buildCity(Point position) { // TODO: testing
+    Building building = siedlerBoard.getCorner(position);
+    boolean isSettlement = building instanceof Settlement;
+    if (isBuilduingFaction(position) && isSettlement && hasEnoughForCity()) {
       City city = new City(position, getCurrentPlayerFaction());
-      siedlerBoard.setCorner(position, city);
-      getCurrentPlayer().addPoints(city.getWinPoints());
-      getCurrentPlayer().removeResourceFromPlayer(Resource.ORE, 3);
-      getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 2);
+      Player currentPlayer = getCurrentPlayer();
+      placeBuilding(city, position, currentPlayer);
+      currentPlayer.removeResourceFromPlayer(Resource.ORE, 3);  // TODO CleanCode CodeDuplication
+      currentPlayer.removeResourceFromPlayer(Resource.GRAIN, 2);
       return true;
     } else
       return true;
