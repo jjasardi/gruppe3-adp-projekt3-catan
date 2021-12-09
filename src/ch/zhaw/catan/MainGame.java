@@ -4,10 +4,12 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.Dice;
 
 import java.awt.Point;
 
 public class MainGame {
+    private Dice dice;
     private Input input;
     private Output output;
     private TextIO textIO;
@@ -40,6 +42,7 @@ public class MainGame {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         input = new Input();
+        dice = new Dice();
         playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(POINTS_TO_WIN, playerCount);
         output = new Output();
@@ -133,9 +136,19 @@ public class MainGame {
     }
 
     private void thirdPhase() {
+        int diceThrow = 0;
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
-            // throwdice
+            diceThrow = dice.getDiceThrow();
+            output.printDice(diceThrow);
+            siedlerGame.throwDice(diceThrow);
+            if (diceThrow == 7) {
+                output.printThief();
+                Point field = input.getPosition();
+                if (!siedlerGame.placeThiefAndStealCard(field)) {
+                    output.printError();
+                }
+            }
             commands();
             siedlerGame.switchToNextPlayer();
         }

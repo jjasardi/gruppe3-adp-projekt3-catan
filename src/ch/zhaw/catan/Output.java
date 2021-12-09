@@ -54,6 +54,14 @@ public class Output {
         textTerminal.println("The action could not be successfully executed.");
     }
 
+    public void printThief() {
+        textTerminal.println("Position for Thief?");
+    }
+
+    public void printDice(int diceThrow) {
+        textTerminal.println("You rolled: " + diceThrow);
+    }
+
     public void printWinnter(Faction faction) {
         textTerminal.println("Congratulation!! the winner is:" + faction.name());
     }

@@ -56,4 +56,17 @@ public class SiedlerGameTest {
         assertTrue(model.getBankStock().equals(bankStock));
     }
 
+    @Test
+    public void cityTest() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        model.getCurrentPlayer().addResourceToPlayer(Resource.ORE, 10);
+        model.getCurrentPlayer().addResourceToPlayer(Resource.GRAIN, 10);
+        model.buildCity(new Point(8, 4));
+
+        Building building = model.getBoard().getCorner(new Point(8, 4));
+        assertTrue(model.toString().equals(model.getCurrentPlayerFaction().toString().toUpperCase()));
+    }
+
 }

@@ -294,8 +294,9 @@ public class SiedlerGame {
               Collections.emptyList()));
           factionResourceList.put(buildingFaction, resourceList);
           for (Resource resource : resourceList) {
-            player.addResourceToPlayer(resource);
-            bank.removeOneResource(resource);
+            if (bank.removeOneResource(resource)) {
+              player.addResourceToPlayer(resource);
+            }
           }
         }
       }
@@ -417,9 +418,6 @@ public class SiedlerGame {
   }
 
   private boolean hasEnoughForCity() { // TODO: magic numbers
-    // List<Resource> costs = Structure.CITY.getCosts();
-    // for (Resource cost : costs) {
-    // }
     if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
         && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
       return true;
@@ -489,8 +487,8 @@ public class SiedlerGame {
           factions.get(randomFactionIndex));
       Resource resourceToSteal = thiefPosition
           .getRandomResource(randomPlayer.getResourceList());
-      randomPlayer.removeResourceFromPlayer(resourceToSteal, 1);
-      getCurrentPlayer().addResourceToPlayer(resourceToSteal, 1);
+      randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
+      getCurrentPlayer().addResourceToPlayer(resourceToSteal);
       siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(),
           thiefPosition.toString());
       return true;
@@ -506,7 +504,7 @@ public class SiedlerGame {
 
   // new implement
 
-  private Player getCurrentPlayer() {
+  public Player getCurrentPlayer() {
     return playerList.get(currentPlayerIndex);
   }
 
@@ -519,11 +517,6 @@ public class SiedlerGame {
     }
     return player1;
   }
-
-  /*
-   * private Map<Faction, Point> getAllSettlements() { Map<Faction, Point>
-   * allSettlements = new HashMap<>(); for (Player player : playerList) { } }
-   */
 
   /**
    * Returns how many cards the current player owns.
