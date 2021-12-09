@@ -201,7 +201,7 @@ public class SiedlerGame {
   private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
     // TODO: second street only on second settlement
     if (siedlerBoard.hasEdge(roadStart, roadEnd) && siedlerBoard.getEdge(roadStart, roadEnd) == null
-        && ((isBuilduingOwner(roadStart) || isBuilduingOwner(roadEnd)
+        && ((isBuilduingFaction(roadStart) || isBuilduingFaction(roadEnd)
             || isAdjacentToRoad(roadStart) || isAdjacentToRoad(roadEnd)))) {
       return true;
     } else {
@@ -209,9 +209,9 @@ public class SiedlerGame {
     }
   }
 
-  private boolean isBuilduingOwner(Point point) {
-    Faction buildingOwner = siedlerBoard.getCorner(point).getOwner();
-    if (buildingOwner.equals(getCurrentPlayerFaction())) {
+  private boolean isBuilduingFaction(Point point) {
+    Faction buildingFaction = siedlerBoard.getCorner(point).getFaction();
+    if (buildingFaction.equals(getCurrentPlayerFaction())) {
       return true;
     } else {
       return false;
@@ -221,8 +221,8 @@ public class SiedlerGame {
   private boolean isAdjacentToRoad(Point point) {
     List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
     for (Road road : AdjacentRoads) {
-      Faction roadOwner = road.getOwner();
-      if (roadOwner.equals(getCurrentPlayerFaction())) {
+      Faction roadFaction = road.getFaction();
+      if (roadFaction.equals(getCurrentPlayerFaction())) {
         return true;
       }
     }
@@ -261,7 +261,7 @@ public class SiedlerGame {
         landType = siedlerBoard.getField(fieldPosition);
         buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
         for (Building building : buildingsOfField) {
-          Faction owner = building.getOwner();
+          Faction buildingFaction = building.getFaction();
           // resourceList =
         }
       }
@@ -317,14 +317,14 @@ public class SiedlerGame {
    */
   public boolean buildCity(Point position) { // TODO: Resource, Settlement City conflict
     List<Building> settlements = siedlerBoard.getCorners();
-    boolean isSettlementOwner = false;
+    boolean isSettlementFaction = false;
     for (Building building : settlements) {
-      Faction buildingOwner = building.getOwner();
-      if (buildingOwner.equals(getCurrentPlayerFaction())) {
-        isSettlementOwner = true;
+      Faction buildingFaction = building.getFaction();
+      if (buildingFaction.equals(getCurrentPlayerFaction())) {
+        isSettlementFaction = true;
       }
     }
-    if (isSettlementOwner && hasEnoughForCity()) {
+    if (isSettlementFaction && hasEnoughForCity()) {
       City city = new City(position, getCurrentPlayerFaction());
       siedlerBoard.setCorner(position, city);
       getCurrentPlayer().addPoints(city.getWinPoints());
@@ -441,8 +441,8 @@ public class SiedlerGame {
       thiefPosition.setNewThiefPosition(field);
       List<Faction> factions = new ArrayList<>();
       for (Building building : corners) {
-        if (building.getOwner() != getCurrentPlayerFaction()) {
-          factions.add(building.getOwner());
+        if (building.getFaction() != getCurrentPlayerFaction()) {
+          factions.add(building.getFaction());
         }
       }
       int totalFactions = factions.size();

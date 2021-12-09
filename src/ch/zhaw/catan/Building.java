@@ -5,12 +5,12 @@ import ch.zhaw.catan.Config.Faction;
 
 public class Building {
     private Point position;
-    private Faction owner;
+    private Faction faction;
     private int winPointsForBuilduing;
 
-    public Building(Point position, Faction owner, int winPointsForBuilduing) {
+    public Building(Point position, Faction faction, int winPointsForBuilduing) {
         this.position = position;
-        this.owner = owner;
+        this.faction = faction;
         this.winPointsForBuilduing = winPointsForBuilduing;
     }
 
@@ -18,8 +18,8 @@ public class Building {
         return position;
     }
 
-    public Faction getOwner() {
-        return owner;
+    public Faction getFaction() {
+        return faction;
     }
 
     public int getWinPoints() {
