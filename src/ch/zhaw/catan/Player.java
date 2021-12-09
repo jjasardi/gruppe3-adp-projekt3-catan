@@ -63,6 +63,14 @@ public class Player {
         }
     }
 
+    public void addResourceToPlayer(Resource resource) {
+        if (playerResource.get(resource) != null) {
+            playerResource.merge(resource, 1, Integer::sum);
+        } else {
+            playerResource.put(resource, 1);
+        }
+    }
+
     public void addResourceToPlayer(List<Resource> resourceList) {
         for (Resource resource : resourceList) {
             addResourceToPlayer(resource, 1);
