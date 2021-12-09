@@ -211,7 +211,7 @@ public class SiedlerGame {
    */
   public boolean placeInitialRoad(Point roadStart, Point roadEnd) {
     // TODO: fertig implementieren
-    if (isInitialRoadPositionValid(roadStart, roadEnd)) {
+    if (isRoadPositionValid(roadStart, roadEnd)) {
       Road initalRoad = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, initalRoad);
       return true;
@@ -221,8 +221,7 @@ public class SiedlerGame {
 
   }
 
-  private boolean isInitialRoadPositionValid(Point roadStart, Point roadEnd) {
-        // TODO: second street only on second settlement
+  private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
     if (siedlerBoard.hasEdge(roadStart, roadEnd)
         && siedlerBoard.getEdge(roadStart, roadEnd) == null
         && ((isBuilduingFaction(roadStart) || isBuilduingFaction(roadEnd)
@@ -234,12 +233,13 @@ public class SiedlerGame {
   }
 
   private boolean isBuilduingFaction(Point point) {
-    Faction buildingFaction = siedlerBoard.getCorner(point).getFaction();
-    if (buildingFaction.equals(getCurrentPlayerFaction())) {
-      return true;
-    } else {
-      return false;
+    Building building = siedlerBoard.getCorner(point);
+    if (building != null) {
+      if(building.getFaction().equals(getCurrentPlayerFaction())){
+        return true;
+      }
     }
+    return false;
   }
 
   private boolean isAdjacentToRoad(Point point) {
@@ -376,8 +376,8 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (siedlerBoard.hasEdge(roadStart, roadEnd) && isAdjacentToRoad(roadStart)
-        && hasEnoughForRoad()) {
+    if (isRoadPositionValid(roadStart, roadEnd)
+        && hasEnoughForRoad()) { //TODO fix hasEnoughForRoad
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
