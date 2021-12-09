@@ -139,7 +139,8 @@ public class MainGame {
         int diceThrow = 0;
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
-            diceThrow = dice.getDiceThrow();
+            //diceThrow = dice.getDiceThrow();
+            diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
