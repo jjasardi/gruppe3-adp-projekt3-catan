@@ -262,8 +262,7 @@ public class SiedlerGame {
    * certain type (relevant if there are not enough left in the bank).
    * </p>
    *
-   * @param dicethrow the resource cards that have been distributed to the players
-   *                  TODO: ist das richtig?
+   * @param dicethrow the number of the dice roll.
    * @return the resource cards added to the stock of the different players
    */
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
