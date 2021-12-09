@@ -5,12 +5,12 @@ import ch.zhaw.catan.Config.Faction;
 
 public class Road {
     private Point firstPoint, secondPoint;
-    private Faction owner;
+    private Faction faction;
 
-    public Road(Point firstPoint, Point secondPoint, Faction owner) {
+    public Road(Point firstPoint, Point secondPoint, Faction faction) {
         this.firstPoint = firstPoint;
         this.secondPoint = secondPoint;
-        this.owner = owner;
+        this.faction = faction;
     }
 
     public Point getFirstPoint() {
@@ -21,12 +21,12 @@ public class Road {
         return secondPoint;
     }
 
-    public Faction getOwner() {
-        return owner;
+    public Faction getFaction() {
+        return faction;
     }
 
     @Override
     public String toString() {
-        return getOwner().toString();
+        return getFaction().toString();
     }
 }

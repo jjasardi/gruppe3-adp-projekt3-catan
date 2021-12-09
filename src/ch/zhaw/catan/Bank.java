@@ -31,7 +31,7 @@ public class Bank {
     }
 
     public boolean removeOneResource(Resource resource) {
-        if (bank.get(resource) > 0) {
+        if (bank.get(resource) != null && bank.get(resource) > 0) {
             setBankResource(resource, (bank.get(resource) - RESOURCE_WANT));
             return true;
         } else
@@ -39,7 +39,7 @@ public class Bank {
     }
 
     public void addOneResource(Resource resource) {
-        if (bank.get(resource) >= 0) {
+        if (bank.get(resource) != null && bank.get(resource) >= 0) {
             setBankResource(resource, (bank.get(resource) + 1));
         } else {
             bank.put(resource, 1);
