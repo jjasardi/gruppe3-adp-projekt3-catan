@@ -25,11 +25,22 @@ public class Player {
     }
 
     public int getPlayerResource(Resource resource) {
-        return playerResource.get(resource);
+        if (playerResource.get(resource) != null) {
+            return playerResource.get(resource);
+        } else
+            return 0;
     }
 
     public HashMap<Resource, Integer> getPlayerStock() {
         return playerResource;
+    }
+
+    public int getPlayerStockVolume() {
+        int stock = 0;
+        for (Entry<Resource, Integer> resource : playerResource.entrySet()) {
+            stock += resource.getValue();
+        }
+        return stock;
     }
 
     public int getPlayerPoints() {
@@ -42,7 +53,8 @@ public class Player {
             if (resource.getValue() > 0) {
                 list.add(resource.getKey());
             }
-        } return list;
+        }
+        return list;
     }
 
     public void addResourceToPlayer(Resource resource, int amount) {
@@ -60,6 +72,15 @@ public class Player {
     public boolean removeResourceFromPlayer(Resource resource, int amount) {
         if (amount > 0 && PlayerHasResourceInStock(resource, amount)) {
             playerResource.merge(resource, -amount, Integer::sum);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removeOneResourceFromPlayer(Resource resource) {
+        if (PlayerHasResourceInStock(resource, 1)) {
+            playerResource.merge(resource, -1, Integer::sum);
             return true;
         } else {
             return false;
