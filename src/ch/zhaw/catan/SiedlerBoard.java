@@ -35,6 +35,9 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		}
 	}
 
+	/**
+	 * @return HashMap<Point, Integer>
+	 */
 	public HashMap<Point, Integer> getDiceValues() {
 		return diceValueList;
 	}
@@ -72,8 +75,11 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		return getFields(corner);
 	}
 
-	// new
-
+	/**
+	 * @param position
+	 * @param structure
+	 * @param (structure.equals(Structure.SETTLEMENT)
+	 */
 	public void addBuilding(Point position, Structure structure, Faction faction) { // TODO: eventuell löschen
 		if (structure.equals(Structure.SETTLEMENT)) {
 			buildingList.add(new Settlement(position, faction));

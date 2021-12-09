@@ -3,7 +3,7 @@ package ch.zhaw.catan;
 import java.awt.Point;
 import ch.zhaw.catan.Config.Faction;
 
-public class Building {
+public class Building { // TODO Builduing Abstract?
     private Point position;
     private Faction faction;
     private int winPointsForBuilduing;
@@ -16,18 +16,30 @@ public class Building {
         this.resourceEarning = resourceEarning;
     }
 
+    /**
+     * @return Point
+     */
     public Point getPosition() {
         return position;
     }
 
+    /**
+     * @return Faction
+     */
     public Faction getFaction() {
         return faction;
     }
 
+    /**
+     * @return int
+     */
     public int getWinPoints() {
         return winPointsForBuilduing;
     }
 
+    /**
+     * @return int
+     */
     public int getResourceEarning() {
         return resourceEarning;
     }

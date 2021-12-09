@@ -3,7 +3,6 @@ package ch.zhaw.catan;
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.catan.Config.Structure;
 
 import java.awt.Point;
 import java.sql.Struct;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.beryx.textio.TextIO;
+
 
 /**
  * This class performs all actions related to modifying the game state. TODO:
@@ -105,6 +104,9 @@ public class SiedlerGame {
     return siedlerBoard;
   }
 
+  /**
+   * @return SiedlerBoardTextView
+   */
   public SiedlerBoardTextView getView() {
     return view;
   }
@@ -192,14 +194,18 @@ public class SiedlerGame {
 
   /**
    * places the building in the game board at the specified position
+   * and updates the points of the specified player
    * 
    * @param building the building to be placed
    * @param position the position where the building is placed
+   * @param player   the player that places the building
    */
-  private void placeBuilding(Building building, Point position,
-      Player currentPlayer) {
-    siedlerBoard.setCorner(position, building);
-    currentPlayer.addPoints(building.getWinPoints());
+  private void placeBuilding(Building building, Point position, Player player) {
+    Building oldBuilding = siedlerBoard.setCorner(position, building);
+    if (oldBuilding != null) {
+      player.removePoints(oldBuilding.getWinPoints());
+    }
+    player.addPoints(building.getWinPoints());
   }
 
   /**
@@ -222,6 +228,11 @@ public class SiedlerGame {
 
   }
 
+  /**
+   * @param roadStart
+   * @param roadEnd
+   * @return boolean
+   */
   private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
     if (siedlerBoard.hasEdge(roadStart, roadEnd)
         && siedlerBoard.getEdge(roadStart, roadEnd) == null
@@ -233,6 +244,10 @@ public class SiedlerGame {
     }
   }
 
+  /**
+   * @param point
+   * @return boolean
+   */
   private boolean isBuilduingFaction(Point point) {
     Building building = siedlerBoard.getCorner(point);
     if (building != null) {
@@ -243,6 +258,10 @@ public class SiedlerGame {
     return false;
   }
 
+  /**
+   * @param point
+   * @return boolean
+   */
   private boolean isAdjacentToRoad(Point point) {
     List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
     for (Road road : AdjacentRoads) {
@@ -365,7 +384,7 @@ public class SiedlerGame {
       Settlement settlement = new Settlement(position,
           currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
-      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
+      getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1); // TODO CleanCode CodeDuplication
       getCurrentPlayer().removeResourceFromPlayer(Resource.BRICK, 1);
       getCurrentPlayer().removeResourceFromPlayer(Resource.WOOL, 1);
       getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 1);
@@ -388,22 +407,15 @@ public class SiedlerGame {
    * @param position the position of the city
    * @return true, if the placement was successful
    */
-  public boolean buildCity(Point position) { // TODO: Resource, Settlement City
-                                             // conflict
-    List<Building> settlements = siedlerBoard.getCorners();
-    boolean isSettlementFaction = false;
-    for (Building building : settlements) {
-      Faction buildingFaction = building.getFaction();
-      if (buildingFaction.equals(getCurrentPlayerFaction())) {
-        isSettlementFaction = true;
-      }
-    }
-    if (isSettlementFaction && hasEnoughForCity() && hasRoomToBuildCity()) {
+  public boolean buildCity(Point position) { // TODO: testing
+    Building building = siedlerBoard.getCorner(position);
+    boolean isSettlement = building instanceof Settlement;
+    if (isBuilduingFaction(position) && isSettlement && hasEnoughForCity()) {
       City city = new City(position, getCurrentPlayerFaction());
-      siedlerBoard.setCorner(position, city);
-      getCurrentPlayer().addPoints(city.getWinPoints());
-      getCurrentPlayer().removeResourceFromPlayer(Resource.ORE, 3);
-      getCurrentPlayer().removeResourceFromPlayer(Resource.GRAIN, 2);
+      Player currentPlayer = getCurrentPlayer();
+      placeBuilding(city, position, currentPlayer);
+      currentPlayer.removeResourceFromPlayer(Resource.ORE, 3);  // TODO CleanCode CodeDuplication
+      currentPlayer.removeResourceFromPlayer(Resource.GRAIN, 2);
       return true;
     } else
       return true;
@@ -436,6 +448,9 @@ public class SiedlerGame {
       return false;
   }
 
+  /**
+   * @return boolean
+   */
   private boolean hasEnoughForRoad() { // TODO: magic numbers
     if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1) {
@@ -444,6 +459,9 @@ public class SiedlerGame {
       return false;
   }
 
+  /**
+   * @return boolean
+   */
   private boolean hasEnoughForSettlement() { // TODO: magic numbers
     if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1
@@ -454,6 +472,9 @@ public class SiedlerGame {
       return false;
   }
 
+  /**
+   * @return boolean
+   */
   private boolean hasEnoughForCity() { // TODO: magic numbers
     if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
         && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
@@ -476,6 +497,9 @@ public class SiedlerGame {
     return bank.tradeFourForOne(getCurrentPlayer(), offer, want);
   }
 
+  /**
+   * @return Map<Resource, Integer>
+   */
   public Map<Resource, Integer> getBankStock() {
     return bank.getBankStock();
   }
@@ -520,14 +544,11 @@ public class SiedlerGame {
       }
       int totalFactions = factions.size();
       int randomFactionIndex = (int) ((Math.random() * totalFactions));
-      Player randomPlayer = getPlayerofFaction(
-          factions.get(randomFactionIndex));
-      Resource resourceToSteal = thiefPosition
-          .getRandomResource(randomPlayer.getResourceList());
+      Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
+      Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
       randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
       getCurrentPlayer().addResourceToPlayer(resourceToSteal);
-      siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(),
-          thiefPosition.toString());
+      siedlerBoard.addFieldAnnotation(field, thiefPosition.getPositionOffset(), thiefPosition.toString());
       return true;
     } else
       return false;
@@ -539,12 +560,19 @@ public class SiedlerGame {
         thiefPosition.getPositionOffset(), thiefPosition.toString());
   }
 
+  /**
+   * @return Player
+   */
   // new implement
 
   public Player getCurrentPlayer() {
     return playerList.get(currentPlayerIndex);
   }
 
+  /**
+   * @param faction
+   * @return Player
+   */
   private Player getPlayerofFaction(Faction faction) {
     Player player1 = null;
     for (Player player : playerList) {
@@ -564,6 +592,9 @@ public class SiedlerGame {
     return getCurrentPlayer().getPlayerStock();
   }
 
+  /**
+   * @param numberOfPlayers
+   */
   private void setPlayerList(int numberOfPlayers) {
     Faction faction[] = Faction.values();
     playerList = new ArrayList<>();
@@ -588,8 +619,12 @@ public class SiedlerGame {
     }
   }
 
-  private List<Resource> resourceEarningByBuilding(Building building,
-      Land landType) {
+  /**
+   * @param building
+   * @param landType
+   * @return List<Resource>
+   */
+  private List<Resource> resourceEarningByBuilding(Building building, Land landType) {
     List<Resource> resourceEarning = new ArrayList<>();
     for (int i = 0; i < building.getResourceEarning(); i++) {
       resourceEarning.add(landType.getResource());
@@ -597,8 +632,12 @@ public class SiedlerGame {
     return resourceEarning;
   }
 
-  private Map<Faction, List<Resource>> setEmptyFactionMap(
-      Map<Faction, List<Resource>> factionResourceMap) {
+  /**
+   * @param Map<Faction
+   * @param factionResourceMap
+   * @return Map<Faction, List<Resource>>
+   */
+  private Map<Faction, List<Resource>> setEmptyFactionMap(Map<Faction, List<Resource>> factionResourceMap) {
     for (Faction faction : getPlayerFactions()) {
       factionResourceMap.put(faction, Collections.emptyList());
     }
