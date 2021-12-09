@@ -235,7 +235,7 @@ public class SiedlerGame {
   private boolean isBuilduingFaction(Point point) {
     Building building = siedlerBoard.getCorner(point);
     if (building != null) {
-      if(building.getFaction().equals(getCurrentPlayerFaction())){
+      if (building.getFaction().equals(getCurrentPlayerFaction())) {
         return true;
       }
     }
@@ -256,19 +256,21 @@ public class SiedlerGame {
   /**
    * This method takes care of actions depending on the dice throw result. A key
    * action is the payout of the resource cards to the players according to the
-   * payout rules of the game. This includes the "negative payout" in case a 7 is
-   * thrown and a player has more than {@link Config#MAX_CARDS_IN_HAND_NO_DROP}
-   * resource cards. If a player does not get resource cards, the list for this
-   * players' {@link Faction} is <b>an empty list (not null)</b>!.
+   * payout rules of the game. This includes the "negative payout" in case a 7
+   * is thrown and a player has more than
+   * {@link Config#MAX_CARDS_IN_HAND_NO_DROP} resource cards. If a player does
+   * not get resource cards, the list for this players' {@link Faction} is <b>an
+   * empty list (not null)</b>!.
    * <p>
-   * The payout rules of the game take into account factors such as, the number of
-   * resource cards currently available in the bank, settlement types (settlement
-   * or city), and the number of players that should get resource cards of a
-   * certain type (relevant if there are not enough left in the bank).
+   * The payout rules of the game take into account factors such as, the number
+   * of resource cards currently available in the bank, settlement types
+   * (settlement or city), and the number of players that should get resource
+   * cards of a certain type (relevant if there are not enough left in the
+   * bank).
    * </p>
    *
-   * @param dicethrow the resource cards that have been distributed to the players
-   *                  TODO: ist das richtig?
+   * @param dicethrow the resource cards that have been distributed to the
+   *                  players TODO: ist das richtig?
    * @return the resource cards added to the stock of the different players
    */
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
@@ -286,8 +288,15 @@ public class SiedlerGame {
         buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
         for (Building building : buildingsOfField) {
           Faction buildingFaction = building.getFaction();
+          Player player = getPlayerofFaction(building.getFaction());
           resourceList = resourceEarningByBuilding(building, landType);
+          resourceList.addAll(factionResourceList.getOrDefault(buildingFaction,
+              Collections.emptyList()));
           factionResourceList.put(buildingFaction, resourceList);
+          for (Resource resource : resourceList) {
+            player.addResourceToPlayer(resource);
+            bank.removeOneResource(resource);
+          }
         }
       }
 
@@ -341,7 +350,8 @@ public class SiedlerGame {
    * @param position the position of the city
    * @return true, if the placement was successful
    */
-  public boolean buildCity(Point position) { // TODO: Resource, Settlement City conflict
+  public boolean buildCity(Point position) { // TODO: Resource, Settlement City
+                                             // conflict
     List<Building> settlements = siedlerBoard.getCorners();
     boolean isSettlementFaction = false;
     for (Building building : settlements) {
@@ -376,8 +386,9 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (isRoadPositionValid(roadStart, roadEnd)
-        && hasEnoughForRoad()) { //TODO fix hasEnoughForRoad
+    if (isRoadPositionValid(roadStart, roadEnd) && hasEnoughForRoad()) { // TODO
+                                                                         // fix
+                                                                         // hasEnoughForRoad
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       getCurrentPlayer().removeResourceFromPlayer(Resource.LUMBER, 1);
@@ -547,7 +558,8 @@ public class SiedlerGame {
     }
   }
 
-  private List<Resource> resourceEarningByBuilding(Building building, Land landType) {
+  private List<Resource> resourceEarningByBuilding(Building building,
+      Land landType) {
     List<Resource> resourceEarning = new ArrayList<>();
     for (int i = 0; i < building.getResourceEarning(); i++) {
       resourceEarning.add(landType.getResource());

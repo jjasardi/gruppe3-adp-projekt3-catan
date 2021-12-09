@@ -71,12 +71,6 @@ public class Player {
         }
     }
 
-    public void addResourceToPlayer(List<Resource> resourceList) {
-        for (Resource resource : resourceList) {
-            addResourceToPlayer(resource, 1);
-        }
-    }
-
     public boolean removeResourceFromPlayer(Resource resource, int amount) {
         if (amount > 0 && PlayerHasResourceInStock(resource, amount)) {
             playerResource.merge(resource, -amount, Integer::sum);
