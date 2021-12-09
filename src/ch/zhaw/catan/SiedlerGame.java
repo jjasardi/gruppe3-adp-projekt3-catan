@@ -433,7 +433,10 @@ public class SiedlerGame {
    *         placed there (e.g., on water)
    */
   public boolean placeThiefAndStealCard(Point field) {
-    List<Building> corners = siedlerBoard.getCornersOfField(field);
+    List<Building> corners = null;
+    if (siedlerBoard.hasField(field)) {
+    corners = siedlerBoard.getCornersOfField(field);
+    }
     if (siedlerBoard.hasField(field) && corners != null) {
       thiefPosition.setNewThiefPosition(field);
       List<Faction> factions = new ArrayList<>();

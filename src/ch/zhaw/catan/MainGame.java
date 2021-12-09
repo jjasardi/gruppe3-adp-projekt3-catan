@@ -14,6 +14,7 @@ public class MainGame {
     private TextTerminal<?> textTerminal;
     private SiedlerGame siedlerGame;
     private int playerCount;
+    private static final int POINTS_TO_WIN = 7;
 
     public enum Actions {
         SHOW, TRADE, BUILD, BANK_STOCK, MY_STOCK, END
@@ -29,6 +30,7 @@ public class MainGame {
 
     private void run() {
         firstPhase();
+        secondTestPhase();
         //secondPhase();
         thirdPhase();
 
@@ -39,7 +41,7 @@ public class MainGame {
         textTerminal = textIO.getTextTerminal();
         input = new Input();
         playerCount = input.getNumberOfPlayers(textIO);
-        siedlerGame = new SiedlerGame(5, playerCount); // Magic Numbers
+        siedlerGame = new SiedlerGame(POINTS_TO_WIN, playerCount);
         output = new Output();
 
     }
@@ -48,6 +50,31 @@ public class MainGame {
         secondPhaseOne();
         secondPhaseTwo();
     }
+
+    private void secondTestPhase() {
+            playerCount = 2;
+            Point settlement = new Point(8, 4);
+            siedlerGame.placeInitialSettlement(settlement, false);
+            Point roadEnd = new Point(8, 6);
+            siedlerGame.placeInitialRoad(settlement, roadEnd);
+            siedlerGame.switchToNextPlayer();
+
+            Point settlement2 = new Point(9, 15);
+            siedlerGame.placeInitialSettlement(settlement2, false);
+            Point roadEnd2 = new Point(9, 13);
+            siedlerGame.placeInitialRoad(settlement2, roadEnd2);
+            Point settlement3 = new Point(5, 15);
+            siedlerGame.placeInitialSettlement(settlement3, true);
+            Point roadEnd3 = new Point(6, 16);
+            siedlerGame.placeInitialRoad(settlement3, roadEnd3);
+            siedlerGame.switchToPreviousPlayer();
+
+            Point settlement4 = new Point(5, 7);
+            siedlerGame.placeInitialSettlement(settlement4, true);
+            Point roadEnd4 = new Point(5, 9);
+            siedlerGame.placeInitialRoad(settlement4, roadEnd4);
+        }
+
 
     private void secondPhaseOne() {
         for (int player = 1; player <= playerCount; player++) {
