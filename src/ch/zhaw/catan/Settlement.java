@@ -24,7 +24,9 @@ public class Settlement extends Building {
     }
 
     /**
-     * Returns the factionname of the Settlement as an uppercase String
+     * Returns the factionname of the Settlement as a String
+     * 
+     * @return String
      */
     @Override
     public String toString() {
