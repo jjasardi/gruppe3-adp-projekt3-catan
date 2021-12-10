@@ -37,8 +37,10 @@ public class Bank {
     }
 
     /**
-     * @param resource
-     * @return boolean
+     * Removes one given specific resource from the Bank.
+     * 
+     * @param resource the specific resource
+     * @return true, if removel was successful
      */
     public boolean removeOneResource(Resource resource) {
         if (bank.get(resource) != null && bank.get(resource) > 0) {
@@ -49,7 +51,9 @@ public class Bank {
     }
 
     /**
-     * @param resource
+     * Adds one given specific resource to the Bank.
+     * 
+     * @param resource the specific resource
      */
     public void addOneResource(Resource resource) {
         if (bank.get(resource) != null && bank.get(resource) >= 0) {
@@ -60,10 +64,13 @@ public class Bank {
     }
 
     /**
-     * @param currentPlayer
-     * @param offer
-     * @param want
-     * @return boolean
+     * Trade with the Bank with a {@link #RESOURCE_OFFER}:{@link #RESOURCE_WANT}
+     * ratio.
+     * 
+     * @param currentPlayer the player whose turn it is
+     * @param offer         the resource the player offer
+     * @param want          the resource the player wants
+     * @return true, if the trade was successful
      */
     public boolean tradeFourForOne(Player currentPlayer, Resource offer, Resource want) {
         if (bank.get(want) > 0 && currentPlayer.getPlayerResource(offer) >= 4) {
