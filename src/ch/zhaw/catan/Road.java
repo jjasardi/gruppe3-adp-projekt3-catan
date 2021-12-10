@@ -4,8 +4,8 @@ import java.awt.Point;
 import ch.zhaw.catan.Config.Faction;
 
 /**
- * This class models a a road object and has all the method which has to do with
- * the road.
+ * This class models a {@link Road} object and has all the method which has to
+ * do with the {@link Road}.
  * 
  * @author Durim, Ardi, Philipp
  */
@@ -13,6 +13,13 @@ public class Road {
     private Point firstPoint, secondPoint;
     private Faction faction;
 
+    /**
+     * Creates a road object {@link Road}
+     * 
+     * @param firstPoint  first position of the {@link Road}
+     * @param secondPoint second position of the {@link Road}
+     * @param faction     the faction that belongs the {@link Road}
+     */
     public Road(Point firstPoint, Point secondPoint, Faction faction) {
         this.firstPoint = firstPoint;
         this.secondPoint = secondPoint;
@@ -49,6 +56,7 @@ public class Road {
     }
 
     /**
+     * TODO
      * @return String
      */
     @Override

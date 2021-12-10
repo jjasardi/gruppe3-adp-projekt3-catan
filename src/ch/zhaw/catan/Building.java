@@ -19,8 +19,8 @@ public abstract class Building {
      * Creates a building object {@link Building} with a position, faction, win
      * points and resource earning.
      * 
-     * @param position              coordinates of the Building
-     * @param faction               faction who owns the Building
+     * @param position              coordinates of the {@link Building}
+     * @param faction               faction who owns the {@link Building}
      * @param winPointsForBuilduing how many win points it gives
      * @param resourceEarning       how many resource it gives
      */
