@@ -48,7 +48,7 @@ public class Input {
      * Ask for the command. TODO: finish javaDoc
      * 
      * @param textIO
-     * @param commands the enum of commands
+     * @param commands the {@link Enum} of commands
      * @return T
      */
     public <T extends Enum<T>> T getClassInput(TextIO textIO, Class<T> commands, String output) {
