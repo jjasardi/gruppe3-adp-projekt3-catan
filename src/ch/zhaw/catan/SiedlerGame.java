@@ -30,7 +30,7 @@ public class SiedlerGame {
   private int currentPlayerIndex;
   private Bank bank;
   private SiedlerBoardTextView view;
-  private Thief thiefPosition;
+  private Thief thief;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -47,7 +47,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     bank = new Bank();
     currentPlayerIndex = FIRST_PLAYER_IN_LIST;
-    thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
+    thief = new Thief(Config.INITIAL_THIEF_POSITION);
 
   }
 
@@ -311,7 +311,7 @@ public class SiedlerGame {
     if (dicethrow != THIEF_NUMBER) {
       fieldPositions = siedlerBoard.getFieldsForDiceValue(dicethrow);
       for (Point fieldPosition : fieldPositions) {
-        if (fieldPosition != thiefPosition.getPosition()) { // Correct?
+        if (fieldPosition != thief.getPosition()) {
           landType = siedlerBoard.getField(fieldPosition);
           buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
           for (Building building : buildingsOfField) {
@@ -475,8 +475,8 @@ public class SiedlerGame {
   public boolean placeThiefAndStealCard(Point field) {
     if (siedlerBoard.hasField(field)) {
       List<Building> corners = siedlerBoard.getCornersOfField(field);
-      if (corners != null) {
-        thiefPosition.setNewThiefPosition(field);
+      if (corners != null && corners.size() > 0) {
+        thief.setNewThiefPosition(field);
         List<Faction> factions = new ArrayList<>();
         for (Building building : corners) {
           if (building.getFaction() != getCurrentPlayerFaction()) {
@@ -486,9 +486,12 @@ public class SiedlerGame {
         int totalFactions = factions.size();
         int randomFactionIndex = (int) ((Math.random() * totalFactions));
         Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
-        Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
-        randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
-        getCurrentPlayer().addOneResourceToPlayer(resourceToSteal);
+        List<Resource> resourceList = randomPlayer.getResourceList();
+        if (resourceList.size() > 0) {
+          Resource resourceToSteal = thief.getRandomResource(resourceList);
+          randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
+          getCurrentPlayer().addOneResourceToPlayer(resourceToSteal);
+        }
 
       }
       return true;
@@ -496,8 +499,12 @@ public class SiedlerGame {
       return false;
   }
 
-  public String getThiefPosition() {
-    return thiefPosition.toString();
+  public String getThiefPositionAsString() {
+    return thief.toString();
+  }
+
+  public Point getThiefPositiong() {
+    return thief.getPosition();
   }
 
   /**
