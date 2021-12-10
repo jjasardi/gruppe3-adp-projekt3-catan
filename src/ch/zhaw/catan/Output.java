@@ -46,19 +46,19 @@ public class Output {
     }
 
     public void printRoadStart() {
-        textTerminal.println("Position for roadStart?");
+        textTerminal.println("Set Position for roadStart:");
     }
 
     public void printRoadEnd() {
-        textTerminal.println("Position for roadEnd?");
+        textTerminal.println("Set Position for roadEnd:");
     }
 
     public void printSettelment() {
-        textTerminal.println("Position for Settelment?");
+        textTerminal.println("Set Position for Settelment:");
     }
 
     public void printCity() {
-        textTerminal.println("Position for City?");
+        textTerminal.println("Set Position for City: ");
     }
 
     public void printErrorMessage() {
@@ -66,7 +66,7 @@ public class Output {
     }
 
     public void printThief() {
-        textTerminal.println("Position for Thief?");
+        textTerminal.println("Set Position for Thief: ");
     }
 
     /**
