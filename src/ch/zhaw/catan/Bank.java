@@ -22,6 +22,9 @@ public class Bank {
     static final int RESOURCE_OFFER = 4;
     static final int RESOURCE_WANT = 1;
 
+    /**
+     * Creates a bank object {@link Bank} and give it the initial resource.
+     */
     public Bank() {
         bank = new HashMap<>();
         setBank();
