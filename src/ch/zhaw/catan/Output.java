@@ -1,6 +1,5 @@
 package ch.zhaw.catan;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.beryx.textio.TextIO;
@@ -80,8 +79,7 @@ public class Output {
      * @param faction
      */
     public void printWinnter(Faction faction) {
-        textTerminal
-                .println("Congratulation!! the winner is:" + faction.name());
+        textTerminal.println("Congratulation!! the winner is:" + faction.name());
     }
 
     public String getInputReadString(Read command) {

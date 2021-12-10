@@ -90,8 +90,7 @@ public class MainGame {
                 while (!success) {
                     output.printError();
                     settlement = input.getPosition();
-                    success = siedlerGame.placeInitialSettlement(settlement,
-                            false);
+                    success = siedlerGame.placeInitialSettlement(settlement, false);
                 }
             }
             output.printRoadEnd();
@@ -120,8 +119,7 @@ public class MainGame {
                 while (!success) {
                     output.printError();
                     settlement = input.getPosition();
-                    success = siedlerGame.placeInitialSettlement(settlement,
-                            true);
+                    success = siedlerGame.placeInitialSettlement(settlement, true);
                 }
             }
             output.printRoadEnd();
@@ -142,7 +140,7 @@ public class MainGame {
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             diceThrow = Dice.rollWithTwoDice();
-            //diceThrow = 7;
+            // diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
@@ -163,8 +161,7 @@ public class MainGame {
     private void commands() {
         boolean running = true;
         while (running) {
-            switch (input.getClassInput(textIO, Actions.class,
-                    output.getInputReadString(Read.COMMAND))) {
+            switch (input.getClassInput(textIO, Actions.class, output.getInputReadString(Read.COMMAND))) {
             case SHOW:
                 textTerminal.println(siedlerGame.getView().toString());
                 textTerminal.println(siedlerGame.getThiefPosition());
@@ -185,17 +182,14 @@ public class MainGame {
                 running = false;
                 break;
             default:
-                throw new IllegalStateException(
-                        "Internal error found - Command not implemented.");
+                throw new IllegalStateException("Internal error found - Command not implemented.");
             }
         }
     }
 
     private void tradeResource() {
-        Resource offer = input.getClassInput(textIO, Config.Resource.class,
-                output.getInputReadString(Read.OFFER));
-        switch (input.getClassInput(textIO, Config.Resource.class,
-                output.getInputReadString(Read.BUY))) {
+        Resource offer = input.getClassInput(textIO, Config.Resource.class, output.getInputReadString(Read.OFFER));
+        switch (input.getClassInput(textIO, Config.Resource.class, output.getInputReadString(Read.BUY))) {
         case GRAIN:
             if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN)) {
                 output.printError();
@@ -225,8 +219,7 @@ public class MainGame {
     }
 
     private void build() {
-        switch (input.getClassInput(textIO, Building.class,
-                output.getInputReadString(Read.BUILD))) {
+        switch (input.getClassInput(textIO, Building.class, output.getInputReadString(Read.BUILD))) {
         case ROAD:
             output.printRoadStart();
             Point roadStart = input.getPosition();

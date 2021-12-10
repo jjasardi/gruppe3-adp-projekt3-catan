@@ -78,16 +78,6 @@ public class Player {
 
     /**
      * @param resource
-     * @param amount
-     */
-    private void addResourceToPlayer(Resource resource, int amount) {
-        if (amount > 0) {
-            playerResource.merge(resource, amount, Integer::sum);
-        }
-    }
-
-    /**
-     * @param resource
      */
     public void addOneResourceToPlayer(Resource resource) {
         if (playerResource.get(resource) != null) {

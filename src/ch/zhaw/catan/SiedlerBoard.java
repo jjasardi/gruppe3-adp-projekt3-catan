@@ -28,8 +28,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	}
 
 	private void setBoard() {
-		for (Entry<Point, Land> index : Config.getStandardLandPlacement()
-				.entrySet()) {
+		for (Entry<Point, Land> index : Config.getStandardLandPlacement().entrySet()) {
 			addField(index.getKey(), index.getValue());
 		}
 	}
@@ -42,8 +41,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	}
 
 	private void setDiceValues() {
-		for (Map.Entry<Point, Integer> index : Config
-				.getStandardDiceNumberPlacement().entrySet()) {
+		for (Map.Entry<Point, Integer> index : Config.getStandardDiceNumberPlacement().entrySet()) {
 			diceValueList.put(new Point(index.getKey()), index.getValue());
 		}
 	}
