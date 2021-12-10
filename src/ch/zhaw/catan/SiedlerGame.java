@@ -143,7 +143,8 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean placeInitialSettlement(Point position, boolean payout) {
-    if (isSettlementPositionValid(position)) {
+    if (isSettlementPositionValid(position)
+        && hasRoomToBuild(getCurrentPlayerFaction(), Settlement.class, Structure.SETTLEMENT)) {
       Player currentPlayer = getCurrentPlayer();
       Settlement initalSettlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(initalSettlement, position, currentPlayer);
@@ -258,40 +259,28 @@ public class SiedlerGame {
     return false;
   }
 
-  private boolean hasRoomToBuildSettlement() {
-    List<Building> list = new ArrayList<>();
-    for (Building building : siedlerBoard.getCorners()) {
-      if (building.getClass() == Settlement.class && building.getFaction() == getCurrentPlayerFaction()) {
-        list.add(building);
+  private boolean hasRoomToBuild(Faction faction, Class type, Structure structure) {
+    int buildingCount = 0;
+    if (type != Road.class) {
+      List<Building> buildingList = siedlerBoard.getAllBuildingsOfFaction(faction);
+      for (Building building : buildingList) {
+        if (building.getClass() == type) {
+          buildingCount++;
+        }
+      }
+    } else if (type == Road.class) {
+      List<Road> buildingList = siedlerBoard.getAllRoadsOfFaction(faction);
+      for (Road building : buildingList) {
+        if (building.getClass() == type) {
+          buildingCount++;
+        }
       }
     }
-    if (list.size() < Config.Structure.SETTLEMENT.getStockPerPlayer()) {
+    if (buildingCount < structure.getStockPerPlayer()) {
       return true;
     } else
       return false;
   }
-
-  private boolean hasRoomToBuildCity() {
-    List<Building> list = new ArrayList<>();
-    for (Building building : siedlerBoard.getCorners()) {
-      if (building.getClass() == City.class && building.getFaction() == getCurrentPlayerFaction()) {
-        list.add(building);
-      }
-    }
-    if (list.size() < Config.Structure.CITY.getStockPerPlayer()) {
-      return true;
-    } else
-      return false;
-  }
-
-  /*
-   * private boolean hasRoomToBuildRoad() { List<Road> list = new ArrayList<>();
-   * for (Building building : siedlerBoard.getCorners()) { if (building.getClass()
-   * == Road.class && building.getFaction() == getCurrentPlayerFaction()) {
-   * list.add(building); } } if (list.size() <
-   * Config.Structure.ROAD.getStockPerPlayer()) { return true; } else return
-   * false; }
-   */
 
   /**
    * This method takes care of actions depending on the dice throw result. A key
@@ -311,7 +300,6 @@ public class SiedlerGame {
    * @return the resource cards added to the stock of the different players
    */
   public Map<Faction, List<Resource>> throwDice(int dicethrow) {
-    // TODO: finish implementation
     Map<Faction, List<Resource>> factionResourceMap = new HashMap<>();
     Land landType;
     List<Resource> resourceList;
@@ -361,7 +349,8 @@ public class SiedlerGame {
    */
   public boolean buildSettlement(Point position) {
     if (isSettlementPositionValid(position) && isAdjacentToRoad(position)
-        && hasEnoughToBuild(Structure.SETTLEMENT.getCosts()) && hasRoomToBuildSettlement()) {
+        && hasEnoughToBuild(Structure.SETTLEMENT.getCosts())
+        && hasRoomToBuild(getCurrentPlayerFaction(), Settlement.class, Structure.SETTLEMENT)) {
       Player currentPlayer = getCurrentPlayer();
       Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
@@ -390,7 +379,8 @@ public class SiedlerGame {
   public boolean buildCity(Point position) { // TODO: testing
     Building building = siedlerBoard.getCorner(position);
     boolean isSettlement = building instanceof Settlement;
-    if (isBuilduingFaction(position) && isSettlement && hasEnoughToBuild(Structure.CITY.getCosts())) {
+    if (isBuilduingFaction(position) && isSettlement && hasEnoughToBuild(Structure.CITY.getCosts())
+        && hasRoomToBuild(getCurrentPlayerFaction(), City.class, Config.Structure.CITY)) {
       City city = new City(position, getCurrentPlayerFaction());
       Player currentPlayer = getCurrentPlayer();
       placeBuilding(city, position, currentPlayer);
@@ -417,7 +407,8 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (isRoadPositionValid(roadStart, roadEnd) && hasEnoughToBuild(Structure.ROAD.getCosts())) {
+    if (isRoadPositionValid(roadStart, roadEnd) && hasEnoughToBuild(Structure.ROAD.getCosts())
+        && hasRoomToBuild(getCurrentPlayerFaction(), Road.class, Structure.ROAD)) {
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       for (Resource resource : Structure.ROAD.getCosts()) {
@@ -482,9 +473,8 @@ public class SiedlerGame {
    *         placed there (e.g., on water)
    */
   public boolean placeThiefAndStealCard(Point field) {
-    List<Building> corners = null;
     if (siedlerBoard.hasField(field)) {
-      corners = siedlerBoard.getCornersOfField(field);
+      List<Building> corners = siedlerBoard.getCornersOfField(field);
       if (corners != null) {
         thiefPosition.setNewThiefPosition(field);
         List<Faction> factions = new ArrayList<>();

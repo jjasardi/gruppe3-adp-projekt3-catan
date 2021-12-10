@@ -72,7 +72,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		return getFields(corner);
 	}
 
-	public Set<Road> getAllRoadsOfFaction(Faction faction) {
+	public List<Road> getAllRoadsOfFaction(Faction faction) {
 		Set<Road> roadsOfFaction= new HashSet<>();
 		List<Building> allBuildings = getAllBuildingsOfFaction(faction);
 		for (Building building : allBuildings) {
@@ -81,7 +81,7 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 				roadsOfFaction.add(road);
 			}
 		}
-		return roadsOfFaction;
+		return new ArrayList<>(roadsOfFaction);
 	}
 
 	public List<Building> getAllBuildingsOfFaction(Faction faction) {
