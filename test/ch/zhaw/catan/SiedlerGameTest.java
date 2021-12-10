@@ -217,6 +217,10 @@ public class SiedlerGameTest {
         assertFalse(model.buildCity(new Point(11, 7)));
     }
 
+    /**
+     * Tests if the right winner of the game is returned when the player reaches the
+     * specified win points.
+     */
     @Test
     public void winnerTest() {
         SiedlerGame model = ThreePlayerStandard.getPlayerOneReadyToBuildFifthSettlement(5);
