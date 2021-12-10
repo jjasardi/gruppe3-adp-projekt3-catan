@@ -483,7 +483,6 @@ public class SiedlerGame {
    * @return boolean
    */
   private boolean hasEnoughForCity() { // TODO: magic numbers
-    for ()
     if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
         && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
       return true;

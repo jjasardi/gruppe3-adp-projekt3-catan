@@ -6,6 +6,17 @@ import java.util.Map.Entry;
 
 import ch.zhaw.catan.Config.Resource;
 
+/**
+ * This class is responsible for evrything Bank related.
+ * <ul>
+ * <li>Pay out the player</li>
+ * <li>Trade 4 : 1 with the Player</li>
+ * <li>Get the Structure cost from the Player</li>
+ * </ul>
+ * The Bank has it's own stock.
+ * 
+ * @author Durim
+ */
 public class Bank {
     private Map<Resource, Integer> bank;
     static final int RESOURCE_OFFER = 4;
@@ -17,24 +28,12 @@ public class Bank {
     }
 
     /**
+     * Returns the total remaining Stock of the Bank.
+     * 
      * @return Map<Resource, Integer>
      */
     public Map<Resource, Integer> getBankStock() {
         return bank;
-    }
-
-    private void setBank() {
-        for (Entry<Resource, Integer> resource : Config.INITIAL_RESOURCE_CARDS_BANK.entrySet()) {
-            bank.put(resource.getKey(), resource.getValue());
-        }
-    }
-
-    /**
-     * @param resource
-     * @param neuerWert
-     */
-    public void setBankResource(Resource resource, Integer neuerWert) {
-        bank.put(resource, neuerWert);
     }
 
     /**
@@ -43,7 +42,7 @@ public class Bank {
      */
     public boolean removeOneResource(Resource resource) {
         if (bank.get(resource) != null && bank.get(resource) > 0) {
-            setBankResource(resource, (bank.get(resource) - RESOURCE_WANT));
+            bank.merge(resource, -1, Integer::sum);
             return true;
         } else
             return false;
@@ -54,7 +53,7 @@ public class Bank {
      */
     public void addOneResource(Resource resource) {
         if (bank.get(resource) != null && bank.get(resource) >= 0) {
-            setBankResource(resource, (bank.get(resource) + 1));
+            bank.merge(resource, 1, Integer::sum);
         } else {
             bank.put(resource, 1);
         }
@@ -75,5 +74,15 @@ public class Bank {
             return true;
         } else
             return false;
+    }
+
+    private void setBank() {
+        for (Entry<Resource, Integer> resource : Config.INITIAL_RESOURCE_CARDS_BANK.entrySet()) {
+            bank.put(resource.getKey(), resource.getValue());
+        }
+    }
+
+    private void setBankResource(Resource resource, Integer neuerWert) {
+        bank.put(resource, neuerWert);
     }
 }
