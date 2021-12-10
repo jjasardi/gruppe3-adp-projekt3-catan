@@ -25,7 +25,7 @@ public class City extends Building {
     }
 
     /**
-     * Converts the Faction of the City object the an uppercase String
+     * Returns the factionname of the City as an uppercase String
      * 
      * @return String
      */

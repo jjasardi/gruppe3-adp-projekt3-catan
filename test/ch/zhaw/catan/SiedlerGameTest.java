@@ -10,6 +10,7 @@ import ch.zhaw.catan.Config.Resource;
 import ch.zhaw.catan.games.ThreePlayerStandard;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /***
@@ -45,6 +46,26 @@ public class SiedlerGameTest {
         model.placeInitialSettlement(settlement4, true);
         Point roadEnd4 = new Point(5, 9);
         model.placeInitialRoad(settlement4, roadEnd4);
+    }
+
+    /**
+     * Tests if City recieves two Resources.
+     */
+    @Test
+    public void diceThrowWithCity() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        model.buildCity(new Point(8, 4));
+        model.throwDice(8);
+        Map<Resource, Integer> redList = new HashMap<>(redResourceList);
+        redList.put(Resource.WOOL, 2);
+        assertEquals(model.getCurrentPlayer().getPlayerStock(), redList);
     }
 
     /**
