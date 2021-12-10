@@ -44,7 +44,7 @@ For the coordinates use the Sheet. (Please See below)
 
 ## Klassendiagramm:
 
-![Class_Diagram](https://github.zhaw.ch/storage/user/4867/files/1a61ff7e-a0e2-4055-ab44-144a87a4e033)
+![Class_Diagram](https://github.zhaw.ch/storage/user/4867/files/f0321f5a-0c3a-4f06-b76f-4d060bc548b5)
 
 ## Test Dokument:
 
