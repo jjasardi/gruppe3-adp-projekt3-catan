@@ -101,13 +101,6 @@ public class SiedlerGameTest {
         for (int i = 0; i < 18; i++) {
             model.removeOneResourceFromBank(Resource.LUMBER);
         }
-        Map<Resource, Integer> bankStock = new HashMap<>();
-        bankStock.put(Config.Resource.BRICK, 1);
-        bankStock.put(Config.Resource.GRAIN, 0);
-        bankStock.put(Config.Resource.LUMBER, 0);
-        bankStock.put(Config.Resource.ORE, 0);
-        bankStock.put(Config.Resource.WOOL, 0);
-        assertTrue(model.getBankStock().equals(bankStock));
         model.throwDice(11);
         Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
         model.switchToNextPlayer();
