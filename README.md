@@ -42,11 +42,12 @@ For the coordinates use the Sheet. (Please See below)
 
 ![Coordinates-Cheat-Sheet](https://github.zhaw.ch/storage/user/4867/files/3ca6dc7d-a5e9-47de-adf9-f293df5c575c)
 
-## Test Dokument:
-
-https://github.zhaw.ch/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/blob/5637b007240e32b57e4213c7856723ca2a2fea15/doc/Dokumentation%20Testing.pdf
-
 ## Klassendiagramm:
 
-https://github.zhaw.ch/raw/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/main/doc/Diagram%202021-12-10%2023-41-24.png?token=AAABGPXCUDRXC2VXPUAU3A3BXUJKM
+![Class_Diagram](https://github.zhaw.ch/storage/user/4867/files/1a61ff7e-a0e2-4055-ab44-144a87a4e033)
+
+## Test Dokument:
+
+[Documentation_Testing](https://github.zhaw.ch/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/blob/5637b007240e32b57e4213c7856723ca2a2fea15/doc/Dokumentation%20Testing.pdf)
+
 
