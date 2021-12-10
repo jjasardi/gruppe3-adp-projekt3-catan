@@ -93,4 +93,24 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		}
 		return buildingsOfFaction;
 	}
+
+	public List<Building> getAllSettlementsOfFaction(Faction faction){
+		List<Building> Settlements = new ArrayList<>();
+		for (Building building : getAllBuildingsOfFaction(faction)) {
+			if (building instanceof Settlement) {
+				Settlements.add(building);
+			}
+		} 
+		return Settlements;
+	}
+
+	public List<Building> getAllCitiesOfFaction(Faction faction){
+		List<Building> Cities = new ArrayList<>();
+		for (Building building : getAllBuildingsOfFaction(faction)) {
+			if (building instanceof City) {
+				Cities.add(building);
+			}
+		} 
+		return Cities;
+	}
 }
