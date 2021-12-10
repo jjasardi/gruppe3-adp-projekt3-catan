@@ -37,3 +37,10 @@ If it's your turn the terminal ask you what you want to do. The selection you ha
 For the official rules click [here](https://www.catan.de/sites/prod/files/2021-06/CATAN_DasSpiel_Spielregel.pdf) (german)
 
 For the coordinates use the Sheet. (Please See below)
+
+## Coordinate sheet:
+
+![Coordinates-Cheat-Sheet](https://github.zhaw.ch/storage/user/4867/files/3ca6dc7d-a5e9-47de-adf9-f293df5c575c)
+
+
+
