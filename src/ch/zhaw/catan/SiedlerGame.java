@@ -469,6 +469,7 @@ public class SiedlerGame {
    * @return boolean
    */
   private boolean hasEnoughForSettlement() { // TODO: magic numbers
+    getCurrentPlayer().getResourceList();
     if (getCurrentPlayer().getPlayerResource(Resource.LUMBER) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.BRICK) >= 1
         && getCurrentPlayer().getPlayerResource(Resource.WOOL) >= 1
@@ -482,6 +483,7 @@ public class SiedlerGame {
    * @return boolean
    */
   private boolean hasEnoughForCity() { // TODO: magic numbers
+    for ()
     if (getCurrentPlayer().getPlayerResource(Resource.ORE) >= 3
         && getCurrentPlayer().getPlayerResource(Resource.GRAIN) >= 2) {
       return true;

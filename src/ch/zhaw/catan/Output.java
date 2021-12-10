@@ -9,7 +9,7 @@ import org.beryx.textio.TextTerminal;
 
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.catan.Command.Read;
+import ch.zhaw.catan.MainGame.Read;
 
 public class Output {
     TextIO textIO = TextIoFactory.getTextIO();
