@@ -4,8 +4,6 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 import ch.zhaw.catan.Config.Resource;
-import ch.zhaw.catan.Dice;
-import ch.zhaw.catan.Command.Read;
 
 import java.awt.Point;
 
@@ -25,6 +23,10 @@ public class MainGame {
 
     public enum Building {
         ROAD, SETTELMENT, CITY
+    }
+
+    public enum Read {
+        COMMAND, BUY, OFFER, BUILD
     }
 
     public static void main(String[] args) {
@@ -141,8 +143,8 @@ public class MainGame {
         int diceThrow = 0;
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
-            // diceThrow = dice.getDiceThrow();
-            diceThrow = 7;
+            diceThrow = dice.getDiceThrow();
+            //diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
