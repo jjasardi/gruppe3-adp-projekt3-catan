@@ -13,7 +13,10 @@ import java.awt.Point;
  * the game. It starts the game and goes through all the different phases until
  * one player wins the game. Execute the {@link #main(String[])} method to start
  * the game.
+ * 
+ * @author Durim, Ardi, Philipp
  */
+
 public class MainGame {
     private Input input;
     private Output output;
@@ -42,7 +45,7 @@ public class MainGame {
     }
 
     /**
-     * Main-Methode
+     * main method
      * 
      * @param args Eingabe vom Typ String
      */
