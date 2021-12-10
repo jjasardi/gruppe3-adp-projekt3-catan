@@ -58,8 +58,7 @@ public class MainGame {
      */
     private void run() {
         firstPhase();
-        secondTestPhase();
-        // secondPhase();
+        secondPhase();
         thirdPhase();
 
     }
@@ -78,37 +77,6 @@ public class MainGame {
     private void secondPhase() {
         secondPhaseOne();
         secondPhaseTwo();
-    }
-
-    private void secondTestPhase() {
-        playerCount = 2;
-        Point settlement = new Point(8, 18);
-        siedlerGame.placeInitialSettlement(settlement, false);
-        Point roadEnd = new Point(8, 16);
-        siedlerGame.placeInitialRoad(settlement, roadEnd);
-        siedlerGame.switchToNextPlayer();
-
-        Point settlement2 = new Point(9, 15);
-        siedlerGame.placeInitialSettlement(settlement2, false);
-        Point roadEnd2 = new Point(9, 13);
-        siedlerGame.placeInitialRoad(settlement2, roadEnd2);
-        Point settlement3 = new Point(5, 15);
-        siedlerGame.placeInitialSettlement(settlement3, true);
-        Point roadEnd3 = new Point(6, 16);
-        siedlerGame.placeInitialRoad(settlement3, roadEnd3);
-        siedlerGame.switchToPreviousPlayer();
-
-        Point settlement4 = new Point(5, 7);
-        siedlerGame.placeInitialSettlement(settlement4, true);
-        Point roadEnd4 = new Point(5, 9);
-        siedlerGame.placeInitialRoad(settlement4, roadEnd4);
-        /*
-        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
-        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
-        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
-        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
-        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
-        */
     }
 
     private void secondPhaseOne() {
