@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 public class Player {
     private final static int MAX_POINTS_PLAYER_CAN_GET = 2;
 
-    private final Faction PLAYER_FACTION;
+    private final Faction playerFaction;
     private HashMap<Resource, Integer> playerResource;
     private int points;
 
@@ -30,7 +30,7 @@ public class Player {
      * @param PlayerFaction is the colour of the player
      */
     public Player(Faction PlayerFaction) {
-        this.PLAYER_FACTION = PlayerFaction;
+        this.playerFaction = PlayerFaction;
         playerResource = new HashMap<>();
     }
 
@@ -40,7 +40,7 @@ public class Player {
      * @return Faction of the player
      */
     public Faction getPlayerFaction() {
-        return PLAYER_FACTION;
+        return playerFaction;
     }
 
     /**
