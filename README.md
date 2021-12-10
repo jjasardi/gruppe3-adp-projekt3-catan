@@ -1,4 +1,4 @@
-# Catan from the ADP Group
+# Catan from the ADP Groupe
 
 ## Starting the game
 
