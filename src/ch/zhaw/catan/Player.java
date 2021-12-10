@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+/**
+ * This class represent a Player. Every player has a faction, a number of points
+ * and a stock of resources. This class performs all actions related to the
+ * player.
+ * 
+ * @author Durim, Ardi, Philipp
+ */
 public class Player {
     private final static int MAX_POINTS_PLAYER_CAN_GET = 2;
 
@@ -15,21 +22,30 @@ public class Player {
     private HashMap<Resource, Integer> playerResource;
     private int points;
 
+    /**
+     * Creates a player object with a given faction.
+     * 
+     * @param PlayerFaction is the colour of the player
+     */
     public Player(Faction PlayerFaction) {
         this.playerFaction = PlayerFaction;
         playerResource = new HashMap<>();
     }
 
     /**
-     * @return Faction
+     * returns the faction of the player.
+     * 
+     * @return Faction of the player
      */
     public Faction getPlayerFaction() {
         return playerFaction;
     }
 
     /**
-     * @param resource
-     * @return int
+     * returns the amount of a specific resource. If it is null, 0 is returned.
+     * 
+     * @param resource the specific resource
+     * @return amount of the resource the player has in stock
      */
     public int getPlayerResource(Resource resource) {
         if (playerResource.get(resource) != null) {
@@ -39,14 +55,19 @@ public class Player {
     }
 
     /**
-     * @return HashMap<Resource, Integer>
+     * returns all resources the player has in stock.
+     * 
+     * @return HashMap<Resource, Integer> playerResource
      */
     public HashMap<Resource, Integer> getPlayerStock() {
         return playerResource;
     }
 
     /**
-     * @return int
+     * returns how many resources the player has as a number. "How many cards in
+     * hand."
+     * 
+     * @return number of resources in stock
      */
     public int getPlayerStockVolume() {
         int stock = 0;
@@ -57,7 +78,9 @@ public class Player {
     }
 
     /**
-     * @return int
+     * returns the current win points the player has.
+     * 
+     * @return points of the player
      */
     public int getPlayerPoints() {
         return points;
