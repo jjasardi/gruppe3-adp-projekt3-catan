@@ -15,7 +15,8 @@ import java.util.Map.Entry;
 
 /**
  * This class inherits from {@link HexBoard} and initializes. It adds all the
- * fields to the board. TODO: more?
+ * fields to the board. It contains methods that are used in SiedlerGame. Thee
+ * class contains methods that return Structure or Points of the board.
  *
  * @author Durim, Ardi, Philipp
  */
