@@ -4,6 +4,7 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.Config.Structure;
 
 import java.awt.Point;
 
@@ -29,15 +30,6 @@ public class MainGame {
      */
     public enum Actions {
         SHOW, TRADE, BUILD, BANK_STOCK, MY_STOCK, END
-    }
-
-    /**
-     * This {@link Enum} specifies the available buildings in the game.
-     * 
-     * @author Durim
-     */
-    public enum Building {
-        ROAD, SETTELMENT, CITY // TODO: ned config enum?
     }
 
     /**
@@ -106,6 +98,11 @@ public class MainGame {
         siedlerGame.placeInitialSettlement(settlement4, true);
         Point roadEnd4 = new Point(5, 9);
         siedlerGame.placeInitialRoad(settlement4, roadEnd4);
+        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
     }
 
     private void secondPhaseOne() {
@@ -169,7 +166,7 @@ public class MainGame {
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             diceThrow = Dice.rollWithTwoDice();
-            diceThrow = 7;
+            diceThrow = 8;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
@@ -248,7 +245,7 @@ public class MainGame {
     }
 
     private void build() {
-        switch (input.getClassInput(textIO, Building.class, output.getInputReadString(Read.BUILD))) {
+        switch (input.getClassInput(textIO, Structure.class, output.getInputReadString(Read.BUILD))) {
         case ROAD:
             output.printRoadStart();
             Point roadStart = input.getPosition();
@@ -258,7 +255,7 @@ public class MainGame {
                 output.printError();
             }
             break;
-        case SETTELMENT:
+        case SETTLEMENT:
             output.printSettelment();
             Point positionSettelment = input.getPosition();
             if (!siedlerGame.buildSettlement(positionSettelment)) {
