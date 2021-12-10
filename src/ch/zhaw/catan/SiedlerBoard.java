@@ -13,14 +13,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+/**
+ * This class inherits from {@link HexBoard} and initializes. It adds all the
+ * fields to the board. TODO: more?
+ *
+ * @author Durim, Ardi, Philipp
+ */
 public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 
 	private HashMap<Point, Integer> diceValueList;
 
-	// TODO: Add fields, constructors and methods as you see fit. Do NOT change
-	// the
-	// signature
-	// of the methods below.
+	/**
+	 * Creates a SiedlerBoard and adds all required fields to the board. The fields
+	 * are arranged according to the {@link Config} class. Sets the dice value to
+	 * the fields.
+	 */
 	public SiedlerBoard() {
 		diceValueList = new HashMap<>();
 		setBoard();
@@ -34,6 +41,8 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	}
 
 	/**
+	 * returns a map with dice values of the fields coordinates.
+	 * 
 	 * @return HashMap<Point, Integer>
 	 */
 	public HashMap<Point, Integer> getDiceValues() {
@@ -72,8 +81,14 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		return getFields(corner);
 	}
 
+	/**
+	 * returns a list of all Roads on the board from the specific faction.
+	 * 
+	 * @param faction the specific faction
+	 * @return list of all roads from specific faction
+	 */
 	public List<Road> getAllRoadsOfFaction(Faction faction) {
-		Set<Road> roadsOfFaction= new HashSet<>();
+		Set<Road> roadsOfFaction = new HashSet<>();
 		List<Building> allBuildings = getAllBuildingsOfFaction(faction);
 		for (Building building : allBuildings) {
 			List<Road> adjacentRoads = getAdjacentEdges(building.getPosition());
@@ -84,6 +99,12 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		return new ArrayList<>(roadsOfFaction);
 	}
 
+	/**
+	 * returns a list of all buildings on the board from the specific faction.
+	 * 
+	 * @param faction the specific faction
+	 * @return list of all buildings from specific faction
+	 */
 	public List<Building> getAllBuildingsOfFaction(Faction faction) {
 		List<Building> buildingsOfFaction = new ArrayList<>();
 		for (Building building : getCorners()) {
@@ -94,23 +115,35 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 		return buildingsOfFaction;
 	}
 
-	public List<Building> getAllSettlementsOfFaction(Faction faction){
+	/**
+	 * returns a list of all settlements on the board from the specific faction.
+	 * 
+	 * @param faction the specific faction
+	 * @return list of all settlements from specific faction
+	 */
+	public List<Building> getAllSettlementsOfFaction(Faction faction) {
 		List<Building> Settlements = new ArrayList<>();
 		for (Building building : getAllBuildingsOfFaction(faction)) {
 			if (building instanceof Settlement) {
 				Settlements.add(building);
 			}
-		} 
+		}
 		return Settlements;
 	}
 
-	public List<Building> getAllCitiesOfFaction(Faction faction){
+	/**
+	 * returns a list of all Cities on the board from the specific faction.
+	 * 
+	 * @param faction the specific faction
+	 * @return list of all Cities from specific faction
+	 */
+	public List<Building> getAllCitiesOfFaction(Faction faction) {
 		List<Building> Cities = new ArrayList<>();
 		for (Building building : getAllBuildingsOfFaction(faction)) {
 			if (building instanceof City) {
 				Cities.add(building);
 			}
-		} 
+		}
 		return Cities;
 	}
 }
