@@ -1,6 +1,8 @@
 package ch.zhaw.catan;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -37,6 +39,20 @@ public class Bank {
      */
     public Map<Resource, Integer> getBankStock() {
         return bank;
+    }
+
+    public List<Resource> getBankStockList() {
+        List<Resource> list = new ArrayList<>();
+        for (Entry<Resource, Integer> resource : bank.entrySet()) {
+            int resourceAmount = resource.getValue();
+            for (int i=0; i < resourceAmount; i++) {
+                list.add(resource.getKey());
+            }
+        } return list;
+    }
+    
+    public int getBankResourceStock(Resource resource) {
+        return bank.get(resource);
     }
 
     /**

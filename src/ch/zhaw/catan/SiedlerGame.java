@@ -283,15 +283,18 @@ public class SiedlerGame {
         if (fieldPosition != thief.getPosition()) {
           landType = siedlerBoard.getField(fieldPosition);
           buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
+          List<Resource> totalResourceList = resourceEarningByBuilding(buildingsOfField, landType);
           for (Building building : buildingsOfField) {
             Faction buildingFaction = building.getFaction();
             Player player = getPlayerofFaction(building.getFaction());
             resourceList = resourceEarningByBuilding(building, landType);
             resourceList.addAll(factionResourceMap.getOrDefault(buildingFaction, Collections.emptyList()));
             factionResourceMap.put(buildingFaction, resourceList);
-            for (Resource resource : resourceList) {
-              if (bank.removeOneResource(resource)) {
-                player.addOneResourceToPlayer(resource);
+            if (bank.getBankStock().get(totalResourceList.get(0)) >= totalResourceList.size()) {
+              for (Resource resource : resourceList) {
+                if (bank.removeOneResource(resource)) {
+                  player.addOneResourceToPlayer(resource);
+                }
               }
             }
           }
@@ -576,6 +579,16 @@ public class SiedlerGame {
     List<Resource> resourceEarning = new ArrayList<>();
     for (int i = 0; i < building.getResourceEarning(); i++) {
       resourceEarning.add(landType.getResource());
+    }
+    return resourceEarning;
+  }
+
+  private List<Resource> resourceEarningByBuilding(List<Building> buildings, Land landType) {
+    List<Resource> resourceEarning = new ArrayList<>();
+    for (Building building : buildings) {
+      for (int i = 0; i < building.getResourceEarning(); i++) {
+        resourceEarning.add(landType.getResource());
+      }
     }
     return resourceEarning;
   }

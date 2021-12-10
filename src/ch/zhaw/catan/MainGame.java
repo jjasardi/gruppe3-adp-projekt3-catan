@@ -82,9 +82,9 @@ public class MainGame {
 
     private void secondTestPhase() {
         playerCount = 2;
-        Point settlement = new Point(8, 4);
+        Point settlement = new Point(8, 18);
         siedlerGame.placeInitialSettlement(settlement, false);
-        Point roadEnd = new Point(8, 6);
+        Point roadEnd = new Point(8, 16);
         siedlerGame.placeInitialRoad(settlement, roadEnd);
         siedlerGame.switchToNextPlayer();
 
@@ -102,11 +102,13 @@ public class MainGame {
         siedlerGame.placeInitialSettlement(settlement4, true);
         Point roadEnd4 = new Point(5, 9);
         siedlerGame.placeInitialRoad(settlement4, roadEnd4);
+        /*
         siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
         siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
         siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
         siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
         siedlerGame.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        */
     }
 
     private void secondPhaseOne() {
@@ -170,7 +172,7 @@ public class MainGame {
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             diceThrow = Dice.rollWithTwoDice();
-            diceThrow = 8;
+            diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
