@@ -172,7 +172,7 @@ public class MainGame {
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
             diceThrow = Dice.rollWithTwoDice();
-            // diceThrow = 7;
+            diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
@@ -196,7 +196,7 @@ public class MainGame {
             switch (input.getClassInput(textIO, Actions.class, output.getInputReadString(Read.COMMAND))) {
             case SHOW:
                 textTerminal.println(siedlerGame.getView().toString());
-                textTerminal.println(siedlerGame.getThiefPosition());
+                textTerminal.println(siedlerGame.getThiefPositionAsString() + "\n");
                 break;
             case TRADE:
                 tradeResource();

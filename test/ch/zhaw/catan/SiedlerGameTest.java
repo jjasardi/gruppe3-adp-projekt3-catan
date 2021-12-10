@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public class SiedlerGameTest {
 
+    private Map<Resource, Integer> redResourceList = Map.of(Resource.ORE, 1, Resource.GRAIN, 1, Resource.LUMBER, 1);
+    private Map<Resource, Integer> blueResourceList = Map.of(Resource.WOOL, 1, Resource.ORE, 1, Resource.GRAIN, 1);
+
     @Test
     public void dummyTestMethod() {
         assertTrue(false);
@@ -54,6 +57,53 @@ public class SiedlerGameTest {
 
         Map<Resource, Integer> bankStock = Map.of(Resource.WOOL, 18, Resource.ORE, 17, Resource.GRAIN, 17, Resource.LUMBER, 18, Resource.BRICK, 19);
         assertTrue(model.getBankStock().equals(bankStock));
+    }
+
+    @Test
+    public void thiefTestNullResourcen() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        model.getCurrentPlayer().removeOneResourceFromPlayer(Resource.ORE);
+        model.getCurrentPlayer().removeOneResourceFromPlayer(Resource.GRAIN);
+        model.getCurrentPlayer().removeOneResourceFromPlayer(Resource.LUMBER);
+        Map<Resource, Integer> redStock = model.getCurrentPlayerStock();
+
+        model.switchToNextPlayer();
+        Point point = new Point(6, 8);
+        model.placeThiefAndStealCard(point);
+        Map<Resource, Integer> blueStock = model.getCurrentPlayerStock();
+        model.switchToNextPlayer();
+        Map<Resource, Integer> redStock2 = model.getCurrentPlayerStock();
+
+        assertTrue(redStock.equals(redStock2));
+        assertTrue(blueStock.equals(blueResourceList));
+    }
+
+    @Test
+    public void thiefTestNullCorners() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        Point point = new Point(10, 8);
+        model.placeThiefAndStealCard(point);
+        Map<Resource, Integer> redStock = model.getCurrentPlayerStock();
+        model.switchToNextPlayer();
+        Map<Resource, Integer> blueStock = model.getCurrentPlayerStock();
+
+        assertTrue(redStock.equals(redResourceList));
+        assertTrue(blueStock.equals(blueResourceList));
+    }
+
+    @Test
+    public void thiefTestOnWater() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        Point point = new Point(10, 2);
+        model.placeThiefAndStealCard(point);
+
+        assertTrue(model.getThiefPositiong() == Config.INITIAL_THIEF_POSITION);
     }
 
     // @Test

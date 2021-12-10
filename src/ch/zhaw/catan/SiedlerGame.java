@@ -30,7 +30,7 @@ public class SiedlerGame {
   private int currentPlayerIndex;
   private Bank bank;
   private SiedlerBoardTextView view;
-  private Thief thiefPosition;
+  private Thief thief;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -47,7 +47,7 @@ public class SiedlerGame {
     view = new SiedlerBoardTextView(siedlerBoard);
     bank = new Bank();
     currentPlayerIndex = FIRST_PLAYER_IN_LIST;
-    thiefPosition = new Thief(Config.INITIAL_THIEF_POSITION);
+    thief = new Thief(Config.INITIAL_THIEF_POSITION);
 
   }
 
@@ -143,8 +143,7 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean placeInitialSettlement(Point position, boolean payout) {
-    if (isSettlementPositionValid(position)
-        && hasRoomToBuild(getCurrentPlayerFaction(), Settlement.class, Structure.SETTLEMENT)) {
+    if (isSettlementPositionValid(position)) {
       Player currentPlayer = getCurrentPlayer();
       Settlement initalSettlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(initalSettlement, position, currentPlayer);
@@ -259,29 +258,6 @@ public class SiedlerGame {
     return false;
   }
 
-  private boolean hasRoomToBuild(Faction faction, Class type, Structure structure) {
-    int buildingCount = 0;
-    if (type != Road.class) {
-      List<Building> buildingList = siedlerBoard.getAllBuildingsOfFaction(faction);
-      for (Building building : buildingList) {
-        if (building.getClass() == type) {
-          buildingCount++;
-        }
-      }
-    } else if (type == Road.class) {
-      List<Road> buildingList = siedlerBoard.getAllRoadsOfFaction(faction);
-      for (Road building : buildingList) {
-        if (building.getClass() == type) {
-          buildingCount++;
-        }
-      }
-    }
-    if (buildingCount < structure.getStockPerPlayer()) {
-      return true;
-    } else
-      return false;
-  }
-
   /**
    * This method takes care of actions depending on the dice throw result. A key
    * action is the payout of the resource cards to the players according to the
@@ -311,7 +287,7 @@ public class SiedlerGame {
     if (dicethrow != THIEF_NUMBER) {
       fieldPositions = siedlerBoard.getFieldsForDiceValue(dicethrow);
       for (Point fieldPosition : fieldPositions) {
-        if (fieldPosition != thiefPosition.getPosition()) { // Correct?
+        if (fieldPosition != thief.getPosition()) {
           landType = siedlerBoard.getField(fieldPosition);
           buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
           for (Building building : buildingsOfField) {
@@ -350,13 +326,23 @@ public class SiedlerGame {
   public boolean buildSettlement(Point position) {
     if (isSettlementPositionValid(position) && isAdjacentToRoad(position)
         && hasEnoughToBuild(Structure.SETTLEMENT.getCosts())
-        && hasRoomToBuild(getCurrentPlayerFaction(), Settlement.class, Structure.SETTLEMENT)) {
+        && hasStockForSettlement(getCurrentPlayerFaction())) {
       Player currentPlayer = getCurrentPlayer();
       Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
       for (Resource resource : Structure.SETTLEMENT.getCosts()) {
         currentPlayer.removeOneResourceFromPlayer(resource);
       }
+      return true;
+    } else {
+      return false;
+    }
+  }  
+
+  private boolean hasStockForSettlement(Faction faction) {
+    int numberOfSettlementsOfFaction = siedlerBoard.getAllSettlementsOfFaction(faction).size();
+    int requiredStock = Structure.SETTLEMENT.getStockPerPlayer();
+    if (numberOfSettlementsOfFaction < requiredStock) {
       return true;
     } else {
       return false;
@@ -380,7 +366,7 @@ public class SiedlerGame {
     Building building = siedlerBoard.getCorner(position);
     boolean isSettlement = building instanceof Settlement;
     if (isBuilduingFaction(position) && isSettlement && hasEnoughToBuild(Structure.CITY.getCosts())
-        && hasRoomToBuild(getCurrentPlayerFaction(), City.class, Config.Structure.CITY)) {
+        && hasStockForCity(getCurrentPlayerFaction())) {
       City city = new City(position, getCurrentPlayerFaction());
       Player currentPlayer = getCurrentPlayer();
       placeBuilding(city, position, currentPlayer);
@@ -390,6 +376,16 @@ public class SiedlerGame {
       return true;
     } else
       return true;
+  }
+
+  private boolean hasStockForCity(Faction faction) {
+    int numberOfCitiesOfFaction = siedlerBoard.getAllCitiesOfFaction(faction).size();
+    int requiredStock = Structure.CITY.getStockPerPlayer();
+    if (numberOfCitiesOfFaction < requiredStock) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -408,7 +404,7 @@ public class SiedlerGame {
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
     if (isRoadPositionValid(roadStart, roadEnd) && hasEnoughToBuild(Structure.ROAD.getCosts())
-        && hasRoomToBuild(getCurrentPlayerFaction(), Road.class, Structure.ROAD)) {
+        && hasStockForRoad(getCurrentPlayerFaction())) {
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       for (Resource resource : Structure.ROAD.getCosts()) {
@@ -417,6 +413,16 @@ public class SiedlerGame {
       return true;
     } else
       return false;
+  }
+
+  private boolean hasStockForRoad(Faction faction) {
+    int numberOfRoadsOfFaction = siedlerBoard.getAllRoadsOfFaction(faction).size();
+    int requiredStock = Structure.ROAD.getStockPerPlayer();
+    if (numberOfRoadsOfFaction < requiredStock) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private boolean hasEnoughToBuild(List<Resource> resourceList) {
@@ -475,8 +481,8 @@ public class SiedlerGame {
   public boolean placeThiefAndStealCard(Point field) {
     if (siedlerBoard.hasField(field)) {
       List<Building> corners = siedlerBoard.getCornersOfField(field);
-      if (corners != null) {
-        thiefPosition.setNewThiefPosition(field);
+      if (corners != null && corners.size() > 0) {
+        thief.setNewThiefPosition(field);
         List<Faction> factions = new ArrayList<>();
         for (Building building : corners) {
           if (building.getFaction() != getCurrentPlayerFaction()) {
@@ -486,9 +492,12 @@ public class SiedlerGame {
         int totalFactions = factions.size();
         int randomFactionIndex = (int) ((Math.random() * totalFactions));
         Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
-        Resource resourceToSteal = thiefPosition.getRandomResource(randomPlayer.getResourceList());
-        randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
-        getCurrentPlayer().addOneResourceToPlayer(resourceToSteal);
+        List<Resource> resourceList = randomPlayer.getResourceList();
+        if (resourceList.size() > 0) {
+          Resource resourceToSteal = thief.getRandomResource(resourceList);
+          randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
+          getCurrentPlayer().addOneResourceToPlayer(resourceToSteal);
+        }
 
       }
       return true;
@@ -496,8 +505,12 @@ public class SiedlerGame {
       return false;
   }
 
-  public String getThiefPosition() {
-    return thiefPosition.toString();
+  public String getThiefPositionAsString() {
+    return thief.toString();
+  }
+
+  public Point getThiefPositiong() {
+    return thief.getPosition();
   }
 
   /**
