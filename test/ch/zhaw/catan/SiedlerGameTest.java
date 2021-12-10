@@ -1,5 +1,6 @@
 package ch.zhaw.catan;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,6 @@ public class SiedlerGameTest {
     private Map<Resource, Integer> redResourceList = Map.of(Resource.ORE, 1, Resource.GRAIN, 1, Resource.LUMBER, 1);
     private Map<Resource, Integer> blueResourceList = Map.of(Resource.WOOL, 1, Resource.ORE, 1, Resource.GRAIN, 1);
 
-    @Test
-    public void dummyTestMethod() {
-        assertTrue(false);
-    }
 
     private void setUpTwoPlayer(SiedlerGame model) {
         Point settlement = new Point(8, 4);
@@ -50,14 +47,6 @@ public class SiedlerGameTest {
         model.placeInitialRoad(settlement4, roadEnd4);
     }
 
-    @Test
-    public void bankTest() {
-        SiedlerGame model = new SiedlerGame(7, 2);
-        setUpTwoPlayer(model);
-
-        Map<Resource, Integer> bankStock = Map.of(Resource.WOOL, 18, Resource.ORE, 17, Resource.GRAIN, 17, Resource.LUMBER, 18, Resource.BRICK, 19);
-        assertTrue(model.getBankStock().equals(bankStock));
-    }
 
     @Test
     public void thiefTestNullResourcen() {
@@ -74,9 +63,9 @@ public class SiedlerGameTest {
         model.placeThiefAndStealCard(point);
         Map<Resource, Integer> blueStock = model.getCurrentPlayerStock();
         model.switchToNextPlayer();
-        Map<Resource, Integer> redStock2 = model.getCurrentPlayerStock();
+        Map<Resource, Integer> redStockAfterSteal = model.getCurrentPlayerStock();
 
-        assertTrue(redStock.equals(redStock2));
+        assertTrue(redStock.equals(redStockAfterSteal));
         assertTrue(blueStock.equals(blueResourceList));
     }
 
@@ -106,17 +95,43 @@ public class SiedlerGameTest {
         assertTrue(model.getThiefPositiong() == Config.INITIAL_THIEF_POSITION);
     }
 
-    // @Test
-    // public void cityTest() {
-    //     SiedlerGame model = new SiedlerGame(7, 2);
-    //     setUpTwoPlayer(model);
+    @Test
+    public void cityTestOnSettlement() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
 
-    //     model.getCurrentPlayer().addResourceToPlayer(Resource.ORE, 10);
-    //     model.getCurrentPlayer().addResourceToPlayer(Resource.GRAIN, 10);
-    //     model.buildCity(new Point(8, 4));
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        assertTrue(model.buildCity(new Point(8, 4)));
+    }
 
-    //     Building building = model.getBoard().getCorner(new Point(8, 4));
-    //     assertTrue(model.toString().equals(model.getCurrentPlayerFaction().toString().toUpperCase()));
-    // }
+    @Test
+    public void cityTestOnNullCorner() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        assertFalse(model.buildCity(new Point(9, 3)));
+    }
+
+    @Test
+    public void cityTestOnNullCorner() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
+        assertFalse(model.buildCity(new Point(9, 3)));
+    }
 
 }

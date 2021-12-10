@@ -45,11 +45,13 @@ public class Input {
     }
 
     /**
-     * Ask for the command. TODO: finish javaDoc
+     * Ask User for Input. User is Presented with Choices to pick from.
      * 
-     * @param textIO
-     * @param commands the {@link Enum} of commands
-     * @return T
+     * @param <T>      enum class
+     * @param textIO   jar library
+     * @param commands enum class
+     * @param output   String that is printed befor Input
+     * @return Input Reader with output as String
      */
     public <T extends Enum<T>> T getClassInput(TextIO textIO, Class<T> commands, String output) {
         return textIO.newEnumInputReader(commands).read(output);

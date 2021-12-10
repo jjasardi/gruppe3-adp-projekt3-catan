@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class performs all actions related to modifying the game state. TODO:
@@ -325,8 +326,8 @@ public class SiedlerGame {
    */
   public boolean buildSettlement(Point position) {
     if (isSettlementPositionValid(position) && isAdjacentToRoad(position)
-        && hasEnoughToBuild(Structure.SETTLEMENT.getCosts())
-        && hasStockForSettlement(getCurrentPlayerFaction())) {
+        && hasResourceToBuild(Structure.SETTLEMENT.getCosts())
+        && isBelowMaxNumberOfSettlement(getCurrentPlayerFaction())) {
       Player currentPlayer = getCurrentPlayer();
       Settlement settlement = new Settlement(position, currentPlayer.getPlayerFaction());
       placeBuilding(settlement, position, currentPlayer);
@@ -337,9 +338,9 @@ public class SiedlerGame {
     } else {
       return false;
     }
-  }  
+  }
 
-  private boolean hasStockForSettlement(Faction faction) {
+  private boolean isBelowMaxNumberOfSettlement(Faction faction) {
     int numberOfSettlementsOfFaction = siedlerBoard.getAllSettlementsOfFaction(faction).size();
     int requiredStock = Structure.SETTLEMENT.getStockPerPlayer();
     if (numberOfSettlementsOfFaction < requiredStock) {
@@ -365,8 +366,8 @@ public class SiedlerGame {
   public boolean buildCity(Point position) { // TODO: testing
     Building building = siedlerBoard.getCorner(position);
     boolean isSettlement = building instanceof Settlement;
-    if (isBuilduingFaction(position) && isSettlement && hasEnoughToBuild(Structure.CITY.getCosts())
-        && hasStockForCity(getCurrentPlayerFaction())) {
+    if (isBuilduingFaction(position) && isSettlement && hasResourceToBuild(Structure.CITY.getCosts())
+        && isBelowMaxNumberOfCity(getCurrentPlayerFaction())) {
       City city = new City(position, getCurrentPlayerFaction());
       Player currentPlayer = getCurrentPlayer();
       placeBuilding(city, position, currentPlayer);
@@ -375,10 +376,10 @@ public class SiedlerGame {
       }
       return true;
     } else
-      return true;
+      return false;
   }
 
-  private boolean hasStockForCity(Faction faction) {
+  private boolean isBelowMaxNumberOfCity(Faction faction) {
     int numberOfCitiesOfFaction = siedlerBoard.getAllCitiesOfFaction(faction).size();
     int requiredStock = Structure.CITY.getStockPerPlayer();
     if (numberOfCitiesOfFaction < requiredStock) {
@@ -403,8 +404,8 @@ public class SiedlerGame {
    * @return true, if the placement was successful
    */
   public boolean buildRoad(Point roadStart, Point roadEnd) {
-    if (isRoadPositionValid(roadStart, roadEnd) && hasEnoughToBuild(Structure.ROAD.getCosts())
-        && hasStockForRoad(getCurrentPlayerFaction())) {
+    if (isRoadPositionValid(roadStart, roadEnd) && hasResourceToBuild(Structure.ROAD.getCosts())
+        && isBelowMaxNumberOfRoad(getCurrentPlayerFaction())) {
       Road road = new Road(roadStart, roadEnd, getCurrentPlayerFaction());
       siedlerBoard.setEdge(roadStart, roadEnd, road);
       for (Resource resource : Structure.ROAD.getCosts()) {
@@ -415,7 +416,7 @@ public class SiedlerGame {
       return false;
   }
 
-  private boolean hasStockForRoad(Faction faction) {
+  private boolean isBelowMaxNumberOfRoad(Faction faction) {
     int numberOfRoadsOfFaction = siedlerBoard.getAllRoadsOfFaction(faction).size();
     int requiredStock = Structure.ROAD.getStockPerPlayer();
     if (numberOfRoadsOfFaction < requiredStock) {
@@ -425,8 +426,8 @@ public class SiedlerGame {
     }
   }
 
-  private boolean hasEnoughToBuild(List<Resource> resourceList) {
-    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) {
+  private boolean hasResourceToBuild(List<Resource> resourceList) {
+    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) { // TODO: check list
       return true;
     } else
       return false;
@@ -492,7 +493,7 @@ public class SiedlerGame {
         int totalFactions = factions.size();
         int randomFactionIndex = (int) ((Math.random() * totalFactions));
         Player randomPlayer = getPlayerofFaction(factions.get(randomFactionIndex));
-        List<Resource> resourceList = randomPlayer.getResourceList();
+        List<Resource> resourceList = new ArrayList<>(randomPlayer.getResourceSet());
         if (resourceList.size() > 0) {
           Resource resourceToSteal = thief.getRandomResource(resourceList);
           randomPlayer.removeOneResourceFromPlayer(resourceToSteal);
@@ -562,7 +563,7 @@ public class SiedlerGame {
       if (playerStock > Config.MAX_CARDS_IN_HAND_NO_DROP) {
         int resourceToSteal = playerStock / 2;
         for (int i = 0; i < resourceToSteal; i++) {
-          List<Resource> resourceList = player.getResourceList();
+          List<Resource> resourceList = new ArrayList<>(player.getResourceSet());
           int randomIndex = (int) ((Math.random() * resourceList.size()));
           Resource resource = resourceList.get(randomIndex);
           player.removeOneResourceFromPlayer(resource);

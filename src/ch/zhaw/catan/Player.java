@@ -5,7 +5,9 @@ import ch.zhaw.catan.Config.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
 
 /**
@@ -89,11 +91,17 @@ public class Player {
     /**
      * @return List<Resource>
      */
+    public Set<Resource> getResourceSet() {
+        return new HashSet<>(getResourceList());
+    }
+
     public List<Resource> getResourceList() {
         List<Resource> list = new ArrayList<>();
         for (Entry<Resource, Integer> resource : playerResource.entrySet()) {
             if (resource.getValue() > 0) {
-                list.add(resource.getKey());
+                for (int i = 0; i < resource.getValue(); i++) {
+                    list.add(resource.getKey());
+                }
             }
         }
         return list;
