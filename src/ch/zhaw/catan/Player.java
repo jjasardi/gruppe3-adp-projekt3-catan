@@ -89,12 +89,20 @@ public class Player {
     }
 
     /**
-     * @return List<Resource>
+     * returns a set of the current resource the player has.
+     * 
+     * @return Set<Resource>
      */
     public Set<Resource> getResourceSet() {
         return new HashSet<>(getResourceList());
     }
 
+    /**
+     * Returns a list of all the player's current resources, with several of the
+     * same resource when present.
+     * 
+     * @return List<Resource>
+     */
     public List<Resource> getResourceList() {
         List<Resource> list = new ArrayList<>();
         for (Entry<Resource, Integer> resource : playerResource.entrySet()) {
@@ -108,7 +116,9 @@ public class Player {
     }
 
     /**
-     * @param resource
+     * Adds one specific resource to the player.
+     * 
+     * @param resource the specific resource
      */
     public void addOneResourceToPlayer(Resource resource) {
         if (playerResource.get(resource) != null) {
@@ -119,9 +129,12 @@ public class Player {
     }
 
     /**
-     * @param resource
-     * @param amount
-     * @return boolean
+     * Removes an amount of the specific resources from the player. returns true
+     * when successful.
+     * 
+     * @param resource the specific resource
+     * @param amount   amount to remove
+     * @return if the action was successful
      */
     public boolean removeResourceFromPlayer(Resource resource, int amount) {
         if (amount > 0 && PlayerHasResourceInStock(resource, amount)) {
@@ -133,8 +146,10 @@ public class Player {
     }
 
     /**
-     * @param resource
-     * @return boolean
+     * Removes one specific resource from the player. returns true when successful.
+     * 
+     * @param resource the specific resource
+     * @return if the action was successful
      */
     public boolean removeOneResourceFromPlayer(Resource resource) {
         if (PlayerHasResourceInStock(resource, 1)) {
@@ -146,7 +161,9 @@ public class Player {
     }
 
     /**
-     * @param pointsAdd
+     * Add an amount of win points to the player.
+     * 
+     * @param pointsAdd amount of points to add
      */
     public void addPoints(int pointsAdd) {
         if (pointsAdd > 0 && pointsAdd <= MAX_POINTS_PLAYER_CAN_GET) {
@@ -155,7 +172,9 @@ public class Player {
     }
 
     /**
-     * @param pointsRemove
+     * Removes an amount of win points from the player.
+     * 
+     * @param pointsRemove amount of points to remove
      */
     public void removePoints(int pointsRemove) {
         if (pointsRemove >= points) {
@@ -164,9 +183,11 @@ public class Player {
     }
 
     /**
-     * @param resource
-     * @param amount
-     * @return boolean
+     * returns true if the player has the specific resource and enough of it.
+     * 
+     * @param resource the specific resource
+     * @param amount   the amount the player needs to have
+     * @return if the player has enough resource in stock
      */
     private boolean PlayerHasResourceInStock(Resource resource, int amount) {
         if (getPlayerResource(resource) >= amount) {
