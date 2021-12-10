@@ -21,7 +21,7 @@ public class Input {
      * Ask how many players are playing the game. Only allows min 2 player and max
      * lenght of {@link Config.Faction}.
      * 
-     * @param textIO TODO:?
+     * @param textIO jar library
      * @return the amount of players playing the game
      */
     public int getNumberOfPlayers(TextIO textIO) {

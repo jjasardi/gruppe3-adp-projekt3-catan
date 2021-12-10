@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class performs all actions related to modifying the game state. TODO:
@@ -430,7 +429,7 @@ public class SiedlerGame {
   }
 
   private boolean hasResourceToBuild(List<Resource> resourceList) {
-    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) { // TODO: check list
+    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) {
       return true;
     } else
       return false;

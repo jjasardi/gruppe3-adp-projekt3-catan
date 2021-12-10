@@ -36,7 +36,7 @@ public class MainGame {
     }
 
     /**
-     * This {@link Enum} specifies the TODO: what
+     * This {@link Enum} specifies the Strings that are used for the InputReader.
      * 
      * @author Durim
      */
