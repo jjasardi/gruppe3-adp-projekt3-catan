@@ -54,21 +54,21 @@ public class Output {
      * @param currentPlayer the current player faction
      */
     public void printCurrentPlayer(Faction currentPlayer) {
-        textTerminal.println(currentPlayer.name() + "'s turn:");
+        textTerminal.println(currentPlayer.name() + "'s turn:\n");
     }
 
     /**
      * prints the request to set the road start position.
      */
     public void printRoadStart() {
-        textTerminal.println("Set Position for roadStart:");
+        textTerminal.println("Set Position for road start:");
     }
 
     /**
      * prints the request to set the road end position.
      */
     public void printRoadEnd() {
-        textTerminal.println("Set Position for roadEnd:");
+        textTerminal.println("Set Position for road end:");
     }
 
     /**
