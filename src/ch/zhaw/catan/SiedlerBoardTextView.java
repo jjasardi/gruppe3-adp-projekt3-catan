@@ -7,8 +7,22 @@ import ch.zhaw.hexboard.HexBoardTextView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class inherits form {@link HexBoardTextView} and adds all the numbers to
+ * the fields of the board It holds the information of the mapping of the number
+ * and the {@link Config.Land}
+ *
+ * @author Durim, Ardi
+ */
 public class SiedlerBoardTextView extends HexBoardTextView<Land, Building, Road, String> {
 
+  /**
+   * Creates an object of SiedlerBoardTextView which inherits from
+   * {@link HexBoardTextView} and adds all dice numbers to the corresponding
+   * fields.
+   * 
+   * @param board the game board
+   */
   public SiedlerBoardTextView(SiedlerBoard board) {
     super(board);
     setDiceValues();

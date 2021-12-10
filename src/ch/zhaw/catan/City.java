@@ -17,8 +17,8 @@ public class City extends Building {
     /**
      * Creates a city object {@link City}
      * 
-     * @param position position with the coordinates of the city
-     * @param faction  faction who belongs the {@link City}
+     * @param position position with the coordinates of the {@link City}
+     * @param faction  the faction that belongs the {@link City}
      */
     public City(Point position, Faction faction) {
         super(position, faction, WIN_POINTS_FOR_CITY, RESOURCE_EARNING);

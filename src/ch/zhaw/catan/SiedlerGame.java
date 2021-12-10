@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class performs all actions related to modifying the game state. TODO:
- * (your documentation)
+ * This class performs all actions related to modifying the game state. Has all
+ * information of the current game state. Has the method for building, trading
+ * and the thief.
  *
- * @author TODO
+ * @author Durim, Ardi, Philipp
  */
 public class SiedlerGame {
   static final int FOUR_TO_ONE_TRADE_OFFER = 4;
@@ -221,19 +222,15 @@ public class SiedlerGame {
 
   private boolean isRoadPositionValid(Point roadStart, Point roadEnd) {
     if (siedlerBoard.hasEdge(roadStart, roadEnd) && siedlerBoard.getEdge(roadStart, roadEnd) == null
-        && ((isBuilduingFaction(roadStart) || isBuilduingFaction(roadEnd) || isAdjacentToRoad(roadStart)
-            || isAdjacentToRoad(roadEnd)))) {
+        && ((isBuildingOfCurrentPlayerFaction(roadStart) || isBuildingOfCurrentPlayerFaction(roadEnd)
+            || isAdjacentToRoad(roadStart) || isAdjacentToRoad(roadEnd)))) {
       return true;
     } else {
       return false;
     }
   }
 
-  /**
-   * @param point
-   * @return boolean
-   */
-  private boolean isBuilduingFaction(Point point) {
+  private boolean isBuildingOfCurrentPlayerFaction(Point point) {
     Building building = siedlerBoard.getCorner(point);
     if (building != null) {
       if (building.getFaction().equals(getCurrentPlayerFaction())) {
@@ -243,10 +240,6 @@ public class SiedlerGame {
     return false;
   }
 
-  /**
-   * @param point
-   * @return boolean
-   */
   private boolean isAdjacentToRoad(Point point) {
     List<Road> AdjacentRoads = siedlerBoard.getAdjacentEdges(point);
     for (Road road : AdjacentRoads) {
@@ -367,7 +360,7 @@ public class SiedlerGame {
     if (siedlerBoard.hasCorner(position)) {
       Building building = siedlerBoard.getCorner(position);
       boolean isSettlement = building instanceof Settlement;
-      if (isBuilduingFaction(position) && isSettlement && hasResourceToBuild(Structure.CITY.getCosts())
+      if (isBuildingOfCurrentPlayerFaction(position) && isSettlement && hasResourceToBuild(Structure.CITY.getCosts())
           && isBelowMaxNumberOfCity(getCurrentPlayerFaction())) {
         City city = new City(position, getCurrentPlayerFaction());
         Player currentPlayer = getCurrentPlayer();
@@ -508,27 +501,34 @@ public class SiedlerGame {
       return false;
   }
 
+  /**
+   * returns a String of the position of the thief.
+   * 
+   * @return String postion of thief
+   */
   public String getThiefPositionAsString() {
     return thief.toString();
   }
 
+  /**
+   * returns the current postion of the thief.
+   * 
+   * @return Point
+   */
   public Point getThiefPositiong() {
     return thief.getPosition();
   }
 
   /**
+   * returns the active player
+   * 
    * @return Player
    */
-  // new implement
 
   public Player getCurrentPlayer() {
     return playerList.get(currentPlayerIndex);
   }
 
-  /**
-   * @param faction
-   * @return Player
-   */
   private Player getPlayerofFaction(Faction faction) {
     Player player1 = null;
     for (Player player : playerList) {
@@ -548,9 +548,6 @@ public class SiedlerGame {
     return getCurrentPlayer().getPlayerStock();
   }
 
-  /**
-   * @param numberOfPlayers
-   */
   private void setPlayerList(int numberOfPlayers) {
     Faction faction[] = Faction.values();
     playerList = new ArrayList<>();
@@ -575,11 +572,6 @@ public class SiedlerGame {
     }
   }
 
-  /**
-   * @param building
-   * @param landType
-   * @return List<Resource>
-   */
   private List<Resource> resourceEarningByBuilding(Building building, Land landType) {
     List<Resource> resourceEarning = new ArrayList<>();
     for (int i = 0; i < building.getResourceEarning(); i++) {
@@ -588,11 +580,6 @@ public class SiedlerGame {
     return resourceEarning;
   }
 
-  /**
-   * @param Map<Faction
-   * @param factionResourceMap
-   * @return Map<Faction, List<Resource>>
-   */
   private Map<Faction, List<Resource>> setEmptyFactionMap(Map<Faction, List<Resource>> factionResourceMap) {
     for (Faction faction : getPlayerFactions()) {
       factionResourceMap.put(faction, Collections.emptyList());
