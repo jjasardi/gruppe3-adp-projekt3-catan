@@ -49,66 +49,6 @@ public class SiedlerGameTest {
         model.placeInitialRoad(settlement4, roadEnd4);
     }
 
-    /**
-     * This test checks if the bank gives out recources while it has none.
-     */
-    @Test
-    public void bankNoStock() {
-        SiedlerGame model = new SiedlerGame(7, 2);
-        setUpTwoPlayer(model);
-        for (int i = 0; i < 17; i++) {
-            model.removeOneResourceFromBank(Resource.ORE);
-        }
-        for (int i = 0; i < 19; i++) {
-            model.removeOneResourceFromBank(Resource.BRICK);
-        }
-        for (int i = 0; i < 18; i++) {
-            model.removeOneResourceFromBank(Resource.WOOL);
-        }
-        for (int i = 0; i < 17; i++) {
-            model.removeOneResourceFromBank(Resource.GRAIN);
-        }
-        for (int i = 0; i < 18; i++) {
-            model.removeOneResourceFromBank(Resource.LUMBER);
-        }
-        model.throwDice(6);
-        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
-        assertEquals(redResourceList, redStock);
-    }
-
-    /**
-     * This Test checks if a recource is given out to only one player while it's
-     * supposed to be given to two players, if only one recource is in bank stock.
-     * 
-     * this test fails because the codelines to make it work are excluded in the
-     * SiedlerGame class.
-     */
-    @Test
-    public void bankResourceForOnlyOnePlayer() {
-        SiedlerGame model = new SiedlerGame(7, 2);
-        setUpTwoPlayer(model);
-        for (int i = 0; i < 17; i++) {
-            model.removeOneResourceFromBank(Resource.ORE);
-        }
-        for (int i = 0; i < 18; i++) {
-            model.removeOneResourceFromBank(Resource.BRICK);
-        }
-        for (int i = 0; i < 18; i++) {
-            model.removeOneResourceFromBank(Resource.WOOL);
-        }
-        for (int i = 0; i < 17; i++) {
-            model.removeOneResourceFromBank(Resource.GRAIN);
-        }
-        for (int i = 0; i < 18; i++) {
-            model.removeOneResourceFromBank(Resource.LUMBER);
-        }
-        model.throwDice(11);
-        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
-        model.switchToNextPlayer();
-        Map<Resource, Integer> blueStock = model.getCurrentPlayer().getPlayerStock();
-        assertEquals(redResourceList, redStock);
-        assertEquals(blueResourceList, blueStock);
-    }
 
     /**
      * Tests if player receives two Resources for city.
@@ -323,5 +263,66 @@ public class SiedlerGameTest {
         SiedlerGame model = ThreePlayerStandard.getPlayerOneReadyToBuildFifthSettlement(5);
         model.buildSettlement(ThreePlayerStandard.PLAYER_ONE_READY_TO_BUILD_FIFTH_SETTLEMENT_FIFTH_SETTLEMENT_POSITION);
         assertEquals(model.getWinner(), Faction.RED);
+    }
+
+    /**
+     * This test checks if the bank gives out recources while it has none.
+     */
+    @Test
+    public void bankNoStock() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.ORE);
+        }
+        for (int i = 0; i < 19; i++) {
+            model.removeOneResourceFromBank(Resource.BRICK);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.WOOL);
+        }
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.GRAIN);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.LUMBER);
+        }
+        model.throwDice(6);
+        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
+        assertEquals(redResourceList, redStock);
+    }
+
+    /**
+     * This Test checks if a recource is given out to only one player while it's
+     * supposed to be given to two players, if only one recource is in bank stock.
+     * 
+     * this test fails because the codelines to make it work are excluded in the
+     * SiedlerGame class.
+     */
+    @Test
+    public void bankResourceForOnlyOnePlayer() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.ORE);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.BRICK);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.WOOL);
+        }
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.GRAIN);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.LUMBER);
+        }
+        model.throwDice(11);
+        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
+        model.switchToNextPlayer();
+        Map<Resource, Integer> blueStock = model.getCurrentPlayer().getPlayerStock();
+        assertEquals(redResourceList, redStock);
+        assertEquals(blueResourceList, blueStock);
     }
 }
