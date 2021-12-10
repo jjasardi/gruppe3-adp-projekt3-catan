@@ -12,7 +12,7 @@ import java.awt.Point;
  * @author Durim, Philipp
  */
 public class Input {
-    TextIO textIO = TextIoFactory.getTextIO();
+    private TextIO textIO = TextIoFactory.getTextIO();
     private static final int MIN_COORDINATE = 0;
     private static final int MAX_X_COORDINATE = 14;
     private static final int MAX_Y_COORDINATE = 22;
