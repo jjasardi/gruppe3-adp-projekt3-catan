@@ -1,10 +1,13 @@
 package ch.zhaw.catan;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.games.ThreePlayerStandard;
 
 import java.awt.*;
 import java.util.Map;
@@ -212,5 +215,12 @@ public class SiedlerGameTest {
         model.buildCity(new Point(11, 7));
 
         assertFalse(model.buildCity(new Point(11, 7)));
+    }
+
+    @Test
+    public void winnerTest() {
+        SiedlerGame model = ThreePlayerStandard.getPlayerOneReadyToBuildFifthSettlement(5);
+        model.buildSettlement(ThreePlayerStandard.PLAYER_ONE_READY_TO_BUILD_FIFTH_SETTLEMENT_FIFTH_SETTLEMENT_POSITION);
+        assertEquals(model.getWinner(), Faction.RED);
     }
 }
