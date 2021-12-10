@@ -78,7 +78,7 @@ public class SiedlerGameTest {
 
     /**
      * This Test checks if a recource is given out to only one player while it's
-     * supposed to be given to two players, if only one recource is in stock.
+     * supposed to be given to two players, if only one recource is in bank stock.
      * 
      * this test fails because the codelines to make it work are excluded in the
      * SiedlerGame class.
@@ -111,7 +111,7 @@ public class SiedlerGameTest {
     }
 
     /**
-     * Tests if City recieves two Resources.
+     * Tests if player receives two Resources for city.
      */
     @Test
     public void diceThrowWithCity() {
