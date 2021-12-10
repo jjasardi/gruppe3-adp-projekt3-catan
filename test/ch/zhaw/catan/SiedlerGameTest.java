@@ -148,8 +148,8 @@ public class SiedlerGameTest {
         model.switchToNextPlayer();
         Map<Resource, Integer> redStockAfterSteal = model.getCurrentPlayerStock();
 
-        assertTrue(redStock.equals(redStockAfterSteal));
-        assertTrue(blueStock.equals(blueResourceList));
+        assertEquals(redStock, redStockAfterSteal);
+        assertEquals(blueResourceList, blueStock);
     }
 
     /**
@@ -167,8 +167,8 @@ public class SiedlerGameTest {
         model.switchToNextPlayer();
         Map<Resource, Integer> blueStock = model.getCurrentPlayerStock();
 
-        assertTrue(redStock.equals(redResourceList));
-        assertTrue(blueStock.equals(blueResourceList));
+        assertEquals(redResourceList, redStock);
+        assertEquals(blueResourceList, blueStock);
     }
 
     /**
