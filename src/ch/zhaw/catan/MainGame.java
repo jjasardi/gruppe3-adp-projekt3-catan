@@ -7,6 +7,12 @@ import ch.zhaw.catan.Config.Resource;
 
 import java.awt.Point;
 
+/**
+ * This class represents the the different phases of the game and is controlling
+ * the game. It starts the game and goes through all the different phases until
+ * one player wins the game. Execute the {@link #main(String[])} method to start
+ * the game.
+ */
 public class MainGame {
     private Input input;
     private Output output;
@@ -16,22 +22,45 @@ public class MainGame {
     private int playerCount;
     private static final int POINTS_TO_WIN = 7;
 
+    /**
+     * This {@link Enum} specifies the available commands in the game.
+     * 
+     * @author Durim
+     */
     public enum Actions {
         SHOW, TRADE, BUILD, BANK_STOCK, MY_STOCK, END
     }
 
+    /**
+     * This {@link Enum} specifies the available buildings in the game.
+     * 
+     * @author Durim
+     */
     public enum Building {
-        ROAD, SETTELMENT, CITY
+        ROAD, SETTELMENT, CITY // TODO: ned config enum?
     }
 
+    /**
+     * This {@link Enum} specifies the TODO: what
+     * 
+     * @author Durim
+     */
     public enum Read {
         COMMAND, BUY, OFFER, BUILD
     }
 
+    /**
+     * Main-Methode
+     * 
+     * @param args Eingabe vom Typ String
+     */
     public static void main(String[] args) {
         new MainGame().run();
     }
 
+    /**
+     * Starts the game and goes through the 3 phases until a player wins the game.
+     */
     private void run() {
         firstPhase();
         secondTestPhase();
