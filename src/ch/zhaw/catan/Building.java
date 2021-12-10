@@ -6,6 +6,8 @@ import ch.zhaw.catan.Config.Faction;
 /**
  * This class is the superclass for {@link Settlement} and {@link City}. It has
  * all the get method which has to do with the buildings.
+ * 
+ * @author Durim, Ardi, Philipp
  */
 public abstract class Building { // TODO: abstract testen
     private Point position;

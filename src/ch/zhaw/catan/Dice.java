@@ -3,6 +3,8 @@ package ch.zhaw.catan;
 /**
  * This class represents two Dice with a range from 1 to 6. It can return a
  * random number within the range.
+ * 
+ * @author Philipp
  */
 public class Dice {
 

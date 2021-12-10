@@ -7,6 +7,8 @@ import ch.zhaw.catan.Config.Faction;
  * This class is a subclass of {@link Building}. A {@link City} is a building
  * that can be built. It can only be built if there is already a
  * {@link Settlement}.
+ * 
+ * @author Philipp
  */
 public class City extends Building {
     private static final int WIN_POINTS_FOR_CITY = 2;
