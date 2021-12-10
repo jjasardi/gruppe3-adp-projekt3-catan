@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /***
- * TODO Write your own tests in this class.
+ * This Clas Contains methods to test the buildCity() method, the
+ * placeThiefAndStealCard() method and the throwDice() class.
  *
  * Note: Have a look at {@link ch.zhaw.catan.games.ThreePlayerStandard}. It can
  * be used to get several different game states.
