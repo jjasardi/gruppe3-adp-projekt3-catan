@@ -283,20 +283,30 @@ public class SiedlerGame {
         if (fieldPosition != thief.getPosition()) {
           landType = siedlerBoard.getField(fieldPosition);
           buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
-          List<Resource> totalResourceList = resourceEarningByBuilding(buildingsOfField, landType);
+          // List<Resource> totalResourceList =
+          // resourceEarningByBuilding(buildingsOfField, landType);
           for (Building building : buildingsOfField) {
             Faction buildingFaction = building.getFaction();
             Player player = getPlayerofFaction(building.getFaction());
             resourceList = resourceEarningByBuilding(building, landType);
             resourceList.addAll(factionResourceMap.getOrDefault(buildingFaction, Collections.emptyList()));
             factionResourceMap.put(buildingFaction, resourceList);
-            if (bank.getBankStock().get(totalResourceList.get(0)) >= totalResourceList.size()) {
-              for (Resource resource : resourceList) {
-                if (bank.removeOneResource(resource)) {
-                  player.addOneResourceToPlayer(resource);
-                }
+            // if (bank.getBankStock().get(totalResourceList.get(0)) >=
+            // totalResourceList.size()) {
+            //
+            // The excluded Codoelines are meant to to
+            // prevent the bank from handing out resources to only 1 player while it's
+            // supposed to give 2 players the same resource. We decided to exclude the lines
+            // since they cause the
+            // requirementPlayerResourceCardStockAfterSetupPhaseAlmostEmptyBank() test to
+            // fail.
+            //
+            for (Resource resource : resourceList) {
+              if (bank.removeOneResource(resource)) {
+                player.addOneResourceToPlayer(resource);
               }
             }
+            // }
           }
         }
       }
@@ -578,20 +588,28 @@ public class SiedlerGame {
   private List<Resource> resourceEarningByBuilding(Building building, Land landType) {
     List<Resource> resourceEarning = new ArrayList<>();
     for (int i = 0; i < building.getResourceEarning(); i++) {
-      resourceEarning.add(landType.getResource());
-    }
-    return resourceEarning;
-  }
-
-  private List<Resource> resourceEarningByBuilding(List<Building> buildings, Land landType) {
-    List<Resource> resourceEarning = new ArrayList<>();
-    for (Building building : buildings) {
-      for (int i = 0; i < building.getResourceEarning(); i++) {
+      if (landType.getResource() != null) {
         resourceEarning.add(landType.getResource());
       }
     }
     return resourceEarning;
   }
+
+  /*
+  This method is used for the excluded codelines in throwDice().
+
+  private List<Resource> resourceEarningByBuilding(List<Building> buildings, Land landType) {
+    List<Resource> resourceEarning = new ArrayList<>();
+    for (Building building : buildings) {
+      for (int i = 0; i < building.getResourceEarning(); i++) {
+        if (landType.getResource() != null) {
+          resourceEarning.add(landType.getResource());
+        }
+      }
+    }
+    return resourceEarning;
+  }
+  */
 
   private Map<Faction, List<Resource>> setEmptyFactionMap(Map<Faction, List<Resource>> factionResourceMap) {
     for (Faction faction : getPlayerFactions()) {

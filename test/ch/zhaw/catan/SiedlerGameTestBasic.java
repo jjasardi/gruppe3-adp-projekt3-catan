@@ -159,7 +159,7 @@ public class SiedlerGameTestBasic {
     private void assertPlayerResourceCardStockEquals(SiedlerGame model, Map<Config.Faction, Map<Config.Resource, Integer>> expected) {
         for (int i = 0; i < expected.keySet().size(); i++) {
             Config.Faction f = model.getCurrentPlayerFaction();
-            for (Config.Resource r : Config.Resource.values()) {
+            for (Config.Resource r : Config.Resource.values()) {                
                 assertEquals(expected.get(f).get(r), model.getCurrentPlayerResourceStock(r),
                         "Resource card stock of player " + i + " [faction " + f + "] for resource type " + r + " does not match.");
             }

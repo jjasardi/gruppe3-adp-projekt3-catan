@@ -41,20 +41,6 @@ public class Bank {
         return bank;
     }
 
-    public List<Resource> getBankStockList() {
-        List<Resource> list = new ArrayList<>();
-        for (Entry<Resource, Integer> resource : bank.entrySet()) {
-            int resourceAmount = resource.getValue();
-            for (int i=0; i < resourceAmount; i++) {
-                list.add(resource.getKey());
-            }
-        } return list;
-    }
-    
-    public int getBankResourceStock(Resource resource) {
-        return bank.get(resource);
-    }
-
     /**
      * Removes one given specific resource from the Bank.
      * 

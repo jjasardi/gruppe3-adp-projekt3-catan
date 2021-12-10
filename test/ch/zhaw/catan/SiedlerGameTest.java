@@ -48,6 +48,9 @@ public class SiedlerGameTest {
         model.placeInitialRoad(settlement4, roadEnd4);
     }
 
+    /**
+     * This test checks if the bank gives out recources while it has none.
+     */
     @Test
     public void bankNoStock() {
         SiedlerGame model = new SiedlerGame(7, 2);
@@ -72,6 +75,13 @@ public class SiedlerGameTest {
         assertEquals(redResourceList, redStock);
     }
 
+    /**
+     * This Test checks if a recource is given out to only one player while it's
+     * supposed to be given to two players, if only one recource is in stock.
+     * 
+     * this test fails because the codelines to make it work are excluded in the
+     * SidlerGame class.
+     */
     @Test
     public void bankResourceForOnlyOnePlayer() {
         SiedlerGame model = new SiedlerGame(7, 2);
@@ -181,7 +191,6 @@ public class SiedlerGameTest {
 
         assertEquals(point, model.getThiefPositiong());
     }
-
 
     /**
      * Tests if thief can be placed on Water Field.
