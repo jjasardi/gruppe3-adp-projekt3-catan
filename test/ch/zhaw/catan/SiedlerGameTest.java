@@ -194,7 +194,7 @@ public class SiedlerGameTest {
         Point point = new Point(10, 2);
         model.placeThiefAndStealCard(point);
 
-        assertTrue(model.getThiefPositiong() == Config.INITIAL_THIEF_POSITION);
+        assertEquals(Config.INITIAL_THIEF_POSITION, model.getThiefPositiong());
     }
 
     /**
