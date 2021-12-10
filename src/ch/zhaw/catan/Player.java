@@ -137,7 +137,7 @@ public class Player {
      * @return if the action was successful
      */
     public boolean removeResourceFromPlayer(Resource resource, int amount) {
-        if (amount > 0 && PlayerHasResourceInStock(resource, amount)) {
+        if (amount > 0 && playerHasResourceInStock(resource, amount)) {
             playerResource.merge(resource, -amount, Integer::sum);
             return true;
         } else {
@@ -152,7 +152,7 @@ public class Player {
      * @return if the action was successful
      */
     public boolean removeOneResourceFromPlayer(Resource resource) {
-        if (PlayerHasResourceInStock(resource, 1)) {
+        if (playerHasResourceInStock(resource, 1)) {
             playerResource.merge(resource, -1, Integer::sum);
             return true;
         } else {
@@ -189,7 +189,7 @@ public class Player {
      * @param amount   the amount the player needs to have
      * @return if the player has enough resource in stock
      */
-    private boolean PlayerHasResourceInStock(Resource resource, int amount) {
+    private boolean playerHasResourceInStock(Resource resource, int amount) {
         if (getPlayerResource(resource) >= amount) {
             return true;
         } else {
