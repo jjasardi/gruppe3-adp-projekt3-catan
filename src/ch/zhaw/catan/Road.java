@@ -49,6 +49,8 @@ public class Road {
     }
 
     /**
+     * Returns the factionname of the Road as a String
+     * 
      * @return String
      */
     @Override
