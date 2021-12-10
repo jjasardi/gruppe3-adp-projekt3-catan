@@ -1,8 +1,6 @@
 package ch.zhaw.catan;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -21,8 +19,8 @@ import ch.zhaw.catan.Config.Resource;
  */
 public class Bank {
     private Map<Resource, Integer> bank;
-    static final int RESOURCE_OFFER = 4;
-    static final int RESOURCE_WANT = 1;
+    private static final int RESOURCE_OFFER = 4;
+    private static final int RESOURCE_WANT = 1;
 
     /**
      * Creates a bank object {@link Bank} and give it the initial resource.
