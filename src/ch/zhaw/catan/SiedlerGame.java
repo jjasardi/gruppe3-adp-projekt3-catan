@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class performs all actions related to modifying the game state. TODO:
@@ -363,20 +362,23 @@ public class SiedlerGame {
    * @param position the position of the city
    * @return true, if the placement was successful
    */
-  public boolean buildCity(Point position) { // TODO: testing
-    Building building = siedlerBoard.getCorner(position);
-    boolean isSettlement = building instanceof Settlement;
-    if (isBuilduingFaction(position) && isSettlement && hasResourceToBuild(Structure.CITY.getCosts())
-        && isBelowMaxNumberOfCity(getCurrentPlayerFaction())) {
-      City city = new City(position, getCurrentPlayerFaction());
-      Player currentPlayer = getCurrentPlayer();
-      placeBuilding(city, position, currentPlayer);
-      for (Resource resource : Structure.CITY.getCosts()) {
-        currentPlayer.removeOneResourceFromPlayer(resource);
+  public boolean buildCity(Point position) {
+    boolean success = false;
+    if (siedlerBoard.hasCorner(position)) {
+      Building building = siedlerBoard.getCorner(position);
+      boolean isSettlement = building instanceof Settlement;
+      if (isBuilduingFaction(position) && isSettlement && hasResourceToBuild(Structure.CITY.getCosts())
+          && isBelowMaxNumberOfCity(getCurrentPlayerFaction())) {
+        City city = new City(position, getCurrentPlayerFaction());
+        Player currentPlayer = getCurrentPlayer();
+        placeBuilding(city, position, currentPlayer);
+        for (Resource resource : Structure.CITY.getCosts()) {
+          currentPlayer.removeOneResourceFromPlayer(resource);
+        }
+        success = true;
       }
-      return true;
-    } else
-      return false;
+    }
+    return success;
   }
 
   private boolean isBelowMaxNumberOfCity(Faction faction) {
@@ -427,7 +429,7 @@ public class SiedlerGame {
   }
 
   private boolean hasResourceToBuild(List<Resource> resourceList) {
-    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) { // TODO: check list
+    if (getCurrentPlayer().getResourceList().containsAll(resourceList)) {
       return true;
     } else
       return false;

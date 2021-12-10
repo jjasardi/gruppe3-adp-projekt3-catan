@@ -36,7 +36,7 @@ public class MainGame {
     }
 
     /**
-     * This {@link Enum} specifies the TODO: what
+     * This {@link Enum} specifies the Strings that are used for the InputReader.
      * 
      * @author Durim
      */
@@ -59,7 +59,7 @@ public class MainGame {
     private void run() {
         firstPhase();
         secondTestPhase();
-        // secondPhase();
+        //secondPhase();
         thirdPhase();
 
     }
@@ -68,9 +68,10 @@ public class MainGame {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         input = new Input();
+        output = new Output();
+        output.printWelcome();
         playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(POINTS_TO_WIN, playerCount);
-        output = new Output();
 
     }
 
@@ -182,6 +183,9 @@ public class MainGame {
                 }
             }
             commands();
+            if (siedlerGame.getWinner() != null) {
+                output.printWinnter(siedlerGame.getCurrentPlayerFaction());
+            }
             siedlerGame.switchToNextPlayer();
         }
 

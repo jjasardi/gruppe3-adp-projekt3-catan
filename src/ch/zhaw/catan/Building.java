@@ -9,7 +9,7 @@ import ch.zhaw.catan.Config.Faction;
  * 
  * @author Durim, Ardi, Philipp
  */
-public abstract class Building { // TODO: abstract testen
+public abstract class Building {
     private Point position;
     private Faction faction;
     private int winPointsForBuilduing;
