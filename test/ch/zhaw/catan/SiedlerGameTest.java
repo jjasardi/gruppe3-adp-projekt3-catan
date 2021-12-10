@@ -81,7 +81,7 @@ public class SiedlerGameTest {
      * supposed to be given to two players, if only one recource is in stock.
      * 
      * this test fails because the codelines to make it work are excluded in the
-     * SidlerGame class.
+     * SiedlerGame class.
      */
     @Test
     public void bankResourceForOnlyOnePlayer() {
