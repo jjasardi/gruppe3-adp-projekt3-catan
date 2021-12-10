@@ -17,11 +17,6 @@ public class Thief {
         return position;
     }
 
-    public Point getPositionOffset() {
-        Point newPosition = new Point(position.x, (position.y + 2));
-        return newPosition;
-    }
-
     public void setNewThiefPosition(Point position) {
         this.position = position;
     }
@@ -34,7 +29,7 @@ public class Thief {
 
     @Override
     public String toString() {
-        return "TH";
+        return "Thief is on Position: " + "[" + position.x + "," + position.y + "]";
     }
 
 }

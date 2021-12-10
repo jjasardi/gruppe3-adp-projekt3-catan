@@ -80,7 +80,7 @@ public class Player {
      * @param resource
      * @param amount
      */
-    public void addResourceToPlayer(Resource resource, int amount) {
+    private void addResourceToPlayer(Resource resource, int amount) {
         if (amount > 0) {
             playerResource.merge(resource, amount, Integer::sum);
         }
@@ -89,7 +89,7 @@ public class Player {
     /**
      * @param resource
      */
-    public void addResourceToPlayer(Resource resource) {
+    public void addOneResourceToPlayer(Resource resource) {
         if (playerResource.get(resource) != null) {
             playerResource.merge(resource, 1, Integer::sum);
         } else {

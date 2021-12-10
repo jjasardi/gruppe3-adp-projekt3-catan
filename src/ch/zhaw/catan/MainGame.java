@@ -8,7 +8,6 @@ import ch.zhaw.catan.Config.Resource;
 import java.awt.Point;
 
 public class MainGame {
-    private Dice dice;
     private Input input;
     private Output output;
     private TextIO textIO;
@@ -45,7 +44,6 @@ public class MainGame {
         textIO = TextIoFactory.getTextIO();
         textTerminal = textIO.getTextTerminal();
         input = new Input();
-        dice = new Dice();
         playerCount = input.getNumberOfPlayers(textIO);
         siedlerGame = new SiedlerGame(POINTS_TO_WIN, playerCount);
         output = new Output();
@@ -143,15 +141,17 @@ public class MainGame {
         int diceThrow = 0;
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
-            diceThrow = dice.getDiceThrow();
+            diceThrow = Dice.rollWithTwoDice();
             //diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
             if (diceThrow == 7) {
                 output.printThief();
                 Point field = input.getPosition();
-                if (!siedlerGame.placeThiefAndStealCard(field)) {
+                while (!siedlerGame.placeThiefAndStealCard(field)) {
                     output.printError();
+                    output.printThief();
+                    field = input.getPosition();
                 }
             }
             commands();
@@ -167,6 +167,7 @@ public class MainGame {
                     output.getInputReadString(Read.COMMAND))) {
             case SHOW:
                 textTerminal.println(siedlerGame.getView().toString());
+                textTerminal.println(siedlerGame.getThiefPosition());
                 break;
             case TRADE:
                 tradeResource();
