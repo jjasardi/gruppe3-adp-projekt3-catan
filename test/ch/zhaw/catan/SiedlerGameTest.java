@@ -26,9 +26,9 @@ public class SiedlerGameTest {
     private Map<Resource, Integer> blueResourceList = Map.of(Resource.WOOL, 1, Resource.ORE, 1, Resource.GRAIN, 1);
 
     private void setUpTwoPlayer(SiedlerGame model) {
-        Point settlement = new Point(8, 4);
+        Point settlement = new Point(8, 18);
         model.placeInitialSettlement(settlement, false);
-        Point roadEnd = new Point(8, 6);
+        Point roadEnd = new Point(8, 16);
         model.placeInitialRoad(settlement, roadEnd);
         model.switchToNextPlayer();
 
@@ -48,6 +48,57 @@ public class SiedlerGameTest {
         model.placeInitialRoad(settlement4, roadEnd4);
     }
 
+    @Test
+    public void bankNoStock() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.ORE);
+        }
+        for (int i = 0; i < 19; i++) {
+            model.removeOneResourceFromBank(Resource.BRICK);
+        }
+        for (int i = 0; i < 16; i++) {
+            model.removeOneResourceFromBank(Resource.WOOL);
+        }
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.GRAIN);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.LUMBER);
+        }
+        model.throwDice(6);
+        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
+        assertEquals(redResourceList, redStock);
+    }
+
+    @Test
+    public void bankResourceForOnlyOnePlayer() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.ORE);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.BRICK);
+        }
+        for (int i = 0; i < 16; i++) {
+            model.removeOneResourceFromBank(Resource.WOOL);
+        }
+        for (int i = 0; i < 17; i++) {
+            model.removeOneResourceFromBank(Resource.GRAIN);
+        }
+        for (int i = 0; i < 18; i++) {
+            model.removeOneResourceFromBank(Resource.LUMBER);
+        }
+        model.throwDice(11);
+        Map<Resource, Integer> redStock = model.getCurrentPlayer().getPlayerStock();
+        model.switchToNextPlayer();
+        Map<Resource, Integer> blueStock = model.getCurrentPlayer().getPlayerStock();
+        assertEquals(redResourceList, redStock);
+        assertEquals(blueResourceList, blueStock);
+    }
+
     /**
      * Tests if City recieves two Resources.
      */
@@ -61,10 +112,10 @@ public class SiedlerGameTest {
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
-        model.buildCity(new Point(8, 4));
-        model.throwDice(8);
+        model.buildCity(new Point(8, 18));
+        model.throwDice(11);
         Map<Resource, Integer> redList = new HashMap<>(redResourceList);
-        redList.put(Resource.WOOL, 2);
+        redList.put(Resource.BRICK, 2);
         assertEquals(model.getCurrentPlayer().getPlayerStock(), redList);
     }
 
@@ -111,6 +162,21 @@ public class SiedlerGameTest {
     }
 
     /**
+     * Tests if thief position ist correct.
+     */
+    @Test
+    public void thiefTestOnNormalField() {
+        SiedlerGame model = new SiedlerGame(7, 2);
+        setUpTwoPlayer(model);
+
+        Point point = new Point(8, 14);
+        model.placeThiefAndStealCard(point);
+
+        assertEquals(point, model.getThiefPositiong());
+    }
+
+
+    /**
      * Tests if thief can be placed on Water Field.
      */
     @Test
@@ -138,7 +204,7 @@ public class SiedlerGameTest {
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.ORE);
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
         model.getCurrentPlayer().addOneResourceToPlayer(Resource.GRAIN);
-        assertTrue(model.buildCity(new Point(8, 4)));
+        assertTrue(model.buildCity(new Point(8, 18)));
     }
 
     /**

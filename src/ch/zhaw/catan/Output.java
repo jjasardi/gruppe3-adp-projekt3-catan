@@ -8,6 +8,7 @@ import org.beryx.textio.TextTerminal;
 
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.Config.Structure;
 import ch.zhaw.catan.MainGame.Read;
 
 /**
@@ -133,7 +134,20 @@ public class Output {
         } else if (command.equals(Read.BUILD)) {
             return "What do you want to build?";
         } else
-            return "huh?";
+            return "Error";
+    }
+
+    /**
+     * prints the resource costs of all structures.
+     */
+    public void printStructuresCost() {
+        textTerminal.println("Road: ");
+        textTerminal.println(Structure.ROAD.getCosts().toString() + "\n");
+        textTerminal.println("Settlement: ");
+        textTerminal.println(Structure.SETTLEMENT.getCosts().toString() + "\n");
+        textTerminal.println("City: ");
+        textTerminal.println(Structure.CITY.getCosts().toString() + "\n");
+
     }
 
     /**

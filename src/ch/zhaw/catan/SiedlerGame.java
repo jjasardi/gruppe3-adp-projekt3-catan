@@ -599,4 +599,8 @@ public class SiedlerGame {
     }
     return factionResourceMap;
   }
+
+  protected void removeOneResourceFromBank(Resource resource) {
+    bank.removeOneResource(resource);
+  }
 }

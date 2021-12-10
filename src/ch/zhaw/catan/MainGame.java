@@ -32,7 +32,7 @@ public class MainGame {
      * @author Durim
      */
     public enum Actions {
-        SHOW, TRADE, BUILD, BANK_STOCK, MY_STOCK, END
+        SHOW, TRADE, BUILD, STRUCTURE_COST, BANK_STOCK, MY_STOCK, END
     }
 
     /**
@@ -59,7 +59,7 @@ public class MainGame {
     private void run() {
         firstPhase();
         secondTestPhase();
-        //secondPhase();
+        // secondPhase();
         thirdPhase();
 
     }
@@ -204,6 +204,9 @@ public class MainGame {
                 break;
             case BUILD:
                 build();
+                break;
+            case STRUCTURE_COST:
+                output.printStructuresCost();
                 break;
             case BANK_STOCK:
                 output.printBankStock(siedlerGame.getBankStock());

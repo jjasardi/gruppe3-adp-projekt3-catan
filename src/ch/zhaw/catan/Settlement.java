@@ -23,7 +23,9 @@ public class Settlement extends Building {
         super(position, faction, WIN_POINTS_FOR_SETTLEMENT, RESOURCE_EARNING);
     }
 
-    //TODO
+    /**
+     * Returns the factionname of the Settlement as an uppercase String
+     */
     @Override
     public String toString() {
         return getFaction().toString();
