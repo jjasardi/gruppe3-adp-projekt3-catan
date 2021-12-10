@@ -5,6 +5,7 @@ import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 import ch.zhaw.catan.Config.Resource;
 import ch.zhaw.catan.Dice;
+import ch.zhaw.catan.Command.Read;
 
 import java.awt.Point;
 
@@ -33,7 +34,7 @@ public class MainGame {
     private void run() {
         firstPhase();
         secondTestPhase();
-        //secondPhase();
+        // secondPhase();
         thirdPhase();
 
     }
@@ -55,29 +56,28 @@ public class MainGame {
     }
 
     private void secondTestPhase() {
-            playerCount = 2;
-            Point settlement = new Point(8, 4);
-            siedlerGame.placeInitialSettlement(settlement, false);
-            Point roadEnd = new Point(8, 6);
-            siedlerGame.placeInitialRoad(settlement, roadEnd);
-            siedlerGame.switchToNextPlayer();
+        playerCount = 2;
+        Point settlement = new Point(8, 4);
+        siedlerGame.placeInitialSettlement(settlement, false);
+        Point roadEnd = new Point(8, 6);
+        siedlerGame.placeInitialRoad(settlement, roadEnd);
+        siedlerGame.switchToNextPlayer();
 
-            Point settlement2 = new Point(9, 15);
-            siedlerGame.placeInitialSettlement(settlement2, false);
-            Point roadEnd2 = new Point(9, 13);
-            siedlerGame.placeInitialRoad(settlement2, roadEnd2);
-            Point settlement3 = new Point(5, 15);
-            siedlerGame.placeInitialSettlement(settlement3, true);
-            Point roadEnd3 = new Point(6, 16);
-            siedlerGame.placeInitialRoad(settlement3, roadEnd3);
-            siedlerGame.switchToPreviousPlayer();
+        Point settlement2 = new Point(9, 15);
+        siedlerGame.placeInitialSettlement(settlement2, false);
+        Point roadEnd2 = new Point(9, 13);
+        siedlerGame.placeInitialRoad(settlement2, roadEnd2);
+        Point settlement3 = new Point(5, 15);
+        siedlerGame.placeInitialSettlement(settlement3, true);
+        Point roadEnd3 = new Point(6, 16);
+        siedlerGame.placeInitialRoad(settlement3, roadEnd3);
+        siedlerGame.switchToPreviousPlayer();
 
-            Point settlement4 = new Point(5, 7);
-            siedlerGame.placeInitialSettlement(settlement4, true);
-            Point roadEnd4 = new Point(5, 9);
-            siedlerGame.placeInitialRoad(settlement4, roadEnd4);
-        }
-
+        Point settlement4 = new Point(5, 7);
+        siedlerGame.placeInitialSettlement(settlement4, true);
+        Point roadEnd4 = new Point(5, 9);
+        siedlerGame.placeInitialRoad(settlement4, roadEnd4);
+    }
 
     private void secondPhaseOne() {
         for (int player = 1; player <= playerCount; player++) {
@@ -90,10 +90,11 @@ public class MainGame {
                 while (!success) {
                     output.printError();
                     settlement = input.getPosition();
-                    success = siedlerGame.placeInitialSettlement(settlement, false);
+                    success = siedlerGame.placeInitialSettlement(settlement,
+                            false);
                 }
             }
-            output.printRoad();
+            output.printRoadEnd();
             Point roadEnd = input.getPosition();
             if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
                 boolean success = false;
@@ -119,10 +120,11 @@ public class MainGame {
                 while (!success) {
                     output.printError();
                     settlement = input.getPosition();
-                    success = siedlerGame.placeInitialSettlement(settlement, true);
+                    success = siedlerGame.placeInitialSettlement(settlement,
+                            true);
                 }
             }
-            output.printRoad();
+            output.printRoadEnd();
             Point roadEnd = input.getPosition();
             if (!siedlerGame.placeInitialRoad(settlement, roadEnd)) {
                 boolean success = false;
@@ -139,7 +141,7 @@ public class MainGame {
         int diceThrow = 0;
         while (siedlerGame.getWinner() == null) {
             output.printCurrentPlayer(siedlerGame.getCurrentPlayerFaction());
-            //diceThrow = dice.getDiceThrow();
+            // diceThrow = dice.getDiceThrow();
             diceThrow = 7;
             output.printDice(diceThrow);
             siedlerGame.throwDice(diceThrow);
@@ -159,87 +161,92 @@ public class MainGame {
     private void commands() {
         boolean running = true;
         while (running) {
-            switch (input.getEnumValue(textIO, Actions.class)) {
-                case SHOW:
-                    textTerminal.println(siedlerGame.getView().toString());
-                    break;
-                case TRADE:
-                    tradeResource();
-                    break;
-                case BUILD:
-                    build();
-                    break;
-                case BANK_STOCK:
-                    output.printBankStock(siedlerGame.getBankStock());
-                    break;
-                case MY_STOCK:
-                    output.printPlayerStock(siedlerGame.getCurrentPlayerStock());
-                    break;
-                case END:
-                    running = false;
-                    break;
-                default:
-                    throw new IllegalStateException("Internal error found - Command not implemented.");
+            switch (input.getClassInput(textIO, Actions.class,
+                    output.getInputReadString(Read.COMMAND))) {
+            case SHOW:
+                textTerminal.println(siedlerGame.getView().toString());
+                break;
+            case TRADE:
+                tradeResource();
+                break;
+            case BUILD:
+                build();
+                break;
+            case BANK_STOCK:
+                output.printBankStock(siedlerGame.getBankStock());
+                break;
+            case MY_STOCK:
+                output.printPlayerStock(siedlerGame.getCurrentPlayerStock());
+                break;
+            case END:
+                running = false;
+                break;
+            default:
+                throw new IllegalStateException(
+                        "Internal error found - Command not implemented.");
             }
         }
     }
 
     private void tradeResource() {
-        Resource offer = input.getTradeOffer(textIO, Config.Resource.class);
-        switch (input.getResourceValue(textIO, Config.Resource.class)) {
-            case GRAIN:
-                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN)) {
-                    output.printError();
-                }
-                break;
-            case WOOL:
-                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.WOOL)) {
-                    output.printError();
-                }
-                break;
-            case LUMBER:
-                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.LUMBER)) {
-                    output.printError();
-                }
-                break;
-            case ORE:
-                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.ORE)) {
-                    output.printError();
-                }
-                break;
-            case BRICK:
-                if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.BRICK)) {
-                    output.printError();
-                }
-                break;
+        Resource offer = input.getClassInput(textIO, Config.Resource.class,
+                output.getInputReadString(Read.OFFER));
+        switch (input.getClassInput(textIO, Config.Resource.class,
+                output.getInputReadString(Read.BUY))) {
+        case GRAIN:
+            if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.GRAIN)) {
+                output.printError();
+            }
+            break;
+        case WOOL:
+            if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.WOOL)) {
+                output.printError();
+            }
+            break;
+        case LUMBER:
+            if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.LUMBER)) {
+                output.printError();
+            }
+            break;
+        case ORE:
+            if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.ORE)) {
+                output.printError();
+            }
+            break;
+        case BRICK:
+            if (!siedlerGame.tradeWithBankFourToOne(offer, Resource.BRICK)) {
+                output.printError();
+            }
+            break;
         }
     }
 
     private void build() {
-        switch (input.getBuildingValue(textIO, Building.class)) {
-            case ROAD:
-                output.printRoad();
-                Point roadStart = input.getPosition();
-                output.printRoad();
-                Point roadEnd = input.getPosition();
-                if (!siedlerGame.buildRoad(roadStart, roadEnd)) {
-                    output.printError();
-                }
-                break;
-            case SETTELMENT:
-                output.printSettelment();
-                Point positionSettelment = input.getPosition();
-                if (!siedlerGame.buildSettlement(positionSettelment)) {
-                    output.printError();
-                }
-                break;
-            case CITY:
-                output.printCity();
-                Point positionCity = input.getPosition();
-                if (!siedlerGame.buildCity(positionCity)) {
-                    output.printError();
-                }
-                break;
+        switch (input.getClassInput(textIO, Building.class,
+                output.getInputReadString(Read.BUILD))) {
+        case ROAD:
+            output.printRoadStart();
+            Point roadStart = input.getPosition();
+            output.printRoadEnd();
+            Point roadEnd = input.getPosition();
+            if (!siedlerGame.buildRoad(roadStart, roadEnd)) {
+                output.printError();
+            }
+            break;
+        case SETTELMENT:
+            output.printSettelment();
+            Point positionSettelment = input.getPosition();
+            if (!siedlerGame.buildSettlement(positionSettelment)) {
+                output.printError();
+            }
+            break;
+        case CITY:
+            output.printCity();
+            Point positionCity = input.getPosition();
+            if (!siedlerGame.buildCity(positionCity)) {
+                output.printError();
+            }
+            break;
         }
     }
 }

@@ -18,8 +18,8 @@ public class Thief {
     }
 
     public Point getPositionOffset() {
-        position = new Point(position.x, (position.y + 2));
-        return position;
+        Point newPosition = new Point(position.x, (position.y + 2));
+        return newPosition;
     }
 
     public void setNewThiefPosition(Point position) {

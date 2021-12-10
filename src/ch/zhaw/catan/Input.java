@@ -38,34 +38,7 @@ public class Input {
      * @param commands
      * @return T
      */
-    public <T extends Enum<T>> T getTradeOffer(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("Which Resource do you offer?");
-    }
-
-    /**
-     * @param textIO
-     * @param commands
-     * @return T
-     */
-    public <T extends Enum<T>> T getEnumValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("What would you like to do?");
-    }
-
-    /**
-     * @param textIO
-     * @param commands
-     * @return T
-     */
-    public <T extends Enum<T>> T getResourceValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("Which Resource do you want to buy?");
-    }
-
-    /**
-     * @param textIO
-     * @param commands
-     * @return T
-     */
-    public <T extends Enum<T>> T getBuildingValue(TextIO textIO, Class<T> commands) {
-        return textIO.newEnumInputReader(commands).read("What do you want to build?");
+    public <T extends Enum<T>> T getClassInput(TextIO textIO, Class<T> commands, String output) {
+        return textIO.newEnumInputReader(commands).read(output);
     }
 }

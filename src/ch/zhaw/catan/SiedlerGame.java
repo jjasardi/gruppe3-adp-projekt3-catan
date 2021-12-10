@@ -4,6 +4,7 @@ import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.catan.Config.Resource;
 import ch.zhaw.catan.Config.Structure;
+import ch.zhaw.hexboard.Label;
 
 import java.awt.Point;
 import java.sql.Struct;
@@ -32,6 +33,9 @@ public class SiedlerGame {
   private Bank bank;
   private SiedlerBoardTextView view;
   private Thief thiefPosition;
+
+  private Label thiefLabel = new Label('T', 'H');
+  private Land thief = Land.DESERT;
 
   /**
    * Constructs a SiedlerGame game state object.
@@ -341,18 +345,20 @@ public class SiedlerGame {
     if (dicethrow != THIEF_NUMBER) {
       fieldPositions = siedlerBoard.getFieldsForDiceValue(dicethrow);
       for (Point fieldPosition : fieldPositions) {
-        landType = siedlerBoard.getField(fieldPosition);
-        buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
-        for (Building building : buildingsOfField) {
-          Faction buildingFaction = building.getFaction();
-          Player player = getPlayerofFaction(building.getFaction());
-          resourceList = resourceEarningByBuilding(building, landType);
-          resourceList.addAll(factionResourceMap.getOrDefault(buildingFaction,
-              Collections.emptyList()));
-          factionResourceMap.put(buildingFaction, resourceList);
-          for (Resource resource : resourceList) {
-            if (bank.removeOneResource(resource)) {
-              player.addResourceToPlayer(resource);
+        if (fieldPosition != thiefPosition.getPosition()) { // Correct?
+          landType = siedlerBoard.getField(fieldPosition);
+          buildingsOfField = siedlerBoard.getCornersOfField(fieldPosition);
+          for (Building building : buildingsOfField) {
+            Faction buildingFaction = building.getFaction();
+            Player player = getPlayerofFaction(building.getFaction());
+            resourceList = resourceEarningByBuilding(building, landType);
+            resourceList.addAll(factionResourceMap.getOrDefault(buildingFaction,
+                Collections.emptyList()));
+            factionResourceMap.put(buildingFaction, resourceList);
+            for (Resource resource : resourceList) {
+              if (bank.removeOneResource(resource)) {
+                player.addResourceToPlayer(resource);
+              }
             }
           }
         }
@@ -535,6 +541,8 @@ public class SiedlerGame {
       corners = siedlerBoard.getCornersOfField(field);
     }
     if (siedlerBoard.hasField(field) && corners != null) {
+      // siedlerBoard.addFieldAnnotation(thiefPosition.getPosition(),
+      // thiefPosition.getPositionOffset(), null);
       thiefPosition.setNewThiefPosition(field);
       List<Faction> factions = new ArrayList<>();
       for (Building building : corners) {
@@ -609,7 +617,7 @@ public class SiedlerGame {
   private void removeHalfResource() {
     for (Player player : playerList) {
       int playerStock = player.getPlayerStockVolume();
-      if (playerStock >= THIEF_NUMBER) {
+      if (playerStock > Config.MAX_CARDS_IN_HAND_NO_DROP) {
         int resourceToSteal = playerStock / 2;
         for (int i = 0; i < resourceToSteal; i++) {
           List<Resource> resourceList = player.getResourceList();

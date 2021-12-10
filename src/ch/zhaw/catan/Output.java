@@ -9,6 +9,7 @@ import org.beryx.textio.TextTerminal;
 
 import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Resource;
+import ch.zhaw.catan.Command.Read;
 
 public class Output {
     TextIO textIO = TextIoFactory.getTextIO();
@@ -44,8 +45,12 @@ public class Output {
         textTerminal.println(currentPlayer.name() + "'s turn:");
     }
 
-    public void printRoad() {
-        textTerminal.println("Position for Road?");
+    public void printRoadStart() {
+        textTerminal.println("Position for roadStart?");
+    }
+
+    public void printRoadEnd() {
+        textTerminal.println("Position for roadEnd?");
     }
 
     public void printSettelment() {
@@ -75,7 +80,21 @@ public class Output {
      * @param faction
      */
     public void printWinnter(Faction faction) {
-        textTerminal.println("Congratulation!! the winner is:" + faction.name());
+        textTerminal
+                .println("Congratulation!! the winner is:" + faction.name());
+    }
+
+    public String getInputReadString(Read command) {
+        if (command.equals(Read.OFFER)) {
+            return "Which Resource do you offer?";
+        } else if (command.equals(Read.COMMAND)) {
+            return "What would you like to do?";
+        } else if (command.equals(Read.BUY)) {
+            return "Which Resource do you want to buy?";
+        } else if (command.equals(Read.BUILD)) {
+            return "What do you want to build?";
+        } else
+            return "huh?";
     }
 
     /**
