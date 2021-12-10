@@ -20,8 +20,6 @@ import java.util.Map;
  * @author Durim, Ardi, Philipp
  */
 public class SiedlerGame {
-  static final int FOUR_TO_ONE_TRADE_OFFER = 4;
-  static final int FOUR_TO_ONE_TRADE_WANT = 1;
   private static final int FIRST_PLAYER_IN_LIST = 0;
   private static final int THIEF_NUMBER = 7;
 

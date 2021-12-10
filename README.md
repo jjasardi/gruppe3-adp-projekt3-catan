@@ -42,5 +42,9 @@ For the coordinates use the Sheet. (Please See below)
 
 ![Coordinates-Cheat-Sheet](https://github.zhaw.ch/storage/user/4867/files/3ca6dc7d-a5e9-47de-adf9-f293df5c575c)
 
+## Test Dokument:
+
+https://github.zhaw.ch/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/blob/main/doc/Dokumentation%20Testing.docx?raw=true
+
 
 
