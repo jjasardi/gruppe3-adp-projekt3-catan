@@ -1,13 +1,16 @@
 package ch.zhaw.catan;
 
+import ch.zhaw.catan.Config.Faction;
 import ch.zhaw.catan.Config.Land;
 import ch.zhaw.hexboard.HexBoard;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
@@ -69,5 +72,27 @@ public class SiedlerBoard extends HexBoard<Land, Building, Road, String> {
 	 */
 	public List<Land> getLandsForCorner(Point corner) {
 		return getFields(corner);
+	}
+
+	public Set<Road> getAllRoadsOfFaction(Faction faction) {
+		Set<Road> roadsOfFaction= new HashSet<>();
+		List<Building> allBuildings = getAllBuildingsOfFaction(faction);
+		for (Building building : allBuildings) {
+			List<Road> adjacentRoads = getAdjacentEdges(building.getPosition());
+			for (Road road : adjacentRoads) {
+				roadsOfFaction.add(road);
+			}
+		}
+		return roadsOfFaction;
+	}
+
+	public List<Building> getAllBuildingsOfFaction(Faction faction) {
+		List<Building> buildingsOfFaction = new ArrayList<>();
+		for (Building building : getCorners()) {
+			if (building.getFaction() == faction) {
+				buildingsOfFaction.add(building);
+			}
+		}
+		return buildingsOfFaction;
 	}
 }
