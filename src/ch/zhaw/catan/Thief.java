@@ -55,7 +55,7 @@ public class Thief {
     }
 
     /**
-     * TODO
+     * returns the position of the thief object as String.
      * @return String
      */
     @Override
