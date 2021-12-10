@@ -44,7 +44,6 @@ For the coordinates use the Sheet. (Please See below)
 
 ## Test Dokument:
 
-https://github.zhaw.ch/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/blob/main/doc/Dokumentation%20Testing.docx?raw=true
-
+https://github.zhaw.ch/PM1-IT21aWIN-fame-rayi-wahl/gruppe3-adp-projekt3-catan/blob/5637b007240e32b57e4213c7856723ca2a2fea15/doc/Dokumentation%20Testing.pdf
 
 

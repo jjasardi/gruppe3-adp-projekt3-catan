@@ -18,8 +18,8 @@ import ch.zhaw.catan.MainGame.Read;
  * @author Durim, Philipp
  */
 public class Output {
-    TextIO textIO = TextIoFactory.getTextIO();
-    TextTerminal<?> textTerminal = textIO.getTextTerminal();
+    private TextIO textIO = TextIoFactory.getTextIO();
+    private TextTerminal<?> textTerminal = textIO.getTextTerminal();
 
     /**
      * prints a welcome message for the game.
