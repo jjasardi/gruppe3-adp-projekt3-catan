@@ -34,6 +34,6 @@ If it's your turn the terminal ask you what you want to do. The selection you ha
 
 7. `END:` Ends your turn.'
 
-For the official rules click [here (german)](https://www.catan.de/sites/prod/files/2021-06/CATAN_DasSpiel_Spielregel.pdf)
+For the official rules click [here](https://www.catan.de/sites/prod/files/2021-06/CATAN_DasSpiel_Spielregel.pdf) (german)
 
 For the coordinates use the Sheet. (Please See below)
